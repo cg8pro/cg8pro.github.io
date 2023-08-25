@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'pixel';
+  src: url('./LunaPixel.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'typewritter';
+  src: url('./Typewritter.ttf');
+  font-weight: normal;
+  font-style: normal;
+}

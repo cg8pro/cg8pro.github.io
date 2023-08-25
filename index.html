@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>↑ ↑ ↓ ↓ ← → B A</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="normalize.css" rel="stylesheet" type="text/css" />
+    <link href="skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="custom.css" rel="stylesheet" type="text/css" />
+    <link href="font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+    <div class="section" style="margin-top:2%">
+        <div class="container">
+            <h3 class="section-heading" style="font-family:pixel;"> Draw Something / 画点什么</h3>
+            <img id="img"></img>
+            <label style="font-family:pixel;font-size:20px;text-align: left;">Prompt / 提示词</label>
+            <textarea class="u-full-width" placeholder="↑ ↑ ↓ ↓ ← → ← → B A B A"></textarea>
+            <button id="draw" style="font-family: pixel;font-size: 20px;float: right;"> Go / 开炮</button>
+        </div>
+    </div>
+
+    <div id="result"></div>
+
+    <script src="jquery.min.js"></script>
+    <script src="forge.min.js"></script>
+    <script>
+        const publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgGT9I/42qr9boWNSiFf7Eo4iQQpP/JXk8IBkSCR85Ksoa80z7Qmyr+kGDRoyE18xJIO/QrSyqZrYbwzQ7jqkLjzFBLuoSV3RKARefEeiA5G+8AQ+JApNXccuJYKIXBExJtKjklf2EJtQ/HyV/QzmcXRCwqxCy8tMRTCFfqjWmfuD4G0Bn1HDtPYZX8AI679H/F+sFWhA25rDTuwdT0U+YK5X0aLMZCCB8yJJV/OhcTtrVWydlqCvo4nOSwaixe2I3hpWx8kR8xVCEUO8I0Jm27LQGyLFPDgog8ehksM3zLRKQbbVjc9FHgfJh3uLtfIYRvNiUbhHAF1MbmzpDp1GrQIDAQAB"
+
+        $(document).ready(function(){
+            $("#draw").click(function(){
+                $.ajax({
+                    url: "https://mjproxy.azurewebsites.net/api/mjproxy", // 替换成你想要请求的URL
+                    type: "POST",
+                    data: {
+                        "prompt": "cat", 
+                        "op": "Imagine", 
+                        "mjmessage":"eyJpZCI6IjExNDM5NjI4MzAxMDY3OTIwODciLCJmbGFncyI6MCwiY29udGVudCI6IioqY2F0LS1zNzUwLS1xMC41KiotPEAxMDg4MTQ2MTA0ODkxMjMyMzA3PihmYXN0KSIsImhhc2giOiJmM2M4NGM0ZC02MjQ2LTQ2NjYtODg1Yy0xYjJjNjNlYjBkMTUiLCJwcm9ncmVzcyI6ImRvbmUiLCJ1cmkiOiJodHRwczovL2Nkbi5kaXNjb3JkYXBwLmNvbS9hdHRhY2htZW50cy8xMTQwOTk5Njc5MzA4NDc2NDI2LzExNDM5NjI4Mjk3NzEyNjQwNDAvZHZhZHJhZ29uX2NhdF9mM2M4NGM0ZC02MjQ2LTQ2NjYtODg1Yy0xYjJjNjNlYjBkMTUucG5nIiwicHJveHlfdXJsIjoiaHR0cHM6Ly9tZWRpYS5kaXNjb3JkYXBwLm5ldC9hdHRhY2htZW50cy8xMTQwOTk5Njc5MzA4NDc2NDI2LzExNDM5NjI4Mjk3NzEyNjQwNDAvZHZhZHJhZ29uX2NhdF9mM2M4NGM0ZC02MjQ2LTQ2NjYtODg1Yy0xYjJjNjNlYjBkMTUucG5nIiwib3B0aW9ucyI6W3sidHlwZSI6Miwic3R5bGUiOjIsImxhYmVsIjoiVTEiLCJjdXN0b20iOiJNSjo6Sk9COjp1cHNhbXBsZTo6MTo6ZjNjODRjNGQtNjI0Ni00NjY2LTg4NWMtMWIyYzYzZWIwZDE1In0seyJ0eXBlIjoyLCJzdHlsZSI6MiwibGFiZWwiOiJVMiIsImN1c3RvbSI6Ik1KOjpKT0I6OnVwc2FtcGxlOjoyOjpmM2M4NGM0ZC02MjQ2LTQ2NjYtODg1Yy0xYjJjNjNlYjBkMTUifSx7InR5cGUiOjIsInN0eWxlIjoyLCJsYWJlbCI6IlUzIiwiY3VzdG9tIjoiTUo6OkpPQjo6dXBzYW1wbGU6OjM6OmYzYzg0YzRkLTYyNDYtNDY2Ni04ODVjLTFiMmM2M2ViMGQxNSJ9LHsidHlwZSI6Miwic3R5bGUiOjIsImxhYmVsIjoiVTQiLCJjdXN0b20iOiJNSjo6Sk9COjp1cHNhbXBsZTo6NDo6ZjNjODRjNGQtNjI0Ni00NjY2LTg4NWMtMWIyYzYzZWIwZDE1In0seyJ0eXBlIjoyLCJzdHlsZSI6MiwibGFiZWwiOiLDsMKfwpTChCIsImN1c3RvbSI6Ik1KOjpKT0I6OnJlcm9sbDo6MDo6ZjNjODRjNGQtNjI0Ni00NjY2LTg4NWMtMWIyYzYzZWIwZDE1OjpTT0xPIn0seyJ0eXBlIjoyLCJzdHlsZSI6MiwibGFiZWwiOiJWMSIsImN1c3RvbSI6Ik1KOjpKT0I6OnZhcmlhdGlvbjo6MTo6ZjNjODRjNGQtNjI0Ni00NjY2LTg4NWMtMWIyYzYzZWIwZDE1In0seyJ0eXBlIjoyLCJzdHlsZSI6MiwibGFiZWwiOiJWMiIsImN1c3RvbSI6Ik1KOjpKT0I6OnZhcmlhdGlvbjo6Mjo6ZjNjODRjNGQtNjI0Ni00NjY2LTg4NWMtMWIyYzYzZWIwZDE1In0seyJ0eXBlIjoyLCJzdHlsZSI6MiwibGFiZWwiOiJWMyIsImN1c3RvbSI6Ik1KOjpKT0I6OnZhcmlhdGlvbjo6Mzo6ZjNjODRjNGQtNjI0Ni00NjY2LTg4NWMtMWIyYzYzZWIwZDE1In0seyJ0eXBlIjoyLCJzdHlsZSI6MiwibGFiZWwiOiJWNCIsImN1c3RvbSI6Ik1KOjpKT0I6OnZhcmlhdGlvbjo6NDo6ZjNjODRjNGQtNjI0Ni00NjY2LTg4NWMtMWIyYzYzZWIwZDE1In1dLCJ3aWR0aCI6MjA0OCwiaGVpZ2h0IjoyMDQ4fQ=="}, // 这里是你想发送到服务器的数据
+                    success: function(response) {
+                        var resp = JSON.parse(response);
+                        $("#result").html(response);
+                        $("#img").attr("src", resp.base64img);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("请求出错: " + error);
+                    }
+                });
+            });
+        });
+
+        function encryptWithPublicKey(publicKey, data) {
+            const publicKeyObj = forge.pki.publicKeyFromPem(publicKey);
+            const encrypted = publicKeyObj.encrypt(data, "RSA-OAEP", {
+                md: forge.md.sha256.create(),
+            });
+            return forge.util.encode64(encrypted);
+        }
+
+        function decryptWithPrivateKey(privateKey, encryptedData) {
+            const privateKeyObj = forge.pki.privateKeyFromPem(privateKey);
+            const encryptedBytes = forge.util.decode64(encryptedData);
+            const decrypted = privateKeyObj.decrypt(encryptedBytes, "RSA-OAEP", {
+                md: forge.md.sha256.create(),
+            });
+            return decrypted;
+        }
+    </script>
+</body>
+</html>
