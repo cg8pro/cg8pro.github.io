@@ -10,32 +10,53 @@
     <link href="custom.css" rel="stylesheet" type="text/css" />
     <link href="font-face.css" rel="stylesheet" type="text/css" />
     <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('./bg.gif');  /* 替换为你的GIF图像URL */
+            background-size: cover;  /* 图像将会铺满整个容器 */
+            background-repeat: no-repeat;  /* 图像不会重复 */
+            background-position: center;  /* 图像将从中心开始 */
+            background-attachment: fixed;  /* 背景图像将不随页面的滚动而滚动 */
+        }
+    </style>
 </head>
 <body>
     <div class="section" style="margin-top:2%">
         <div class="container">
-            <h3 class="section-heading" style="font-family:pixel;"> Draw Something / 画点什么</h3>
+            <h3 class="section-heading" style="font-family:pixel;color:white;"> Draw Something / 画点什么</h3>
             <img id="img"></img>
-            <label style="font-family:pixel;font-size:20px;text-align: left;">Prompt / 提示词</label>
-            <textarea id="prompt" class="u-full-width" style="font-family:pixel;font-size:20px;" placeholder=""></textarea>
+            <label style="font-family:pixel;font-size:20px;color:white;text-align: left;">Prompt / 提示词</label>
+            <textarea id="prompt" class="u-full-width" style="font-family:pixel;font-size:20px;"></textarea>
             <div class="four columns" style="float: left;margin-left: 0px;"><input style="font-family:pixel;font-size:20px;" id="token" class="u-full-width"  type="password"  placeholder="Token goes here / 粘贴你的令牌" /></div>
-            <button id="draw" style="font-family: pixel;font-size: 20px;float: right;"> Go / 开炮</button>
+            <button id="draw" style="font-family: pixel;font-size: 20px;color:white;float: right;"> Go / 开炮</button>
         </div>
     </div>
     <script src="jquery.min.js"></script>
     <script src="forge.min.js"></script>
     <script>
-        const publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgGT9I/42qr9boWNSiFf7Eo4iQQpP/JXk8IBkSCR85Ksoa80z7Qmyr+kGDRoyE18xJIO/QrSyqZrYbwzQ7jqkLjzFBLuoSV3RKARefEeiA5G+8AQ+JApNXccuJYKIXBExJtKjklf2EJtQ/HyV/QzmcXRCwqxCy8tMRTCFfqjWmfuD4G0Bn1HDtPYZX8AI679H/F+sFWhA25rDTuwdT0U+YK5X0aLMZCCB8yJJV/OhcTtrVWydlqCvo4nOSwaixe2I3hpWx8kR8xVCEUO8I0Jm27LQGyLFPDgog8ehksM3zLRKQbbVjc9FHgfJh3uLtfIYRvNiUbhHAF1MbmzpDp1GrQIDAQAB"
+        const publicKey = `
+        "-----BEGIN PUBLIC KEY-----
+        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgGT9I/42qr9boWNSiFf7
+        Eo4iQQpP/JXk8IBkSCR85Ksoa80z7Qmyr+kGDRoyE18xJIO/QrSyqZrYbwzQ7jqk
+        LjzFBLuoSV3RKARefEeiA5G+8AQ+JApNXccuJYKIXBExJtKjklf2EJtQ/HyV/Qzm
+        cXRCwqxCy8tMRTCFfqjWmfuD4G0Bn1HDtPYZX8AI679H/F+sFWhA25rDTuwdT0U+
+        YK5X0aLMZCCB8yJJV/OhcTtrVWydlqCvo4nOSwaixe2I3hpWx8kR8xVCEUO8I0Jm
+        27LQGyLFPDgog8ehksM3zLRKQbbVjc9FHgfJh3uLtfIYRvNiUbhHAF1MbmzpDp1G
+        rQIDAQAB
+        -----END PUBLIC KEY-----"
+        `;
 
         $(document).ready(function(){
             $("#draw").click(function(){
                 $.ajax({
-                    url: "https://mjproxy.azurewebsites.net/api/mjproxy", // 替换成你想要请求的URL
+                    url: "http://localhost:7071/api/mjproxy",
                     type: "POST",
                     data: {
                         "prompt": $("#prompt").val(), 
                         "op": "Imagine", 
-                        "token": $("#token").val(),
+                        "token": encryptWithPublicKey(publicKey,$("#token").val()),
                         "mjmessage":""
                     }, 
                     success: function(response) {
