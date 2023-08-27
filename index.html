@@ -33,6 +33,17 @@
             return false;
         }
 
+        function getCookie(name) {
+          const cookies = document.cookie.split("; ");
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].split("=");
+            if (cookie[0] === name) {
+              return decodeURIComponent(cookie[1]);
+            }
+          }
+          return null;
+        }        
+
         window.onload = function() {
             if(!checkCookie("MJPROXY_TOKEN")) {
                 window.location.href = "auth.html";
@@ -47,7 +58,6 @@
             <img id="img"></img>
             <label style="font-family:pixel;font-size:20px;color:white;text-align: left;">Prompt / 提示词</label>
             <textarea id="prompt" class="u-full-width" style="font-family:pixel;font-size:20px;"></textarea>
-            <div class="four columns" style="float: left;margin-left: 0px;"><input style="font-family:pixel;font-size:20px;" id="token" class="u-full-width"  type="password"  placeholder="Token goes here / 粘贴你的令牌" /></div>
             <button id="draw" style="font-family: pixel;font-size: 20px;color:white;float: right;"> Go / 开炮</button>
         </div>
     </div>
@@ -74,7 +84,7 @@
                     data: {
                         "prompt": $("#prompt").val(), 
                         "op": "Imagine", 
-                        "token": encryptWithPublicKey(publicKey,$("#token").val()),
+                        "token": encryptWithPublicKey(publicKey,getCookie("MJPROXY_TOKEN")),
                         "mjmessage":""
                     }, 
                     success: function(response) {
