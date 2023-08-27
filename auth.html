@@ -21,34 +21,15 @@
             background-attachment: fixed;  /* 背景图像将不随页面的滚动而滚动 */
         }
     </style>
-    <script type="text/javascript">
-        function checkCookie(name) {
-            var cookies = document.cookie.split("; ");
-            for(var i = 0; i < cookies.length; i++) {
-                var cookie = cookies[i].split("=");
-                if(cookie[0] === name) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        window.onload = function() {
-            if(!checkCookie("MJPROXY_TOKEN")) {
-                window.location.href = "auth.html";
-            }
-        }
-    </script>
 </head>
 <body>
     <div class="section" style="margin-top:2%">
         <div class="container">
-            <h3 class="section-heading" style="font-family:pixel;color:white;"> Draw Something / 画点什么</h3>
-            <img id="img"></img>
-            <label style="font-family:pixel;font-size:20px;color:white;text-align: left;">Prompt / 提示词</label>
-            <textarea id="prompt" class="u-full-width" style="font-family:pixel;font-size:20px;"></textarea>
-            <div class="four columns" style="float: left;margin-left: 0px;"><input style="font-family:pixel;font-size:20px;" id="token" class="u-full-width"  type="password"  placeholder="Token goes here / 粘贴你的令牌" /></div>
-            <button id="draw" style="font-family: pixel;font-size: 20px;color:white;float: right;"> Go / 开炮</button>
+            <p>
+                <div class="ten columns" style="margin:0px auto 0px auto;"><input style="font-family:pixel;font-size:20px;" id="token" class="u-full-width"  type="password"  placeholder="Token goes here / 粘贴你的令牌" /></div>
+                <button id="go" style="font-family: pixel;font-size: 20px;color:white;"> OK / 好了</button>                
+            </p>
+            <label id="alert" style="color: red;float: left;font-family:pixel;font-size:20px;"></label>
         </div>
     </div>
     <script src="jquery.min.js"></script>
@@ -67,19 +48,23 @@
         `;
 
         $(document).ready(function(){
-            $("#draw").click(function(){
+            $("#go").click(function(){
                 $.ajax({
                     url: "https://mjproxy.azurewebsites.net/api/mjproxy",
                     type: "POST",
                     data: {
-                        "prompt": $("#prompt").val(), 
-                        "op": "Imagine", 
+                        "op": "auth", 
                         "token": encryptWithPublicKey(publicKey,$("#token").val()),
-                        "mjmessage":""
                     }, 
                     success: function(response) {
                         var resp = JSON.parse(response);
-                        $("#img").attr("src", resp.base64img);
+                        if(resp.status == "success"){
+                            document.cookie = "MJPROXY_TOKEN=" + encryptWithPublicKey(publicKey,$("#token").val()) + "; path=/";
+                            window.location.href = "index.html";
+                        }
+                        else{
+                            $("#alert").html("Wrong Token! / 令牌错误！");
+                        }
                     },
                     error: function(xhr, status, error) {
                         console.error("请求出错: " + error);
