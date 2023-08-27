@@ -84,7 +84,7 @@
                     data: {
                         "prompt": $("#prompt").val(), 
                         "op": "Imagine", 
-                        "token": encryptWithPublicKey(publicKey,getCookie("MJPROXY_TOKEN")),
+                        "token": getCookie("MJPROXY_TOKEN"),
                         "mjmessage":""
                     }, 
                     success: function(response) {
