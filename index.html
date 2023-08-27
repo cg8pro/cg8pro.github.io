@@ -51,7 +51,7 @@
         $(document).ready(function(){
             $("#draw").click(function(){
                 $.ajax({
-                    url: "http://localhost:7071/api/mjproxy",
+                    url: "https://mjproxy.azurewebsites.net/api/mjproxy",
                     type: "POST",
                     data: {
                         "prompt": $("#prompt").val(), 
