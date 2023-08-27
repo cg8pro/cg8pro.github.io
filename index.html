@@ -64,20 +64,9 @@
     <script src="jquery.min.js"></script>
     <script src="forge.min.js"></script>
     <script>
-        const publicKey = `
-        "-----BEGIN PUBLIC KEY-----
-        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgGT9I/42qr9boWNSiFf7
-        Eo4iQQpP/JXk8IBkSCR85Ksoa80z7Qmyr+kGDRoyE18xJIO/QrSyqZrYbwzQ7jqk
-        LjzFBLuoSV3RKARefEeiA5G+8AQ+JApNXccuJYKIXBExJtKjklf2EJtQ/HyV/Qzm
-        cXRCwqxCy8tMRTCFfqjWmfuD4G0Bn1HDtPYZX8AI679H/F+sFWhA25rDTuwdT0U+
-        YK5X0aLMZCCB8yJJV/OhcTtrVWydlqCvo4nOSwaixe2I3hpWx8kR8xVCEUO8I0Jm
-        27LQGyLFPDgog8ehksM3zLRKQbbVjc9FHgfJh3uLtfIYRvNiUbhHAF1MbmzpDp1G
-        rQIDAQAB
-        -----END PUBLIC KEY-----"
-        `;
-
         $(document).ready(function(){
             $("#draw").click(function(){
+                $("#draw").disabled = true;
                 $.ajax({
                     url: "https://mjproxy.azurewebsites.net/api/mjproxy",
                     type: "POST",
@@ -90,6 +79,7 @@
                     success: function(response) {
                         var resp = JSON.parse(response);
                         $("#img").attr("src", resp.base64img);
+                        $("#draw").disabled = false;
                     },
                     error: function(xhr, status, error) {
                         console.error("请求出错: " + error);
@@ -97,23 +87,6 @@
                 });
             });
         });
-
-        function encryptWithPublicKey(publicKey, data) {
-            const publicKeyObj = forge.pki.publicKeyFromPem(publicKey);
-            const encrypted = publicKeyObj.encrypt(data, "RSA-OAEP", {
-                md: forge.md.sha256.create(),
-            });
-            return forge.util.encode64(encrypted);
-        }
-
-        function decryptWithPrivateKey(privateKey, encryptedData) {
-            const privateKeyObj = forge.pki.privateKeyFromPem(privateKey);
-            const encryptedBytes = forge.util.decode64(encryptedData);
-            const decrypted = privateKeyObj.decrypt(encryptedBytes, "RSA-OAEP", {
-                md: forge.md.sha256.create(),
-            });
-            return decrypted;
-        }
     </script>
 </body>
 </html>
