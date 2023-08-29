@@ -14,9 +14,9 @@
         body {
             margin: 0;
             padding: 0;
-            background-image: url('./draw_bg.png');
+            background-image: url('./heaven_bg.png');
             background-size: cover;
-            background-repeat: no-repeat; 
+            background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
         }
@@ -34,12 +34,12 @@
                 </div>
             </nav>
         </div>
-    </header>       
+    </header>    
     <div class="section" style="margin-top:2%">
         <div class="container">
             <p>
-                <div class="ten columns" style="margin:0px auto 0px auto;"><input style="font-family:pixel;font-size:20px;" id="token" class="u-full-width"  type="password"  placeholder="芝麻开门" /></div>
-                <button id="go" style="font-family: pixel;font-size: 20px;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 进入画室 </button>                
+                <div class="ten columns" style="margin:0px auto 0px auto;"><input style="font-family:pixel;font-size:20px;" id="subscriber" class="u-full-width"  type="password"  placeholder="内测中 ， 未开放订阅" /></div>
+                <button id="go" style="font-family: pixel;font-size: 20px;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 订阅 </button>                
             </p>
             <label id="alert" style="color: red;float: left;font-family:pixel;font-size:20px;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"></label>
         </div>
@@ -62,17 +62,16 @@
         $(document).ready(function(){
             $("#go").click(function(){
                 $.ajax({
-                    url: "http://localhost:7071/api/mjproxy",
+                    url: "",
                     type: "POST",
                     data: {
-                        "op": "auth", 
+                        "op": "heaven", 
                         "token": encryptWithPublicKey(publicKey,$("#token").val()),
                     }, 
                     success: function(response) {
                         var resp = JSON.parse(response);
                         if(resp.status == "success"){
-                            document.cookie = "MJPROXY_TOKEN=" + encryptWithPublicKey(publicKey,$("#token").val()) + "; path=/";
-                            window.location.href = "index.html";
+
                         }
                         else{
                             $("#alert").html("Wrong Token! / 令牌错误！");
