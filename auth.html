@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>↑ ↑ ↓ ↓ ← → B A</title>
+    <title>cg8.pro 登录</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +14,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-image: url('./bg.gif');  /* 替换为你的GIF图像URL */
+            background-image: url('./bg.png');  /* 替换为你的GIF图像URL */
             background-size: cover;  /* 图像将会铺满整个容器 */
             background-repeat: no-repeat;  /* 图像不会重复 */
             background-position: center;  /* 图像将从中心开始 */
@@ -23,13 +23,24 @@
     </style>
 </head>
 <body>
+    <header class="site-header" style="background-color: white;opacity: 0.7;">
+        <div class="wrapper">
+            <nav class="site-nav">
+                <div class="trigger">
+                    <!--<a class="page-link" href="">千万艺术家</a>-->
+                    <a class="page-link" href="index.html">“中途旅行”</a>
+                    <a class="page-link" href="about.html">关于我</a>               
+                </div>
+            </nav>
+        </div>
+    </header>    
     <div class="section" style="margin-top:2%">
         <div class="container">
             <p>
-                <div class="ten columns" style="margin:0px auto 0px auto;"><input style="font-family:pixel;font-size:20px;" id="token" class="u-full-width"  type="password"  placeholder="Token goes here / 粘贴你的令牌" /></div>
-                <button id="go" style="font-family: pixel;font-size: 20px;color:white;"> OK / 好了</button>                
+                <div class="ten columns" style="margin:0px auto 0px auto;"><input style="font-family:pixel;font-size:20px;" id="token" class="u-full-width"  type="password"  placeholder="芝麻开门" /></div>
+                <button id="go" style="font-family: pixel;font-size: 20px;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 进入画室 </button>                
             </p>
-            <label id="alert" style="color: red;float: left;font-family:pixel;font-size:20px;"></label>
+            <label id="alert" style="color: red;float: left;font-family:pixel;font-size:20px;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"></label>
         </div>
     </div>
     <script src="jquery.min.js"></script>

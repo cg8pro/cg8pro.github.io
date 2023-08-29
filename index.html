@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>↑ ↑ ↓ ↓ ← → B A</title>
+    <title>cg8.pro 画室</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,11 +14,11 @@
         body {
             margin: 0;
             padding: 0;
-            background-image: url('./bg.gif');  /* 替换为你的GIF图像URL */
-            background-size: cover;  /* 图像将会铺满整个容器 */
-            background-repeat: no-repeat;  /* 图像不会重复 */
-            background-position: center;  /* 图像将从中心开始 */
-            background-attachment: fixed;  /* 背景图像将不随页面的滚动而滚动 */
+            background-image: url('./bg.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
         }
     </style>
     <script type="text/javascript">
@@ -52,21 +52,67 @@
     </script>
 </head>
 <body>
+    <header class="site-header" style="background-color: white;opacity: 0.7;">
+        <div class="wrapper">
+            <nav class="site-nav">
+                <div class="trigger">
+                    <!--<a class="page-link" href="">千万艺术家</a>-->
+                    <a class="page-link" href="index.html">“中途旅行”</a>
+                    <a class="page-link" href="about.html">关于我</a>               
+                </div>
+            </nav>
+        </div>
+    </header>
     <div class="section" style="margin-top:2%">
         <div class="container">
-            <h3 class="section-heading" style="font-family:pixel;color:white;"> Draw Something / 画点什么</h3>
-            <img id="img"></img>
-            <label style="font-family:pixel;font-size:20px;color:white;text-align: left;">Prompt / 提示词</label>
+            <h3 class="section-heading" style="font-family:pixel;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 画点什么？</h3>
+            <img id="img" style="box-shadow: 4px 4px 8px 0px #fff000, -4px -4px 8px 0px #ff0000;"></img>
+            <div>
+                <label class="three columns" style="font-family:pixel;font-size:20px;color:white;text-align: left;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">提示词：</label>
+                <meter class="eight columns" id="meter" style="margin-left: 0px; margin-top:5px;" min="0" max="60" value="60"></meter>
+                <label id="countdownLable" style="font-family:pixel;font-size:20px;color:white;text-align: center;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">></label>
+            </div>             
             <textarea id="prompt" class="u-full-width" style="font-family:pixel;font-size:20px;"></textarea>
-            <button id="draw" style="font-family: pixel;font-size: 20px;color:white;float: right;"> Go / 开炮</button>
+            <button id="draw" style="font-family: pixel;font-size: 20px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">开炮</button>
+            
         </div>
     </div>
     <script src="jquery.min.js"></script>
     <script src="forge.min.js"></script>
     <script>
         $(document).ready(function(){
-            $("#draw").click(function(){
-                $("#draw").disabled = true;
+            $('#meter')[0].style.display = "none"
+            $('#countdownLable')[0].style.display = "none"
+            $("#countdownLable").html(seconds);
+
+            var countdown;
+            var seconds = 60;
+
+            function startCountdown() {
+                $('#countdown').text(seconds);
+                countdown = setInterval(function() {
+                    seconds--;
+                    $('#countdown').text(seconds);
+                    $('#meter')[0].value = seconds;
+                    $("#countdownLable").html(seconds);
+                    if (seconds <= 0) {
+                        clearInterval(countdown);
+                    }
+                }, 1000);
+            }
+
+            function stopCountdown() {
+                clearInterval(countdown);
+                $('#countdown').text('倒计时结束');
+            }
+
+            $('#draw').click(function(){
+                $('#draw').prop("disabled", true);
+                $('#draw').text("生成中...");
+                $('#meter')[0].style.display = "block"
+                $('#countdownLable')[0].style.display = "block"
+                $("#countdownLable").html(seconds);
+                startCountdown();
                 $.ajax({
                     url: "https://mjproxy.azurewebsites.net/api/mjproxy",
                     type: "POST",
@@ -76,18 +122,30 @@
                         "token": getCookie("MJPROXY_TOKEN"),
                         "mjmessage":""
                     }, 
+                    contentType: 'application/json',
                     success: function(response) {
                         var resp = JSON.parse(response);
                         $("#img").attr("src", resp.base64img);
-                        $("#draw").disabled = false;
+                        $('#draw').prop("disabled", false);
+                        $('#draw').text("开炮");
+                        $('#meter')[0].style.display = "none"
+                        $('#countdownLable')[0].style.display = "none"
+                        seconds = 60;
+                        stopCountdown();
                     },
                     error: function(xhr, status, error) {
                         console.error("请求出错: " + error);
-                        $("#draw").disabled = false;
+                        $('#draw').prop("disabled", false);
+                        $('#draw').text("开炮");
+                        $('#meter')[0].style.display = "none"
+                        $('#countdownLable')[0].style.display = "none"
+                        seconds = 60;
+                        stopCountdown();
                     }
                 });
             });
         });
+
     </script>
 </body>
 </html>
