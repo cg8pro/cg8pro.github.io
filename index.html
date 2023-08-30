@@ -8,7 +8,6 @@
     <link href="normalize.css" rel="stylesheet" type="text/css" />
     <link href="skeleton.css" rel="stylesheet" type="text/css" />
     <link href="custom.css" rel="stylesheet" type="text/css" />
-    <link href="font-face.css" rel="stylesheet" type="text/css" />
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
         body {
@@ -22,6 +21,14 @@
         }
     </style>
     <script type="text/javascript">
+        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.useragent)) {
+        } else {
+            var link = document.createelement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = 'font-facecss';
+            document.head.appendchild(link);
+        }        
         function checkCookie(name) {
             var cookies = document.cookie.split("; ");
             for(var i = 0; i < cookies.length; i++) {
