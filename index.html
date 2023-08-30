@@ -54,7 +54,7 @@
 
         window.onload = function() {
             if(!checkCookie("MJPROXY_TOKEN")) {
-                window.location.href = "auth.html";
+                //window.location.href = "auth.html";
             }
         }
     </script>
@@ -83,7 +83,14 @@
             </div>             
             <textarea id="prompt" class="u-full-width" style="font-family:pixel;font-size:20px;"></textarea>
             <button id="draw" style="font-family: pixel;font-size: 20px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">开炮</button>
-            
+        </div>
+        <div class="container" style="color:white;text-align: left;text-shadow: 2px 2px 3px #000, -2px -2px 3px #F00;">
+            <h5>Midjourney 极简教学</h5>
+            <h6>如果需要描述很多东西，英文比中文好使</h6>
+            <h6>后缀 “ --niji 5” 启用niji动画模型</h6>
+            <h6>后缀 “ --stylize x” 调整风格化（画面复杂度）上限100</h6>
+            <h6>后缀 “ --ar x:y” 设定出图比例比如 16:9</h6>
+            <h6>如果倒计时结束后还没出图：1 在排队等一会 2 提示词包含被禁词 3 该充钱了</h6>
         </div>
     </div>
     <script src="./js/jquery.min.js"></script>
