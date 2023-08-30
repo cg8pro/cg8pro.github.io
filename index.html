@@ -5,30 +5,31 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="normalize.css" rel="stylesheet" type="text/css" />
-    <link href="skeleton.css" rel="stylesheet" type="text/css" />
-    <link href="custom.css" rel="stylesheet" type="text/css" />
-    <link rel="icon" type="image/png" href="favicon.png">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-image: url('./draw_bg.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
-        }
-    </style>
+    <link href="./style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="./style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="./style/custom.css" rel="stylesheet" type="text/css" />
+    <link href="./img/favicon.png" rel="icon" type="image/png">
     <script type="text/javascript">
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.useragent)) {
+            link.href = './style/draw_bg_mobile.css';
+        } else {
+            link.href = './style/draw_bg.css';
+        }        
+        document.head.appendChild(link);  
+
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
         if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.useragent)) {
         } else {
-            var link = document.createelement('link');
-            link.rel = 'stylesheet';
-            link.type = 'text/css';
-            link.href = 'font-facecss';
-            document.head.appendchild(link);
+            link.href = './style/font-face.css';
+            document.head.appendChild(link); 
         }        
+        
+
         function checkCookie(name) {
             var cookies = document.cookie.split("; ");
             for(var i = 0; i < cookies.length; i++) {
@@ -85,8 +86,8 @@
             
         </div>
     </div>
-    <script src="jquery.min.js"></script>
-    <script src="forge.min.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/forge.min.js"></script>
     <script>
         $(document).ready(function(){
             $('#meter')[0].style.display = "none"

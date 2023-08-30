@@ -1,26 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>cg8.pro 登录</title>
+    <title>cg8.pro 订阅</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="normalize.css" rel="stylesheet" type="text/css" />
-    <link href="skeleton.css" rel="stylesheet" type="text/css" />
-    <link href="custom.css" rel="stylesheet" type="text/css" />
-    <link href="font-face.css" rel="stylesheet" type="text/css" />
-    <link rel="icon" type="image/png" href="favicon.png">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-image: url('./heaven_bg.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
-        }
-    </style>
+    <link href="./style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="./style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="./style/custom.css" rel="stylesheet" type="text/css" />
+    <link href="./img/favicon.png" rel="icon" type="image/png">
+    <script type="text/javascript">
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.useragent)) {
+            link.href = './style/heaven_bg_mobile.css';
+        } else {
+            link.href = './style/heaven_bg.css';
+        }        
+        document.head.appendChild(link); 
+
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.useragent)) {
+        } else {
+            link.href = './style/font-face.css';
+            document.head.appendChild(link);         
+        }        
+    </script>
 </head>
 <body>
     <header class="site-header" style="background-color: white;opacity: 0.7;">
@@ -52,8 +60,8 @@
             </div>            
         </div>
     </div>
-    <script src="jquery.min.js"></script>
-    <script src="forge.min.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/forge.min.js"></script>
     <script>
         const publicKey = `
         "-----BEGIN PUBLIC KEY-----
