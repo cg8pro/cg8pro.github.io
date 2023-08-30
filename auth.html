@@ -13,7 +13,7 @@
         var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.useragent)) {
+        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
             link.href = './style/draw_bg_mobile.css';
         } else {
             link.href = './style/draw_bg.css';
@@ -23,7 +23,7 @@
         var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.useragent)) {
+        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
         } else {
             link.href = './style/font-face.css';
             document.head.appendChild(link);  
