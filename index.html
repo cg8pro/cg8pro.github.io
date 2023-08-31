@@ -54,7 +54,7 @@
 
         window.onload = function() {
             if(!checkCookie("MJPROXY_TOKEN")) {
-                //window.location.href = "auth.html";
+                window.location.href = "auth.html";
             }
         }
     </script>
@@ -74,23 +74,43 @@
     </header>    
     <div class="section" style="margin-top:2%">
         <div class="container">
-            <h3 class="section-heading" style="font-family:pixel;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 画点什么？</h3>
+            <h4 class="section-heading" style="font-family:pixel;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 画点什么？</h4>
             <img id="img" style="box-shadow: 4px 4px 8px 0px #fff000, -4px -4px 8px 0px #ff0000;"></img>
             <div>
                 <label class="three columns" style="font-family:pixel;font-size:20px;color:white;text-align: left;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">提示词：</label>
+                <button id="draw" style="font-family: pixel;font-size: 20px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">开炮</button>
                 <meter class="eight columns" id="meter" style="margin-left: 0px; margin-top:5px;" min="0" max="60" value="60"></meter>
                 <label id="countdownLable" style="font-family:pixel;font-size:20px;color:white;text-align: center;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">></label>
             </div>             
             <textarea id="prompt" class="u-full-width" style="font-family:pixel;font-size:20px;"></textarea>
-            <button id="draw" style="font-family: pixel;font-size: 20px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">开炮</button>
+
         </div>
-        <div class="container" style="color:white;text-align: left;text-shadow: 2px 2px 3px #000, -2px -2px 3px #F00;">
+        <div class="container" style="background-color: rgb(173,194,185,0.6);padding: 5px 5px 5px 5px; border-radius: 10px;">
+            <button id="ar34"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">小红书 3:4</button>
+            <button id="ar916"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">抖音 9:16</button>
+            <button id="ar43"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">传统 4:3</button>
+            <button id="ar169"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">电影 16:9</button>
+        </div>
+        <div class="container" style="background-color: rgb(156,169,134,0.6);padding: 5px 5px 5px 5px;border-radius: 10px;margin: 5px auto 5px auto;">
+            <button id="s50"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">不太艺术</button>
+            <button id="s100"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">稍微艺术</button>
+            <button id="s250"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">比较艺术</button>
+            <button id="s1000"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">特别艺术</button>
+            <button id="niji"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">niji 5</button>
+        </div>        
+        <div class="container" style="background-color: rgb(196,122,155,0.6); padding: 5px 5px 5px 5px;border-radius: 10px;margin: 5px auto 5px auto;">
+            <button id="c10"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">稳定</button>
+            <button id="c30"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">变化</button>
+            <button id="c60"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">多变</button>
+            <button id="c100"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">混乱</button>
+        </div>           
+        <div class="container" style="color:white;text-align: left;text-shadow: 2px 2px 3px #000, -2px -2px 3px #F00;background-color: rgb(111,120,134,0.4);border-radius: 10px;padding: 5px 10px 5px 10px;font-family:pixel;">
             <h5>Midjourney 极简教学</h5>
-            <h6>如果需要描述很多东西，英文比中文好使</h6>
-            <h6>后缀 “ --niji 5” 启用niji动画模型</h6>
-            <h6>后缀 “ --stylize x” 调整风格化（画面复杂度）上限100</h6>
-            <h6>后缀 “ --ar x:y” 设定出图比例比如 16:9</h6>
-            <h6>如果倒计时结束后还没出图：1 在排队等一会 2 提示词包含被禁词 3 该充钱了</h6>
+            <h6>英文比中文好使</h6>
+            <h6>参数“ --niji 5”启用 niji 动画模型</h6>
+            <h6>参数“ --stylize x”调整艺术性/风格化典型数值：50 100 250 750</h6>
+            <h6>参数“ --ar x:y”设定出图比例 如 16:9</h6>
+            <h6>如果倒计时结束后没出图：(1)在排队等一会 (2)提示词包含被禁词 (3)提醒我该充钱了</h6>
         </div>
     </div>
     <script src="./js/jquery.min.js"></script>
@@ -122,6 +142,69 @@
                 $('#countdown').text('倒计时结束');
             }
 
+            function calculateImageSize(width, height, X) {
+              let newWidth, newHeight;
+              // 判断是横图还是竖图，然后相应地计算新尺寸
+              if (width > height) {
+                // 横图: 以高度为基准
+                const aspectRatio = width / height;
+                newWidth = X * aspectRatio;
+                newHeight = X;
+              } else {
+                // 竖图: 以宽度为基准
+                const aspectRatio = height / width;
+                newHeight = X * aspectRatio;
+                newWidth = X;
+              }
+              
+              return {
+                width: newWidth,
+                height: newHeight
+              };
+            }
+
+            $('#ar34').click(function(){
+                $('#prompt').val($('#prompt').val() + " --ar 3:4")
+            })
+            $('#ar916').click(function(){
+                $('#prompt').val($('#prompt').val() + " --ar 9:16")
+            })
+            $('#ar43').click(function(){
+                $('#prompt').val($('#prompt').val() + " --ar 4:3")
+            })
+            $('#ar169').click(function(){
+                $('#prompt').val($('#prompt').val() + " --ar 16:9")
+            })
+
+            $('#s50').click(function(){
+                $('#prompt').val($('#prompt').val() + " --stylize 50")
+            })
+            $('#s100').click(function(){
+                $('#prompt').val($('#prompt').val() + " --stylize 100")
+            })
+            $('#s250').click(function(){
+                $('#prompt').val($('#prompt').val() + " --stylize 250")
+            })
+            $('#s1000').click(function(){
+                $('#prompt').val($('#prompt').val() + " --stylize 1000")
+            })
+            $('#niji').click(function(){
+                $('#prompt').val($('#prompt').val() + " --niji 5")
+            })            
+
+            $('#c10').click(function(){
+                $('#prompt').val($('#prompt').val() + " --c 10")
+            })
+            $('#c30').click(function(){
+                $('#prompt').val($('#prompt').val() + " --c 30")
+            })
+            $('#c60').click(function(){
+                $('#prompt').val($('#prompt').val() + " --c 60")
+            })
+            $('#c100').click(function(){
+                $('#prompt').val($('#prompt').val() + " --c 100")
+            })
+
             $('#draw').click(function(){
                 $('#draw').prop("disabled", true);
                 $('#draw').text("生成中...");
@@ -141,6 +224,14 @@
                     contentType: 'application/json',
                     success: function(response) {
                         var resp = JSON.parse(response);
+                        if (resp.mjmessage !== undefined && resp.mjmessage.width !== undefined && resp.mjmessage.height !== undefined){
+                            const newSize = calculateImageSize(resp.mjmessage.width, resp.mjmessage.height, 512);
+                            $('img').css({
+                              'width': `${newSize.width}px`,
+                              'height': `${newSize.height}px`
+                            });                            
+                        }
+
                         $("#img").attr("src", resp.base64img);
                         $('#draw').prop("disabled", false);
                         $('#draw').text("开炮");
