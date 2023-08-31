@@ -54,7 +54,7 @@
 
         window.onload = function() {
             if(!checkCookie("MJPROXY_TOKEN")) {
-                window.location.href = "auth.html";
+                //window.location.href = "auth.html";
             }
         }
     </script>
@@ -78,11 +78,11 @@
             <img id="img" style="box-shadow: 4px 4px 8px 0px #fff000, -4px -4px 8px 0px #ff0000;"></img>
             <div>
                 <label class="three columns" style="font-family:pixel;font-size:20px;color:white;text-align: left;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">提示词：</label>
-                <button id="draw" style="font-family: pixel;font-size: 20px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">开炮</button>
                 <meter class="eight columns" id="meter" style="margin-left: 0px; margin-top:5px;" min="0" max="60" value="60"></meter>
                 <label id="countdownLable" style="font-family:pixel;font-size:20px;color:white;text-align: center;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">></label>
             </div>             
             <textarea id="prompt" class="u-full-width" style="font-family:pixel;font-size:20px;"></textarea>
+            <button id="draw" style="font-family: pixel;font-size: 20px;color:red;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">开炮</button>
 
         </div>
         <div class="container" style="background-color: rgb(173,194,185,0.6);padding: 5px 5px 5px 5px; border-radius: 10px;">
@@ -92,11 +92,11 @@
             <button id="ar169"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">电影 16:9</button>
         </div>
         <div class="container" style="background-color: rgb(156,169,134,0.6);padding: 5px 5px 5px 5px;border-radius: 10px;margin: 5px auto 5px auto;">
+            <button id="niji"  style="font-size: 14px;color:lightskyblue;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">niji 5</button>
             <button id="s50"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">不太艺术</button>
             <button id="s100"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">稍微艺术</button>
             <button id="s250"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">比较艺术</button>
             <button id="s1000"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">特别艺术</button>
-            <button id="niji"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">niji 5</button>
         </div>        
         <div class="container" style="background-color: rgb(196,122,155,0.6); padding: 5px 5px 5px 5px;border-radius: 10px;margin: 5px auto 5px auto;">
             <button id="c10"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">稳定</button>
