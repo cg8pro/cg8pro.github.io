@@ -1,0 +1,9 @@
+{
+  "routes": [
+    {
+      "route": "/*",
+      "serve": "/gallery.html",
+      "statusCode": 200
+    }
+  ]
+}
