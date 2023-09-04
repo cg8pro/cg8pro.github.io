@@ -15,6 +15,7 @@
 <body>
     <header class="site-header" style="background-color: white;opacity: 0.7;">
         <div class="wrapper">
+            <a class="site-title" href="gallery.html">Midjourney 艺术家画廊</a>
             <nav class="site-nav">
                 <div class="trigger">
                     <a class="page-link" href="gallery.html">千万艺术家</a>
@@ -27,8 +28,9 @@
     </header>
     <div class="section" style="margin-top:2%; padding:0 50px 0 50px">
         <row>
-            <p>欢迎来到 Midjourney 艺术家研究！我正在不断增加新的艺术家，目前有 <strong>492</strong> 位各个风格领域的艺术家。</p>
-            <p>如果你发现这里有缺少的艺术家/运动/风格，或发现错误的作品展示，请点击右上角“关于我”加我微信反馈。注意：完整加载本页需要<strong>32.2MB</strong>流量。</p>
+            <div style="line-height: 35px;">欢迎来到 Midjourney 艺术家研究！我正在不断增加新的艺术家，目前有 <strong>492</strong> 位各个风格领域的艺术家。</div>
+            <div style="line-height: 35px;">如果你发现这里有缺少的艺术家/运动/风格，或发现错误的作品展示，请点击右上角“关于我”加我微信反馈。</div>
+            <div style="line-height: 35px;color: darkgrey;"><strong>注意：</strong>完整加载本页需要<strong>32.2MB</strong>流量。点击图片可查看大图，需要时间加载请耐心等待。</div>
         </row>
     </div>
     <div class="section" style="margin-top:2%">
@@ -37,11 +39,19 @@
                 
             </div>
         </div>
+        <div id="modal" class="modal">
+            <span class="close">&times;</span>
+            <img class="modal-content" alt="" id="imgBig">
+            <div id="caption"></div>
+        </div>
     </div>
     <script src="./js/jquery.min.js"></script>
     <script src="./js/forge.min.js"></script>
     <script>
         window.onload = function() {
+            var modal = document.getElementById('modal');
+            var modalImg = document.getElementById('imgBig');        
+                
             $.ajax({
                 url: "https://mjoss.azurewebsites.net/api/mjoss",
                 type: "POST",
@@ -62,6 +72,11 @@
                             img.style.width = "180px";
                             img.style.height = "180px";
                             img.style.margin = "auto 5px auto 5px"; 
+                            img.alt = images[i].replace('thumb_','').replace('.png','');
+                            img.addEventListener('click', function() {
+                                modal.style.display = "block";
+                                modalImg.src = 'https://mjart.blob.core.windows.net/static/' + this.alt + '.png';
+                            });
                             gallery.appendChild(img);
 
                             var desc = document.createElement('div');
@@ -77,8 +92,13 @@
                     console.error("请求出错: " + error);
                 }
             });
+
+            var span = document.getElementsByClassName('close')[0];
+            span.onclick = function() { 
+                modal.style.display = "none";
+            }            
         };
-    </script>
+
     </script>
 </body>
 </html>
