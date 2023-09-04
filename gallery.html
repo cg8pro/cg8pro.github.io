@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>cg8.pro 画廊</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="./style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="./style/custom.css" rel="stylesheet" type="text/css" />
+    <link href="./img/favicon.png" rel="icon" type="image/png">
+    <script type="text/javascript">
+    </script>
+</head>
+<body>
+    <header class="site-header" style="background-color: white;opacity: 0.7;">
+        <div class="wrapper">
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a class="page-link" href="gallery.html">千万艺术家</a>
+                    <a class="page-link" href="index.html">画室</a>
+                    <!--<a class="page-link" href="heaven.html">里世界</a>-->
+                    <a class="page-link" href="about.html">关于我</a>          
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="section" style="margin-top:2%; padding:0 50px 0 50px">
+        <row>
+            <p>欢迎来到 Midjourney 艺术家研究！我正在不断增加新的艺术家，目前有 <strong>492</strong> 位各个风格领域的艺术家。</p>
+            <p>如果你发现这里有缺少的艺术家/运动/风格，或发现错误的作品展示，请点击右上角“关于我”加我微信反馈。注意：完整加载本页需要<strong>32.2MB</strong>流量。</p>
+        </row>
+    </div>
+    <div class="section" style="margin-top:2%">
+        <div>
+            <div id="gallery" >
+                
+            </div>
+        </div>
+    </div>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/forge.min.js"></script>
+    <script>
+        window.onload = function() {
+            $.ajax({
+                url: "https://mjoss.azurewebsites.net/api/mjoss",
+                type: "POST",
+                data: JSON.stringify({
+                    "option": "list_blob"
+                }), 
+                contentType: 'application/json',
+                success: function(response) {
+                    if (response.status !== undefined && response.status === "success" && response.data !== undefined){
+                        var gallery = document.getElementById('gallery');
+                        var images = response.data
+                        for (var i = 0; i < images.length; i++) {
+                            var div = document.createElement('div');
+                            div.style.display = "inline-block";
+                            
+                            var img = document.createElement('img');
+                            img.src = 'https://mjart.blob.core.windows.net/static/' + images[i] ;
+                            img.style.width = "180px";
+                            img.style.height = "180px";
+                            img.style.margin = "auto 5px auto 5px"; 
+                            gallery.appendChild(img);
+
+                            var desc = document.createElement('div');
+                            desc.innerHTML = images[i].replace('thumb_','').replace('.png','');
+                            desc.style.margin = "10px auto 5px auto"
+                            div.appendChild(desc);
+                            div.appendChild(img);
+                            gallery.appendChild(div);
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("请求出错: " + error);
+                }
+            });
+        };
+    </script>
+    </script>
+</body>
+</html>
