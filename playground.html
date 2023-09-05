@@ -54,7 +54,7 @@
 
         window.onload = function() {
             if(!checkCookie("MJPROXY_TOKEN")) {
-                window.location.href = "auth.html";
+                //window.location.href = "auth.html";
             }
         }
     </script>
@@ -65,7 +65,7 @@
             <nav class="site-nav">
                 <div class="trigger">
                     <a class="page-link" href="gallery.html">千万艺术家</a>
-                    <a class="page-link" href="index.html">画室</a>
+                    <a class="page-link" href="playground.html">画室</a>
                     <!--<a class="page-link" href="heaven.html">里世界</a>-->
                     <a class="page-link" href="about.html">关于我</a>                
                 </div>
@@ -82,33 +82,37 @@
                 <label id="countdownLable" style="font-family:pixel;font-size:20px;color:white;text-align: center;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">></label>
             </div>             
             <textarea id="prompt" class="u-full-width" style="font-family:pixel;font-size:20px;"></textarea>
-            <button id="draw" style="font-family: pixel;font-size: 20px;color:orangered;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">-绘-</button>
+            <button id="draw" style="font-family: pixel;font-size: 20px;color:ghostwhite;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">-绘-</button>
 
         </div>
-        <div class="container" style="background-color: rgb(173,194,185,0.6);padding: 5px 5px 5px 5px; border-radius: 10px;">
+        <div class="container" style="background-color: rgb(173,194,185,0.6);padding: 5px 5px 0px 5px; border-radius: 10px;">
             <button id="ar34"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">小红书 3:4</button>
             <button id="ar916"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">抖音 9:16</button>
             <button id="ar43"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">传统 4:3</button>
             <button id="ar169"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">电影 16:9</button>
+            <button id="arChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;"></button>
         </div>
         <div class="container" style="background-color: rgb(156,169,134,0.6);padding: 5px 5px 5px 5px;border-radius: 10px;margin: 5px auto 5px auto;">
             <button id="niji"  style="font-size: 14px;color:lightskyblue;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">niji 5</button>
-            <button id="s50"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">不太艺术</button>
-            <button id="s100"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">稍微艺术</button>
-            <button id="s250"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">比较艺术</button>
-            <button id="s1000"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">特别艺术</button>
+            <button id="s50"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">不艺术</button>
+            <button id="s100"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">稍艺术</button>
+            <button id="s250"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">较艺术</button>
+            <button id="s1000"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">特艺术</button>
+            <button id="sChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;">
+            <button id="nijiChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;">
         </div>        
         <div class="container" style="background-color: rgb(196,122,155,0.6); padding: 5px 5px 5px 5px;border-radius: 10px;margin: 5px auto 5px auto;">
             <button id="c10"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">稳定</button>
             <button id="c30"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">变化</button>
             <button id="c60"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">多变</button>
             <button id="c100"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">混乱</button>
+            <button id="cChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;"></label>
         </div>           
         <div class="container" style="color:white;text-align: left;text-shadow: 2px 2px 3px #000, -2px -2px 3px #F00;background-color: rgb(111,120,134,0.4);border-radius: 10px;padding: 5px 10px 5px 10px;font-family:pixel;">
             <h5>Midjourney 极简教学</h5>
             <h6>英文比中文好使</h6>
             <h6>参数“ --niji 5”启用 niji 动画模型</h6>
-            <h6>参数“ --stylize x”调整艺术性/风格化  典型数值：50 100 250 750</h6>
+            <h6>参数“ --stylize x”调整艺术性/风格化</h6>
             <h6>参数“ --ar x:y”设定出图比例</h6>
             <h6>如果倒计时结束后没出图： (1)在排队等一会 (2)提示词包含被禁词 (3)提醒我该充钱了</h6>
             <h6>不会保存绘图历史，看到喜欢的及时保存</h6>
@@ -165,45 +169,74 @@
             }
 
             $('#ar34').click(function(){
-                $('#prompt').val($('#prompt').val() + " --ar 3:4")
+                $('#arChosen').html("--ar 3:4" + "   [&times;]")
+                $('#arChosen').val("--ar 3:4")
             })
             $('#ar916').click(function(){
-                $('#prompt').val($('#prompt').val() + " --ar 9:16")
+                $('#arChosen').html("--ar 9:16" + "   [&times;]")
+                $('#arChosen').val("--ar 9:16")
             })
             $('#ar43').click(function(){
-                $('#prompt').val($('#prompt').val() + " --ar 4:3")
+                $('#arChosen').html("--ar 4:3" + "   [&times;]")
+                $('#arChosen').val("--ar 9:16")
             })
             $('#ar169').click(function(){
-                $('#prompt').val($('#prompt').val() + " --ar 16:9")
+                $('#arChosen').html("--ar 16:9" + "   [&times;]")
+                $('#arChosen').val("--ar 9:16")
+            })
+            $('#arChosen').click(function(){
+                $('#arChosen').html("")
+                $('#arChosen').val("")
             })
 
             $('#s50').click(function(){
-                $('#prompt').val($('#prompt').val() + " --stylize 50")
+                $('#sChosen').html("--stylize 50" + "   [&times;]")
+                $('#sChosen').val("--stylize 50")
             })
             $('#s100').click(function(){
-                $('#prompt').val($('#prompt').val() + " --stylize 100")
+                $('#sChosen').html("--stylize 100" + "   [&times;]")
+                $('#sChosen').val("--stylize 100")
             })
             $('#s250').click(function(){
-                $('#prompt').val($('#prompt').val() + " --stylize 250")
+                $('#sChosen').html("--stylize 250" + "   [&times;]")
+                $('#sChosen').val("--stylize 250")
             })
             $('#s1000').click(function(){
-                $('#prompt').val($('#prompt').val() + " --stylize 1000")
+                $('#sChosen').html("--stylize 1000" + "   [&times;]")
+                $('#sChosen').val("--stylize 1000")
+            })
+            $('#sChosen').click(function(){
+                $('#sChosen').html("")
+                $('#sChosen').val("")
             })
             $('#niji').click(function(){
-                $('#prompt').val($('#prompt').val() + " --niji 5")
-            })            
+                $('#nijiChosen').html("--niji 5" + "   [&times;]")
+                $('#nijiChosen').val("--niji 5")
+            })        
+            $('#nijiChosen').click(function(){
+                $('#nijiChosen').html("")
+                $('#nijiChosen').val("")
+            })    
 
             $('#c10').click(function(){
-                $('#prompt').val($('#prompt').val() + " --c 10")
+                $('#cChosen').html("--c 10" + "   [&times;]")
+                $('#cChosen').val("--c 10")
             })
             $('#c30').click(function(){
-                $('#prompt').val($('#prompt').val() + " --c 30")
+                $('#cChosen').html("--c 30" + "   [&times;]")
+                $('#cChosen').val("--c 30")
             })
             $('#c60').click(function(){
-                $('#prompt').val($('#prompt').val() + " --c 60")
+                $('#cChosen').html("--c 60" + "   [&times;]")
+                $('#cChosen').val("--c 60")
             })
             $('#c100').click(function(){
-                $('#prompt').val($('#prompt').val() + " --c 100")
+                $('#cChosen').html("--c 100" + "   [&times;]")
+                $('#cChosen').val("--c 100")
+            })
+            $('#cChosen').click(function(){
+                $('#cChosen').html("")
+                $('#cChosen').val("")
             })
 
             $('#draw').click(function(){
@@ -217,7 +250,7 @@
                     url: "https://mjproxy.azurewebsites.net/api/mjproxy",
                     type: "POST",
                     data: {
-                        "prompt": $("#prompt").val(), 
+                        "prompt": $('#prompt').val() + " " + $('#arChosen').val() + " " + $('#sChosen').val() + " " + $('#nijiChosen').val() + " " + $('#cChosen').val(),
                         "op": "Imagine", 
                         "token": getCookie("MJPROXY_TOKEN"),
                         "mjmessage":""
