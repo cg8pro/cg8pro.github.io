@@ -128,8 +128,8 @@
             <button id="cChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;"></label>
         </div>           
         <div class="container" style="color:white;text-align: left;text-shadow: 2px 2px 3px #000, -2px -2px 3px #F00;background-color: rgb(111,120,134,0.4);border-radius: 10px;padding: 5px 10px 5px 10px;font-family:pixel;">
-            <h5>尽量用英文描述你的作品</h5>
-            <h5>如果倒计时结束后没出图： (1) 在排队稍等一会 (2) 提示词包含被禁词 (3) 提醒我该充钱了</h5>
+            <h5>使用英文描述</h5>
+            <h5>倒计时结束后没出图有各种各样的原因，刷新页面重新试试</h5>
             <h5>不会保存绘图历史，看到喜欢的及时保存</h5>
         </div>
     </div>
@@ -193,7 +193,7 @@
                         "op": "Upscale", 
                         "target": target,
                         "token": getCookie("MJPROXY_TOKEN"),
-                        "mjmessage": btoa(JSON.stringify(mjmessage)
+                        "mjmessage": btoa(JSON.stringify(mjmessage))
                     }, 
                     contentType: 'application/json',
                     success: function(response) {
