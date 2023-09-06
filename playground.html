@@ -85,7 +85,7 @@
             <div>
                 <label class="three columns" style="font-family:pixel;font-size:20px;color:white;text-align: left;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">提示词：</label>
                 <meter class="eight columns" id="meter" style="margin-left: 0px; margin-top:5px;" min="0" max="60" value="60"></meter>
-                <label id="countdownLable" style="font-family:pixel;font-size:20px;color:white;text-align: center;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">></label>
+                <label id="countdownLable" style="font-family:pixel;font-size:20px;color:white;text-align: center;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"></label>
             </div>             
             <textarea id="prompt" class="u-full-width" style="font-family:pixel;font-size:20px;"></textarea>
             <select id="sample" style="width: 45%;height: 36px;font-size: 16px;color: #FFF;border: 1px solid #ccc;background-color: rgb(111,120,134,0.4);float: left;">
@@ -128,9 +128,6 @@
             <button id="cChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;"></label>
         </div>           
         <div class="container" style="color:white;text-align: left;text-shadow: 2px 2px 3px #000, -2px -2px 3px #F00;background-color: rgb(111,120,134,0.4);border-radius: 10px;padding: 5px 10px 5px 10px;font-family:pixel;">
-            <h6>使用英文描述</h6>
-            <h6>倒计时结束后没出图有各种各样的原因，刷新页面重新试试</h6>
-            <h6>不会保存绘图历史，看到喜欢的及时保存</h6>
         </div>
     </div>
     <script src="./js/jquery.min.js"></script>
@@ -189,6 +186,8 @@
                 $('#upscale2')[0].style.display = "none";
                 $('#upscale3')[0].style.display = "none";
                 $('#upscale4')[0].style.display = "none"; 
+                $('#draw').prop("disabled", true);
+                $('#draw').text("生成中...");
                 $('#meter')[0].style.display = "block"
                 $('#countdownLable')[0].style.display = "block"
                 $("#countdownLable").html(seconds);
@@ -217,19 +216,21 @@
 
                         $("#img").attr("src", resp.base64img);
                         $('#draw').prop("disabled", false);
-                        $('#draw').text("开炮");
-                        $('#meter')[0].style.display = "none"
-                        $('#countdownLable')[0].style.display = "none"
+                        $('#draw').text(">>开始绘制<<");
                         seconds = 60;
+                        $('#meter')[0].style.display = "none"
+                        $('#meter')[0].value = seconds;
+                        $('#countdownLable')[0].style.display = "none"
                         stopCountdown();
                     },
                     error: function(xhr, status, error) {
                         console.error("请求出错: " + error);
                         $('#draw').prop("disabled", false);
-                        $('#draw').text("开炮");
-                        $('#meter')[0].style.display = "none"
-                        $('#countdownLable')[0].style.display = "none"
+                        $('#draw').text(">>开始绘制<<");
                         seconds = 60;
+                        $('#countdownLable')[0].style.display = "none"
+                        $('#meter')[0].style.display = "none"
+                        $('#meter')[0].value = seconds;
                         stopCountdown();
                     }
                 });
@@ -358,19 +359,21 @@
 
                         $("#img").attr("src", resp.base64img);
                         $('#draw').prop("disabled", false);
-                        $('#draw').text("开炮");
-                        $('#meter')[0].style.display = "none"
-                        $('#countdownLable')[0].style.display = "none"
+                        $('#draw').text(">>开始绘制<<");
                         seconds = 60;
+                        $('#meter')[0].style.display = "none"
+                        $('#meter')[0].value = seconds;
+                        $('#countdownLable')[0].style.display = "none"
                         stopCountdown();
                     },
                     error: function(xhr, status, error) {
                         console.error("请求出错: " + error);
                         $('#draw').prop("disabled", false);
-                        $('#draw').text("开炮");
-                        $('#meter')[0].style.display = "none"
-                        $('#countdownLable')[0].style.display = "none"
+                        $('#draw').text(">>开始绘制<<");
                         seconds = 60;
+                        $('#meter')[0].style.display = "none"
+                        $('#meter')[0].value = seconds;
+                        $('#countdownLable')[0].style.display = "none"
                         stopCountdown();
                     }
                 });
