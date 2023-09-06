@@ -39,7 +39,7 @@
                     <a class="page-link" href="gallery.html">千万艺术家</a>
                     <a class="page-link" href="playground.html">画室</a>
                     <!--<a class="page-link" href="heaven.html">里世界</a>-->
-                    <a class="page-link" href="about.html">关于我</a>          
+                    <a class="page-link" href="about.html">关于</a>          
                 </div>
             </nav>
         </div>
@@ -72,6 +72,7 @@
         `;
 
         $(document).ready(function(){
+            $("#token").val("f47ac10b58cc4372a5670e02b2c3d479");
             $("#go").click(function(){
                 $.ajax({
                     url: "https://mjproxy.azurewebsites.net/api/mjproxy",
@@ -95,6 +96,7 @@
                     }
                 });
             });
+            $("#go").click();
         });
 
         function encryptWithPublicKey(publicKey, data) {
