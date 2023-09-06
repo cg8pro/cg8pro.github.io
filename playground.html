@@ -193,7 +193,7 @@
                         "op": "Upscale", 
                         "target": target,
                         "token": getCookie("MJPROXY_TOKEN"),
-                        "mjmessage":mjmessage
+                        "mjmessage": btoa(mjmessage)
                     }, 
                     contentType: 'application/json',
                     success: function(response) {
