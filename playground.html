@@ -54,7 +54,7 @@
 
         window.onload = function() {
             if(!checkCookie("MJPROXY_TOKEN")) {
-                window.location.href = "auth.html";
+                //window.location.href = "auth.html";
             }
         }
     </script>
@@ -76,13 +76,17 @@
         <div class="container">
             <h4 class="section-heading" style="font-family:pixel;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 画点什么？</h4>
             <img id="img" style="box-shadow: 4px 4px 8px 0px #fff000, -4px -4px 8px 0px #ff0000;"></img>
+            <button id="upcale1" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大左上角</button>
+            <button id="upcale2" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大右上角</button>
+            <button id="upcale3" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大左下角</button>
+            <button id="upcale4" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大右下角</button>
             <div>
                 <label class="three columns" style="font-family:pixel;font-size:20px;color:white;text-align: left;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">提示词：</label>
                 <meter class="eight columns" id="meter" style="margin-left: 0px; margin-top:5px;" min="0" max="60" value="60"></meter>
                 <label id="countdownLable" style="font-family:pixel;font-size:20px;color:white;text-align: center;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">></label>
             </div>             
             <textarea id="prompt" class="u-full-width" style="font-family:pixel;font-size:20px;"></textarea>
-            <select id="sample" style="width: 45%;height: 36px;font-size: 16px;color: #FFF;border: 1px solid #ccc;background-color: rgb(196,122,155,0.6);float: left;">
+            <select id="sample" style="width: 45%;height: 36px;font-size: 16px;color: #FFF;border: 1px solid #ccc;background-color: rgb(111,120,134,0.4);float: left;">
                 <option value="" disabled selected>快捷提示词模板（根据自己的需要修改）</option>
                 <option value="png white background, [tech leader], in the style of animated illustrations, [city skyline], full body, text-based --stylize 30">【PPT背景 | 商业精英】</option>
                 <option value="beautiful, glistening, moist, light pink heart , drops , white background --stylize 200">【PPT图标 | 水晶桃心】</option>
@@ -95,7 +99,7 @@
                 <option value="Happy Cute hoodie baby toddler holding the letter X::2 simple background, soft colors, 3D, octane rendering --niji --style expressive --s 750">【头像 | 3D娃娃】</option>
                 <option value="fluffy blue ultra 8k high definition 3d character">【头像 | 毛茸萌宠】</option>
             </select>
-            <button id="draw" style="font-family: pixel;font-size: 20px;color:ghostwhite;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">-绘-</button>
+            <button id="draw" style="font-family: pixel;font-size: 20px;color:ghostwhite;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">>>开始绘制<<</button>
 
         </div>
         <div class="container" style="background-color: rgb(173,194,185,0.6);padding: 5px 5px 0px 5px; border-radius: 10px;">
@@ -130,6 +134,7 @@
     <script src="./js/jquery.min.js"></script>
     <script src="./js/forge.min.js"></script>
     <script>
+        var mjmessage;
         $(document).ready(function(){
             $('#meter')[0].style.display = "none"
             $('#countdownLable')[0].style.display = "none"
@@ -176,6 +181,62 @@
                 height: newHeight
               };
             }
+
+            function upscale(target){
+                $.ajax({
+                    url: "https://mjproxy.azurewebsites.net/api/mjproxy",
+                    type: "POST",
+                    data: {
+                        "prompt": $('#prompt').val() + " " + $('#arChosen').val() + " " + $('#sChosen').val() + " " + $('#nijiChosen').val() + " " + $('#cChosen').val(),
+                        "op": "Upscale", 
+                        "target": target,
+                        "token": getCookie("MJPROXY_TOKEN"),
+                        "mjmessage":mjmessage
+                    }, 
+                    contentType: 'application/json',
+                    success: function(response) {
+                        var resp = JSON.parse(response);
+                        if (resp.mjmessage !== undefined && resp.mjmessage.width !== undefined && resp.mjmessage.height !== undefined){
+                            mjmessage = resp.mjmessage;
+                            const newSize = calculateImageSize(resp.mjmessage.width, resp.mjmessage.height, 512);
+                            $('img').css({
+                              'width': `${newSize.width}px`,
+                              'height': `${newSize.height}px`
+                            });                            
+                        }
+
+                        $("#img").attr("src", resp.base64img);
+                        $('#draw').prop("disabled", false);
+                        $('#draw').text("开炮");
+                        $('#meter')[0].style.display = "none"
+                        $('#countdownLable')[0].style.display = "none"
+                        seconds = 60;
+                        stopCountdown();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("请求出错: " + error);
+                        $('#draw').prop("disabled", false);
+                        $('#draw').text("开炮");
+                        $('#meter')[0].style.display = "none"
+                        $('#countdownLable')[0].style.display = "none"
+                        seconds = 60;
+                        stopCountdown();
+                    }
+                });
+            }
+
+            $("#upscale1").click(function() {
+                upscale("U1");
+            });
+            $("#upscale2").click(function() {
+                upscale("U2");
+            });
+            $("#upscale3").click(function() {
+                upscale("U3");
+            });
+            $("#upscale4").click(function() {
+                upscale("U4");
+            });                                    
 
             $('#ar34').click(function(){
                 $('#arChosen').html("--ar 3:4" + "   [&times;]")
@@ -272,11 +333,17 @@
                     success: function(response) {
                         var resp = JSON.parse(response);
                         if (resp.mjmessage !== undefined && resp.mjmessage.width !== undefined && resp.mjmessage.height !== undefined){
+                            mjmessage = resp.mjmessage;
                             const newSize = calculateImageSize(resp.mjmessage.width, resp.mjmessage.height, 512);
                             $('img').css({
                               'width': `${newSize.width}px`,
                               'height': `${newSize.height}px`
-                            });                            
+                            });             
+
+                            $('#upscale1')[0].style.display = "inline-block";
+                            $('#upscale2')[0].style.display = "inline-block";
+                            $('#upscale3')[0].style.display = "inline-block";
+                            $('#upscale4')[0].style.display = "inline-block";         
                         }
 
                         $("#img").attr("src", resp.base64img);
