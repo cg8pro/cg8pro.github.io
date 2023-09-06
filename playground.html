@@ -76,10 +76,12 @@
         <div class="container">
             <h4 class="section-heading" style="font-family:pixel;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 画点什么？</h4>
             <img id="img" style="box-shadow: 4px 4px 8px 0px #fff000, -4px -4px 8px 0px #ff0000;"></img>
-            <button id="upscale1" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大左上角</button>
-            <button id="upscale2" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大右上角</button>
-            <button id="upscale3" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大左下角</button>
-            <button id="upscale4" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大右下角</button>
+            <div style="display: block;">
+                <button id="upscale1" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大左上角</button>
+                <button id="upscale2" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大右上角</button>
+                <button id="upscale3" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大左下角</button>
+                <button id="upscale4" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大右下角</button>
+            </div>
             <div>
                 <label class="three columns" style="font-family:pixel;font-size:20px;color:white;text-align: left;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">提示词：</label>
                 <meter class="eight columns" id="meter" style="margin-left: 0px; margin-top:5px;" min="0" max="60" value="60"></meter>
@@ -340,10 +342,10 @@
                               'height': `${newSize.height}px`
                             });             
 
-                            $('#upscale1')[0].style.display = "block";
-                            $('#upscale2')[0].style.display = "block";
-                            $('#upscale3')[0].style.display = "block";
-                            $('#upscale4')[0].style.display = "block";         
+                            $('#upscale1')[0].style.display = "inline-block";
+                            $('#upscale2')[0].style.display = "inline-block";
+                            $('#upscale3')[0].style.display = "inline-block";
+                            $('#upscale4')[0].style.display = "inline-block";         
                         }
 
                         $("#img").attr("src", resp.base64img);
