@@ -54,7 +54,7 @@
 
         window.onload = function() {
             if(!checkCookie("MJPROXY_TOKEN")) {
-                //window.location.href = "auth.html";
+                window.location.href = "auth.html";
             }
         }
     </script>
@@ -331,7 +331,7 @@
                 $("#countdownLable").html(seconds);
                 startCountdown();
                 $.ajax({
-                    url: "https://mjproxy.azurewebsites.net/api/mjproxy",
+                    url: "http://localhost:7071/api/mjproxy",
                     type: "POST",
                     data: {
                         "prompt": $('#prompt').val() + " " + $('#arChosen').val() + " " + $('#sChosen').val() + " " + $('#nijiChosen').val() + " " + $('#cChosen').val(),
