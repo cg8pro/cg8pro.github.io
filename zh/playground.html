@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./style/normalize.css" rel="stylesheet" type="text/css" />
-    <link href="./style/skeleton.css" rel="stylesheet" type="text/css" />
-    <link href="./style/custom.css" rel="stylesheet" type="text/css" />
-    <link href="./img/favicon.png" rel="icon" type="image/png">
+    <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="../style/custom.css" rel="stylesheet" type="text/css" />
+    <link href="../img/favicon.png" rel="icon" type="image/png">
     <script type="text/javascript">
         var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.type = 'text/css';
         if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
-            link.href = './style/draw_bg_mobile.css';
+            link.href = '../style/draw_bg_mobile.css';
         } else {
-            link.href = './style/draw_bg.css';
+            link.href = '../style/draw_bg.css';
         }        
         document.head.appendChild(link);  
 
@@ -25,7 +25,7 @@
         link.type = 'text/css';
         if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
         } else {
-            link.href = './style/font-face.css';
+            link.href = '../style/font-face.css';
             document.head.appendChild(link); 
         }        
         
@@ -54,7 +54,7 @@
 
         window.onload = function() {
             if(!checkCookie("MJPROXY_TOKEN")) {
-                window.location.href = "auth.html";
+                //window.location.href = "auth.html";
             }
         }
     </script>
@@ -66,7 +66,6 @@
                 <div class="trigger">
                     <a class="page-link" href="gallery.html">千万艺术家</a>
                     <a class="page-link" href="playground.html">画室</a>
-                    <!--<a class="page-link" href="heaven.html">里世界</a>-->
                     <a class="page-link" href="about.html">关于</a>                 
                 </div>
             </nav>
@@ -130,8 +129,8 @@
         <div class="container" style="color:white;text-align: left;text-shadow: 2px 2px 3px #000, -2px -2px 3px #F00;background-color: rgb(111,120,134,0.4);border-radius: 10px;padding: 5px 10px 5px 10px;font-family:pixel;">
         </div>
     </div>
-    <script src="./js/jquery.min.js"></script>
-    <script src="./js/forge.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/forge.min.js"></script>
     <script>
         var mjmessage;
         $(document).ready(function(){
@@ -332,7 +331,7 @@
                 $("#countdownLable").html(seconds);
                 startCountdown();
                 $.ajax({
-                    url: "https://mjproxy.azurewebsites.net/api/mjproxy",
+                    url: "http://localhost:7071/api/mjproxy",
                     type: "POST",
                     data: {
                         "prompt": $('#prompt').val() + " " + $('#arChosen').val() + " " + $('#sChosen').val() + " " + $('#nijiChosen').val() + " " + $('#cChosen').val(),

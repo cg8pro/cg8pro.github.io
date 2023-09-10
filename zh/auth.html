@@ -1,33 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>cg8.pro 订阅</title>
+    <title>cg8.pro 登录</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./style/normalize.css" rel="stylesheet" type="text/css" />
-    <link href="./style/skeleton.css" rel="stylesheet" type="text/css" />
-    <link href="./style/custom.css" rel="stylesheet" type="text/css" />
-    <link href="./img/favicon.png" rel="icon" type="image/png">
+    <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="../style/custom.css" rel="stylesheet" type="text/css" />
+    <link href="../img/favicon.png" rel="icon" type="image/png">
     <script type="text/javascript">
         var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.type = 'text/css';
         if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
-            link.href = './style/heaven_bg_mobile.css';
+            link.href = '../style/draw_bg_mobile.css';
         } else {
-            link.href = './style/heaven_bg.css';
+            link.href = '../style/draw_bg.css';
         }        
-        document.head.appendChild(link); 
+        document.head.appendChild(link);     
 
         var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.type = 'text/css';
         if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
         } else {
-            link.href = './style/font-face.css';
-            document.head.appendChild(link);         
+            link.href = '../style/font-face.css';
+            document.head.appendChild(link);  
         }        
+
     </script>
 </head>
 <body>
@@ -37,31 +38,25 @@
                 <div class="trigger">
                     <a class="page-link" href="gallery.html">千万艺术家</a>
                     <a class="page-link" href="playground.html">画室</a>
-                    <!--<a class="page-link" href="heaven.html">里世界</a>-->
                     <a class="page-link" href="about.html">关于</a>            
                 </div>
             </nav>
         </div>
-    </header>    
+    </header>       
     <div class="section" style="margin-top:2%">
         <div class="container">
+            <row style="color: white;font-family:pixel;font-size:24px;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">由 Midjourney 驱动</row>
+        </div>
+        <div class="container">
             <p>
-                <div class="ten columns" style="margin:0px auto 0px auto;"><input style="font-family:pixel;font-size:20px;" id="subscriber" class="u-full-width"  type="password"  placeholder="内测后开放订阅." /></div>
-                <button id="go" style="font-family: pixel;font-size: 20px;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 订阅 </button>                
+                <div class="ten columns" style="margin:0px auto 0px auto;"><input style="font-family:pixel;font-size:20px;" id="token" class="u-full-width"  type="password"  placeholder="芝麻开门" /></div>
+                <button id="go" style="font-family: pixel;font-size: 20px;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 进入画室 </button>                
             </p>
             <label id="alert" style="color: red;float: left;font-family:pixel;font-size:20px;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"></label>
-            <div>
-                <div style="max-width: 960px;margin: 100px auto 10px auto;border-bottom: 1px solid #e8e8e8;text-align: left;color: white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;font-family:pixel;">
-                    <h5>AI绘画的未来在于迎合人性</h5>
-                </div>
-                <div style="text-align: right;color: white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;font-family:pixel;">
-                    <h5>弗拉基米尔 · 冯 · 长歌</h5>
-                </div>                
-            </div>            
         </div>
     </div>
-    <script src="./js/jquery.min.js"></script>
-    <script src="./js/forge.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/forge.min.js"></script>
     <script>
         const publicKey = `
         "-----BEGIN PUBLIC KEY-----
@@ -76,21 +71,23 @@
         `;
 
         $(document).ready(function(){
+            $("#token").val("f47ac10b58cc4372a5670e02b2c3d479");
             $("#go").click(function(){
                 $.ajax({
-                    url: "",
+                    url: "https://mjproxy.azurewebsites.net/api/mjproxy",
                     type: "POST",
                     data: {
-                        "op": "heaven", 
+                        "op": "auth", 
                         "token": encryptWithPublicKey(publicKey,$("#token").val()),
                     }, 
                     success: function(response) {
                         var resp = JSON.parse(response);
                         if(resp.status == "success"){
-
+                            document.cookie = "MJPROXY_TOKEN=" + encryptWithPublicKey(publicKey,$("#token").val()) + "; path=/";
+                            window.location.href = "playground.html";
                         }
                         else{
-                            $("#alert").html("Wrong Token! / 令牌错误！");
+                            $("#alert").html("令牌错误！");
                         }
                     },
                     error: function(xhr, status, error) {
@@ -98,6 +95,7 @@
                     }
                 });
             });
+            $("#go").click();
         });
 
         function encryptWithPublicKey(publicKey, data) {

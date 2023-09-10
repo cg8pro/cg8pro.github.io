@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>cg8.pro 画室</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="../style/custom.css" rel="stylesheet" type="text/css" />
+    <link href="../img/favicon.png" rel="icon" type="image/png">
+    <script type="text/javascript">
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
+            link.href = './style/draw_bg_mobile.css';
+        } else {
+            link.href = './style/draw_bg.css';
+        }        
+        document.head.appendChild(link);  
+
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
+        } else {
+            link.href = './style/font-face.css';
+            document.head.appendChild(link); 
+        }        
+        
+
+        function checkCookie(name) {
+            var cookies = document.cookie.split("; ");
+            for(var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].split("=");
+                if(cookie[0] === name) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function getCookie(name) {
+          const cookies = document.cookie.split("; ");
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].split("=");
+            if (cookie[0] === name) {
+              return decodeURIComponent(cookie[1]);
+            }
+          }
+          return null;
+        }        
+
+        window.onload = function() {
+            if(!checkCookie("MJPROXY_TOKEN")) {
+                window.location.href = "auth.html";
+            }
+        }
+    </script>
+</head>
+<body>
+    <header class="site-header" style="background-color: white;opacity: 0.7;">
+        <div class="wrapper">
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a class="page-link" href="gallery.html">千万艺术家</a>
+                    <a class="page-link" href="playground.html">画室</a>
+                    <!--<a class="page-link" href="heaven.html">里世界</a>-->
+                    <a class="page-link" href="about.html">关于</a>                 
+                </div>
+            </nav>
+        </div>
+    </header>    
+    <div class="section" style="margin-top:2%">
+        <div class="container">
+            <h4 class="section-heading" style="font-family:pixel;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 画点什么？</h4>
+            <img id="img" style="box-shadow: 4px 4px 8px 0px #fff000, -4px -4px 8px 0px #ff0000;"></img>
+            <div style="display: block;">
+                <button id="upscale1" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大左上角</button>
+                <button id="upscale2" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大右上角</button>
+                <button id="upscale3" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大左下角</button>
+                <button id="upscale4" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大右下角</button>
+            </div>
+            <div>
+                <label class="three columns" style="font-family:pixel;font-size:20px;color:white;text-align: left;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">提示词：</label>
+                <meter class="eight columns" id="meter" style="margin-left: 0px; margin-top:5px;" min="0" max="60" value="60"></meter>
+                <label id="countdownLable" style="font-family:pixel;font-size:20px;color:white;text-align: center;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"></label>
+            </div>             
+            <textarea id="prompt" class="u-full-width" style="font-family:pixel;font-size:20px;"></textarea>
+            <select id="sample" style="width: 45%;height: 36px;font-size: 16px;color: #FFF;border: 1px solid #ccc;background-color: rgb(111,120,134,0.4);float: left;">
+                <option value="" disabled selected>快捷提示词模板（根据自己的需要修改）</option>
+                <option value="png white background, [tech leader], in the style of animated illustrations, [city skyline], full body, text-based --stylize 30">【PPT背景 | 商业精英】</option>
+                <option value="beautiful, glistening, moist, light pink heart , drops , white background --stylize 200">【PPT图标 | 水晶桃心】</option>
+                <option value="line art icon of a envelope --stylize 10">【PPT图标 | 信封图标】</option>
+                <option value="A raygun advertisement with retro typography in the style of Tristan Eaton --ar 3:2 --style raw">【产品设计 | 面板参数图】</option>
+                <option value="Timon the Meerkat from the movie The Lion King as a Sticker, Sticker, high quality press sticker, vinyl sticker --style raw --s 1000 --s 750">【产品设计 | Q版贴纸】</option>
+                <option value="a shot of an icy, rocky planet, diagram from a textbook, illustrated --ar 16:9 --s 750 --v 5">【教学演示 | 课本示例图】</option>
+                <option value="van gogh's starry night --s 750 --ar 4:3">【艺术家临摹 | 梵高·星空】</option>
+                <option value="ice age scene kirigami art --s 750">【国粹 | 剪纸艺术】</option>
+                <option value="Happy Cute hoodie baby toddler holding the letter X::2 simple background, soft colors, 3D, octane rendering --niji --style expressive --s 750">【头像 | 3D娃娃】</option>
+                <option value="fluffy blue ultra 8k high definition 3d character">【头像 | 毛茸萌宠】</option>
+            </select>
+            <button id="draw" style="font-family: pixel;font-size: 20px;color:ghostwhite;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">>>开始绘制<<</button>
+
+        </div>
+        <div class="container" style="background-color: rgb(173,194,185,0.6);padding: 5px 5px 0px 5px; border-radius: 10px;">
+            <button id="ar34"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">小红书 3:4</button>
+            <button id="ar916"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">抖音 9:16</button>
+            <button id="ar43"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">传统 4:3</button>
+            <button id="ar169"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">电影 16:9</button>
+            <button id="arChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;"></button>
+        </div>
+        <div class="container" style="background-color: rgb(156,169,134,0.6);padding: 5px 5px 5px 5px;border-radius: 10px;margin: 5px auto 5px auto;">
+            <button id="niji"  style="font-size: 14px;color:lightskyblue;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">niji 5</button>
+            <button id="s50"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">不艺术</button>
+            <button id="s100"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">稍艺术</button>
+            <button id="s250"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">较艺术</button>
+            <button id="s1000"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">特艺术</button>
+            <button id="sChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;">
+            <button id="nijiChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;">
+        </div>        
+        <div class="container" style="background-color: rgb(196,122,155,0.6); padding: 5px 5px 5px 5px;border-radius: 10px;margin: 5px auto 5px auto;">
+            <button id="c10"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">稳定</button>
+            <button id="c30"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">变化</button>
+            <button id="c60"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">多变</button>
+            <button id="c100"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">混乱</button>
+            <button id="cChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;"></label>
+        </div>           
+        <div class="container" style="color:white;text-align: left;text-shadow: 2px 2px 3px #000, -2px -2px 3px #F00;background-color: rgb(111,120,134,0.4);border-radius: 10px;padding: 5px 10px 5px 10px;font-family:pixel;">
+        </div>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/forge.min.js"></script>
+    <script>
+        var mjmessage;
+        $(document).ready(function(){
+            $('#meter')[0].style.display = "none"
+            $('#countdownLable')[0].style.display = "none"
+            $("#countdownLable").html(seconds);
+
+            var countdown;
+            var seconds = 60;
+
+            function startCountdown() {
+                $('#countdown').text(seconds);
+                countdown = setInterval(function() {
+                    seconds--;
+                    $('#countdown').text(seconds);
+                    $('#meter')[0].value = seconds;
+                    $("#countdownLable").html(seconds);
+                    if (seconds <= 0) {
+                        clearInterval(countdown);
+                    }
+                }, 1000);
+            }
+
+            function stopCountdown() {
+                clearInterval(countdown);
+                $('#countdown').text('倒计时结束');
+            }
+
+            function calculateImageSize(width, height, X) {
+              let newWidth, newHeight;
+              // 判断是横图还是竖图，然后相应地计算新尺寸
+              if (width > height) {
+                // 横图: 以高度为基准
+                const aspectRatio = width / height;
+                newWidth = X * aspectRatio;
+                newHeight = X;
+              } else {
+                // 竖图: 以宽度为基准
+                const aspectRatio = height / width;
+                newHeight = X * aspectRatio;
+                newWidth = X;
+              }
+              
+              return {
+                width: newWidth,
+                height: newHeight
+              };
+            }
+
+            function upscale(target){
+                $('#upscale1')[0].style.display = "none";
+                $('#upscale2')[0].style.display = "none";
+                $('#upscale3')[0].style.display = "none";
+                $('#upscale4')[0].style.display = "none"; 
+                $('#draw').prop("disabled", true);
+                $('#draw').text("生成中...");
+                $('#meter')[0].style.display = "block"
+                $('#countdownLable')[0].style.display = "block"
+                $("#countdownLable").html(seconds);
+                startCountdown();
+                $.ajax({
+                    url: "https://mjproxy.azurewebsites.net/api/mjproxy",
+                    type: "POST",
+                    data: {
+                        "prompt": $('#prompt').val() + " " + $('#arChosen').val() + " " + $('#sChosen').val() + " " + $('#nijiChosen').val() + " " + $('#cChosen').val(),
+                        "op": "Upscale", 
+                        "target": target,
+                        "token": getCookie("MJPROXY_TOKEN"),
+                        "mjmessage": btoa(JSON.stringify(mjmessage).replace("🔄","reroll"))
+                    }, 
+                    contentType: 'application/json',
+                    success: function(response) {
+                        var resp = JSON.parse(response);
+                        if (resp.mjmessage !== undefined && resp.mjmessage.width !== undefined && resp.mjmessage.height !== undefined){
+                            mjmessage = resp.mjmessage;
+                            const newSize = calculateImageSize(resp.mjmessage.width, resp.mjmessage.height, 512);
+                            $('img').css({
+                              'width': `${newSize.width}px`,
+                              'height': `${newSize.height}px`
+                            });                            
+                        }
+
+                        $("#img").attr("src", resp.base64img);
+                        $('#draw').prop("disabled", false);
+                        $('#draw').text(">>开始绘制<<");
+                        seconds = 60;
+                        $('#meter')[0].style.display = "none"
+                        $('#meter')[0].value = seconds;
+                        $('#countdownLable')[0].style.display = "none"
+                        stopCountdown();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("请求出错: " + error);
+                        $('#draw').prop("disabled", false);
+                        $('#draw').text(">>开始绘制<<");
+                        seconds = 60;
+                        $('#countdownLable')[0].style.display = "none"
+                        $('#meter')[0].style.display = "none"
+                        $('#meter')[0].value = seconds;
+                        stopCountdown();
+                    }
+                });
+            }
+
+            $("#upscale1").click(function() {
+                upscale("U1");
+            });
+            $("#upscale2").click(function() {
+                upscale("U2");
+            });
+            $("#upscale3").click(function() {
+                upscale("U3");
+            });
+            $("#upscale4").click(function() {
+                upscale("U4");
+            });                                    
+
+            $('#ar34').click(function(){
+                $('#arChosen').html("--ar 3:4" + "   [&times;]")
+                $('#arChosen').val("--ar 3:4")
+            })
+            $('#ar916').click(function(){
+                $('#arChosen').html("--ar 9:16" + "   [&times;]")
+                $('#arChosen').val("--ar 9:16")
+            })
+            $('#ar43').click(function(){
+                $('#arChosen').html("--ar 4:3" + "   [&times;]")
+                $('#arChosen').val("--ar 4:3")
+            })
+            $('#ar169').click(function(){
+                $('#arChosen').html("--ar 16:9" + "   [&times;]")
+                $('#arChosen').val("--ar 16:9")
+            })
+            $('#arChosen').click(function(){
+                $('#arChosen').html("")
+                $('#arChosen').val("")
+            })
+
+            $('#s50').click(function(){
+                $('#sChosen').html("--stylize 50" + "   [&times;]")
+                $('#sChosen').val("--stylize 50")
+            })
+            $('#s100').click(function(){
+                $('#sChosen').html("--stylize 100" + "   [&times;]")
+                $('#sChosen').val("--stylize 100")
+            })
+            $('#s250').click(function(){
+                $('#sChosen').html("--stylize 250" + "   [&times;]")
+                $('#sChosen').val("--stylize 250")
+            })
+            $('#s1000').click(function(){
+                $('#sChosen').html("--stylize 1000" + "   [&times;]")
+                $('#sChosen').val("--stylize 1000")
+            })
+            $('#sChosen').click(function(){
+                $('#sChosen').html("")
+                $('#sChosen').val("")
+            })
+            $('#niji').click(function(){
+                $('#nijiChosen').html("--niji 5" + "   [&times;]")
+                $('#nijiChosen').val("--niji 5")
+            })        
+            $('#nijiChosen').click(function(){
+                $('#nijiChosen').html("")
+                $('#nijiChosen').val("")
+            })    
+
+            $('#c10').click(function(){
+                $('#cChosen').html("--c 10" + "   [&times;]")
+                $('#cChosen').val("--c 10")
+            })
+            $('#c30').click(function(){
+                $('#cChosen').html("--c 30" + "   [&times;]")
+                $('#cChosen').val("--c 30")
+            })
+            $('#c60').click(function(){
+                $('#cChosen').html("--c 60" + "   [&times;]")
+                $('#cChosen').val("--c 60")
+            })
+            $('#c100').click(function(){
+                $('#cChosen').html("--c 100" + "   [&times;]")
+                $('#cChosen').val("--c 100")
+            })
+            $('#cChosen').click(function(){
+                $('#cChosen').html("")
+                $('#cChosen').val("")
+            })
+
+            $("#sample").change(function() {
+                $("#prompt").val($(this).val());
+            });
+
+            $('#draw').click(function(){
+                $('#draw').prop("disabled", true);
+                $('#draw').text("生成中...");
+                $('#meter')[0].style.display = "block"
+                $('#countdownLable')[0].style.display = "block"
+                $("#countdownLable").html(seconds);
+                startCountdown();
+                $.ajax({
+                    url: "https://mjproxy.azurewebsites.net/api/mjproxy",
+                    type: "POST",
+                    data: {
+                        "prompt": $('#prompt').val() + " " + $('#arChosen').val() + " " + $('#sChosen').val() + " " + $('#nijiChosen').val() + " " + $('#cChosen').val(),
+                        "op": "Imagine", 
+                        "token": getCookie("MJPROXY_TOKEN"),
+                        "mjmessage":""
+                    }, 
+                    contentType: 'application/json',
+                    success: function(response) {
+                        var resp = JSON.parse(response);
+                        if (resp.mjmessage !== undefined && resp.mjmessage.width !== undefined && resp.mjmessage.height !== undefined){
+                            mjmessage = resp.mjmessage;
+                            const newSize = calculateImageSize(resp.mjmessage.width, resp.mjmessage.height, 512);
+                            $('img').css({
+                              'width': `${newSize.width}px`,
+                              'height': `${newSize.height}px`
+                            });             
+
+                            $('#upscale1')[0].style.display = "inline-block";
+                            $('#upscale2')[0].style.display = "inline-block";
+                            $('#upscale3')[0].style.display = "inline-block";
+                            $('#upscale4')[0].style.display = "inline-block";         
+                        }
+
+                        $("#img").attr("src", resp.base64img);
+                        $('#draw').prop("disabled", false);
+                        $('#draw').text(">>开始绘制<<");
+                        seconds = 60;
+                        $('#meter')[0].style.display = "none"
+                        $('#meter')[0].value = seconds;
+                        $('#countdownLable')[0].style.display = "none"
+                        stopCountdown();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("请求出错: " + error);
+                        $('#draw').prop("disabled", false);
+                        $('#draw').text(">>开始绘制<<");
+                        seconds = 60;
+                        $('#meter')[0].style.display = "none"
+                        $('#meter')[0].value = seconds;
+                        $('#countdownLable')[0].style.display = "none"
+                        stopCountdown();
+                    }
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>
