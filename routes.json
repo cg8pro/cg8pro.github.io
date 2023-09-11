@@ -2,7 +2,7 @@
   "routes": [
     {
       "route": "/*",
-      "serve": "zh/gallery.html",
+      "serve": "./zh/gallery.html",
       "statusCode": 200
     }
   ]
