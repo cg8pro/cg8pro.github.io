@@ -293,7 +293,7 @@
                         $("#img").attr("src", resp.base64img);
                         $('#draw').prop("disabled", false);
                         $('#draw').text(">>开始绘制<<");
-                        seconds = 60;
+                        seconds = 120;
                         $('#meter')[0].style.display = "none"
                         $('#meter')[0].value = seconds;
                         $('#countdownLable')[0].style.display = "none"
@@ -303,7 +303,7 @@
                         console.error("请求出错: " + error);
                         $('#draw').prop("disabled", false);
                         $('#draw').text(">>开始绘制<<");
-                        seconds = 60;
+                        seconds = 120;
                         $('#meter')[0].style.display = "none"
                         $('#meter')[0].value = seconds;
                         $('#countdownLable')[0].style.display = "none"
@@ -313,7 +313,7 @@
             });
 
             const arValuesAlias = ['1:1','4:3', '3:4', '16:9', '9:16'];
-            const arValues = ['--ar 1:1','--ar 4:3', '--ar 3:4', '--ar 16:9', '--ar 9:16'];
+            const arValues = ['','--ar 4:3', '--ar 3:4', '--ar 16:9', '--ar 9:16'];
             const arSlider = document.getElementById("arRange");
             const arValue = document.querySelector(".arValue");
             var arPrompt = '1:1';
@@ -323,7 +323,7 @@
             }
 
             const sValuesAlias = ['普通','有点艺术', '稍微艺术', '较为艺术', '特别艺术'];
-            const sValues = ['--stylize 0','--stylize 100', '--stylize 250', '--stylize 500', '--stylize 1000'];
+            const sValues = ['','--stylize 100', '--stylize 250', '--stylize 500', '--stylize 1000'];
             const sSlider = document.getElementById("sRange");
             const sValue = document.querySelector(".sValue");
             var stylizePrompt = '--stylize 0';
@@ -333,7 +333,7 @@
             }
 
             const cValuesAlias = ['稳定','变化', '多变', '不稳定', '混乱'];
-            const cValues = ['--c 0','--c 25', '--c 50', '--c 75', '--c 100'];
+            const cValues = ['','--c 25', '--c 50', '--c 75', '--c 100'];
             const cSlider = document.getElementById("cRange");
             const cValue = document.querySelector(".cValue");
             var chaosPrompt = '--c 0';
@@ -343,7 +343,7 @@
             }     
 
             const wValuesAlias = ['合理','奇怪', '诡异', '疯狂', '卧槽'];
-            const wValues = ['--weird 0','--weird 250', '--weird 750', '--weird 1000', '--weird 3000'];
+            const wValues = ['','--weird 250', '--weird 750', '--weird 1000', '--weird 3000'];
             const wSlider = document.getElementById("wRange");
             const wValue = document.querySelector(".wValue");
             var weirdPrompt = '--weird 0'
