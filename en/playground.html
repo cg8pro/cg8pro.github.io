@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>cg8.pro 画室</title>
+    <title>cg8.pro playground</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,9 +14,9 @@
         link.rel = 'stylesheet';
         link.type = 'text/css';
         if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
-            link.href = './style/draw_bg_mobile.css';
+            link.href = '../style/draw_bg_mobile.css';
         } else {
-            link.href = './style/draw_bg.css';
+            link.href = '../style/draw_bg.css';
         }        
         document.head.appendChild(link);  
 
@@ -25,7 +25,7 @@
         link.type = 'text/css';
         if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
         } else {
-            link.href = './style/font-face.css';
+            link.href = '../style/font-face.css';
             document.head.appendChild(link); 
         }        
         
@@ -64,26 +64,25 @@
         <div class="wrapper">
             <nav class="site-nav">
                 <div class="trigger">
-                    <a class="page-link" href="gallery.html">千万艺术家</a>
-                    <a class="page-link" href="playground.html">画室</a>
-                    <!--<a class="page-link" href="heaven.html">里世界</a>-->
-                    <a class="page-link" href="about.html">关于</a>                 
+                    <a class="page-link" href="gallery.html">Artists</a>
+                    <a class="page-link" href="playground.html">Playground</a>
+                    <a class="page-link" href="about.html">About</a>                    
                 </div>
             </nav>
         </div>
     </header>    
     <div class="section" style="margin-top:2%">
         <div class="container">
-            <h4 class="section-heading" style="font-family:pixel;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 画点什么？</h4>
+            <h4 class="section-heading" style="font-family:pixel;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> Draw Something？</h4>
             <img id="img" style="box-shadow: 4px 4px 8px 0px #fff000, -4px -4px 8px 0px #ff0000;"></img>
             <div style="display: block;">
-                <button id="upscale1" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大左上角</button>
-                <button id="upscale2" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大右上角</button>
-                <button id="upscale3" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大左下角</button>
-                <button id="upscale4" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大右下角</button>
+                <button id="upscale1" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">Upscale ↖</button>
+                <button id="upscale2" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">Upscale ↗</button>
+                <button id="upscale3" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">Upscale ↙</button>
+                <button id="upscale4" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">Upscale ↘</button>
             </div>
             <div>
-                <label class="three columns" style="font-family:pixel;font-size:20px;color:white;text-align: left;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">提示词：</label>
+                <label class="three columns" style="font-family:pixel;font-size:20px;color:white;text-align: left;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">Prompt：</label>
                 <meter class="eight columns" id="meter" style="margin-left: 0px; margin-top:5px;" min="0" max="60" value="60"></meter>
                 <label id="countdownLable" style="font-family:pixel;font-size:20px;color:white;text-align: center;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"></label>
             </div>             
@@ -101,7 +100,7 @@
                 <option value="Happy Cute hoodie baby toddler holding the letter X::2 simple background, soft colors, 3D, octane rendering --niji --style expressive --s 750">【头像 | 3D娃娃】</option>
                 <option value="fluffy blue ultra 8k high definition 3d character">【头像 | 毛茸萌宠】</option>
             </select>
-            <button id="draw" style="font-family: pixel;font-size: 20px;color:ghostwhite;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">>>开始绘制<<</button>
+            <button id="draw" style="font-family: pixel;font-size: 20px;color:ghostwhite;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">>>Draw<<</button>
 
         </div>
         <div class="container" style="background-color: rgb(173,194,185,0.6);padding: 5px 5px 0px 5px; border-radius: 10px;">
@@ -157,19 +156,16 @@
 
             function stopCountdown() {
                 clearInterval(countdown);
-                $('#countdown').text('倒计时结束');
+                $('#countdown').text('0');
             }
 
             function calculateImageSize(width, height, X) {
               let newWidth, newHeight;
-              // 判断是横图还是竖图，然后相应地计算新尺寸
               if (width > height) {
-                // 横图: 以高度为基准
                 const aspectRatio = width / height;
                 newWidth = X * aspectRatio;
                 newHeight = X;
               } else {
-                // 竖图: 以宽度为基准
                 const aspectRatio = height / width;
                 newHeight = X * aspectRatio;
                 newWidth = X;
@@ -187,7 +183,7 @@
                 $('#upscale3')[0].style.display = "none";
                 $('#upscale4')[0].style.display = "none"; 
                 $('#draw').prop("disabled", true);
-                $('#draw').text("生成中...");
+                $('#draw').text("Drawing...");
                 $('#meter')[0].style.display = "block"
                 $('#countdownLable')[0].style.display = "block"
                 $("#countdownLable").html(seconds);
@@ -216,7 +212,7 @@
 
                         $("#img").attr("src", resp.base64img);
                         $('#draw').prop("disabled", false);
-                        $('#draw').text(">>开始绘制<<");
+                        $('#draw').text(">>Draw<<");
                         seconds = 60;
                         $('#meter')[0].style.display = "none"
                         $('#meter')[0].value = seconds;
@@ -224,9 +220,9 @@
                         stopCountdown();
                     },
                     error: function(xhr, status, error) {
-                        console.error("请求出错: " + error);
+                        console.error("Error: " + error);
                         $('#draw').prop("disabled", false);
-                        $('#draw').text(">>开始绘制<<");
+                        $('#draw').text(">>Draw<<");
                         seconds = 60;
                         $('#countdownLable')[0].style.display = "none"
                         $('#meter')[0].style.display = "none"
@@ -326,13 +322,13 @@
 
             $('#draw').click(function(){
                 $('#draw').prop("disabled", true);
-                $('#draw').text("生成中...");
+                $('#draw').text("Drawing...");
                 $('#meter')[0].style.display = "block"
                 $('#countdownLable')[0].style.display = "block"
                 $("#countdownLable").html(seconds);
                 startCountdown();
                 $.ajax({
-                    url: "https://mjproxy.azurewebsites.net/api/mjproxy",
+                    url: "http://localhost:7071/api/mjproxy",
                     type: "POST",
                     data: {
                         "prompt": $('#prompt').val() + " " + $('#arChosen').val() + " " + $('#sChosen').val() + " " + $('#nijiChosen').val() + " " + $('#cChosen').val(),
@@ -359,7 +355,7 @@
 
                         $("#img").attr("src", resp.base64img);
                         $('#draw').prop("disabled", false);
-                        $('#draw').text(">>开始绘制<<");
+                        $('#draw').text(">>Draw<<");
                         seconds = 60;
                         $('#meter')[0].style.display = "none"
                         $('#meter')[0].value = seconds;
@@ -367,9 +363,9 @@
                         stopCountdown();
                     },
                     error: function(xhr, status, error) {
-                        console.error("请求出错: " + error);
+                        console.error("Error: " + error);
                         $('#draw').prop("disabled", false);
-                        $('#draw').text(">>开始绘制<<");
+                        $('#draw').text(">>Draw<<");
                         seconds = 60;
                         $('#meter')[0].style.display = "none"
                         $('#meter')[0].value = seconds;

@@ -36,22 +36,21 @@
         <div class="wrapper">
             <nav class="site-nav">
                 <div class="trigger">
-                    <a class="page-link" href="gallery.html">千万艺术家</a>
-                    <a class="page-link" href="playground.html">画室</a>
-                    <!--<a class="page-link" href="heaven.html">里世界</a>-->
-                    <a class="page-link" href="about.html">关于</a>            
+                    <a class="page-link" href="gallery.html">Artists</a>
+                    <a class="page-link" href="playground.html">Playground</a>
+                    <a class="page-link" href="about.html">About</a>         
                 </div>
             </nav>
         </div>
-    </header>       
+    </header>      
     <div class="section" style="margin-top:2%">
         <div class="container">
-            <row style="color: white;font-family:pixel;font-size:24px;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">由 Midjourney 驱动</row>
+            <row style="color: white;font-family:pixel;font-size:24px;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">Powered by Midjourney</row>
         </div>
         <div class="container">
             <p>
-                <div class="ten columns" style="margin:0px auto 0px auto;"><input style="font-family:pixel;font-size:20px;" id="token" class="u-full-width"  type="password"  placeholder="芝麻开门" /></div>
-                <button id="go" style="font-family: pixel;font-size: 20px;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 进入画室 </button>                
+                <div class="ten columns" style="margin:0px auto 0px auto;"><input style="font-family:pixel;font-size:20px;" id="token" class="u-full-width"  type="password"  placeholder="Open Sesame" /></div>
+                <button id="go" style="font-family: pixel;font-size: 20px;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> Enter Playground </button>                
             </p>
             <label id="alert" style="color: red;float: left;font-family:pixel;font-size:20px;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"></label>
         </div>
@@ -92,7 +91,7 @@
                         }
                     },
                     error: function(xhr, status, error) {
-                        console.error("请求出错: " + error);
+                        console.error("Error: " + error);
                     }
                 });
             });
