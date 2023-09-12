@@ -91,10 +91,10 @@
                 <option value="" disabled selected>提示词模板（根据自己的需要修改关键字）</option>
                 <option value="png white background, [tech leader], in the style of animated illustrations, [city skyline], full body, text-based --stylize 20">职场生产力 - PPT素材 - 商业精英</option>
                 <option value="line art icon of a [envelope] --stylize 10">职场生产力 - PPT图标 - 信封图标</option>
-                <option value="[Timon the Meerkat from the movie The Lion King] as a Sticker, Sticker, high quality press sticker, vinyl sticker --style raw --s 1000 --s 750">产品设计 - Q版贴纸</option>
-                <option value="van gogh's starry night --s 750 --ar 4:3">艺术 - 大师临摹 - 梵高·星空</option>
-                <option value="[ice age scene] kirigami art --s 750">艺术 - 国粹 - 剪纸</option>
-                <option value="Happy Cute hoodie baby toddler holding the letter X::2 simple background, soft colors, 3D, octane rendering --niji --style expressive --s 750">头像 - 3D手办</option>
+                <option value="[Timon the Meerkat from the movie The Lion King] as a Sticker, Sticker, high quality press sticker, vinyl sticker --style raw --s 1000">产品设计 - Q版贴纸</option>
+                <option value="van gogh's starry night --ar 4:3">艺术 - 大师临摹 - 梵高·星空</option>
+                <option value="[ice age scene] kirigami art">艺术 - 国粹 - 剪纸</option>
+                <option value="Happy Cute hoodie baby toddler holding the letter X::2 simple background, soft colors, 3D, octane rendering --niji --style expressive">头像 - 3D手办</option>
             </select>
             <button id="draw" style="font-family: pixel;font-size: 20px;color:lightpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">>>开始绘制<<</button>
 
@@ -312,7 +312,7 @@
                 });
             });
 
-            const arValuesAlias = ['1:1','4:3', '3:4', '16:9', '9:16'];
+            const arValuesAlias = ['正方形','传统尺寸', '小红书尺寸', 'Youtube尺寸', '抖音尺寸'];
             const arValues = ['','--ar 4:3', '--ar 3:4', '--ar 16:9', '--ar 9:16'];
             const arSlider = document.getElementById("arRange");
             const arValue = document.querySelector(".arValue");
@@ -322,7 +322,7 @@
                 arPrompt = arValues[this.value - 1];
             }
 
-            const sValuesAlias = ['普通','有点艺术', '稍微艺术', '较为艺术', '特别艺术'];
+            const sValuesAlias = ['普通','略艺术', '较艺术', '挺艺术', '特艺术'];
             const sValues = ['','--stylize 100', '--stylize 250', '--stylize 500', '--stylize 1000'];
             const sSlider = document.getElementById("sRange");
             const sValue = document.querySelector(".sValue");
@@ -332,7 +332,7 @@
                 stylizePrompt = sValues[this.value - 1]; 
             }
 
-            const cValuesAlias = ['稳定','变化', '多变', '不稳定', '混乱'];
+            const cValuesAlias = ['稳定', '变化', '多变', '不稳定', '混乱'];
             const cValues = ['','--c 25', '--c 50', '--c 75', '--c 100'];
             const cSlider = document.getElementById("cRange");
             const cValue = document.querySelector(".cValue");

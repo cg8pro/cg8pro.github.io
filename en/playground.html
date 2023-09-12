@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>cg8.pro playground</title>
+    <title>cg8.pro 画室</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,7 +50,7 @@
             }
           }
           return null;
-        }        
+        } 
 
         window.onload = function() {
             if(!checkCookie("MJPROXY_TOKEN")) {
@@ -66,14 +66,14 @@
                 <div class="trigger">
                     <a class="page-link" href="gallery.html">Artists</a>
                     <a class="page-link" href="playground.html">Playground</a>
-                    <a class="page-link" href="about.html">About</a>                    
+                    <a class="page-link" href="about.html">About</a>                 
                 </div>
             </nav>
         </div>
     </header>    
     <div class="section" style="margin-top:2%">
         <div class="container">
-            <h4 class="section-heading" style="font-family:pixel;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> Draw Something？</h4>
+            <h4 class="section-heading" style="font-family:pixel;color:lightpink;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> Draw Something?</h4>
             <img id="img" style="box-shadow: 4px 4px 8px 0px #fff000, -4px -4px 8px 0px #ff0000;"></img>
             <div style="display: block;">
                 <button id="upscale1" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">Upscale ↖</button>
@@ -82,51 +82,44 @@
                 <button id="upscale4" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">Upscale ↘</button>
             </div>
             <div>
-                <label class="three columns" style="font-family:pixel;font-size:20px;color:white;text-align: left;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">Prompt：</label>
-                <meter class="eight columns" id="meter" style="margin-left: 0px; margin-top:5px;" min="0" max="60" value="60"></meter>
-                <label id="countdownLable" style="font-family:pixel;font-size:20px;color:white;text-align: center;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"></label>
+                <label class="three columns" style="font-family:pixel;font-size:20px;color:lightpink;text-align: left;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">Prompts：</label>
+                <meter class="eight columns" id="meter" style="margin-left: 0px; margin-top:5px;" min="0" max="120" value="120"></meter>
+                <label id="countdownLable" style="font-family:pixel;font-size:20px;color:lightpink;text-align: center;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"></label>
             </div>             
             <textarea id="prompt" class="u-full-width" style="font-family:pixel;font-size:20px;"></textarea>
             <select id="sample" style="width: 45%;height: 36px;font-size: 16px;color: #FFF;border: 1px solid #ccc;background-color: rgb(111,120,134,0.4);float: left;">
-                <option value="" disabled selected>快捷提示词模板（根据自己的需要修改）</option>
-                <option value="png white background, [tech leader], in the style of animated illustrations, [city skyline], full body, text-based --stylize 30">【PPT背景 | 商业精英】</option>
-                <option value="beautiful, glistening, moist, light pink heart , drops , white background --stylize 200">【PPT图标 | 水晶桃心】</option>
-                <option value="line art icon of a envelope --stylize 10">【PPT图标 | 信封图标】</option>
-                <option value="A raygun advertisement with retro typography in the style of Tristan Eaton --ar 3:2 --style raw">【产品设计 | 面板参数图】</option>
-                <option value="Timon the Meerkat from the movie The Lion King as a Sticker, Sticker, high quality press sticker, vinyl sticker --style raw --s 1000 --s 750">【产品设计 | Q版贴纸】</option>
-                <option value="a shot of an icy, rocky planet, diagram from a textbook, illustrated --ar 16:9 --s 750 --v 5">【教学演示 | 课本示例图】</option>
-                <option value="van gogh's starry night --s 750 --ar 4:3">【艺术家临摹 | 梵高·星空】</option>
-                <option value="ice age scene kirigami art --s 750">【国粹 | 剪纸艺术】</option>
-                <option value="Happy Cute hoodie baby toddler holding the letter X::2 simple background, soft colors, 3D, octane rendering --niji --style expressive --s 750">【头像 | 3D娃娃】</option>
-                <option value="fluffy blue ultra 8k high definition 3d character">【头像 | 毛茸萌宠】</option>
+                <option value="" disabled selected>Prompt Template（Modify by your need）</option>
+                <option value="png white background, [tech leader], in the style of animated illustrations, [city skyline], full body, text-based --stylize 20">tech leader and city skyline</option>
+                <option value="line art icon of a [envelope] --stylize 10">line art icon of a [envelope]</option>
+                <option value="[Timon the Meerkat from the movie The Lion King] as a Sticker, Sticker, high quality press sticker, vinyl sticker --style raw --s 1000">[Timon the Meerkat from the movie The Lion King] as a Sticker</option>
+                <option value="van gogh's starry night --ar 4:3">van gogh's starry night</option>
+                <option value="[ice age scene] kirigami art">[ice age scene] kirigami art</option>
+                <option value="Happy Cute hoodie baby toddler holding the letter X::2 simple background, soft colors, 3D, octane rendering --niji --style expressive">Happy Cute hoodie baby toddler holding the letter</option>
             </select>
-            <button id="draw" style="font-family: pixel;font-size: 20px;color:ghostwhite;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">>>Draw<<</button>
+            <button id="draw" style="font-family: pixel;font-size: 20px;color:lightpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">>>Draw<<</button>
 
         </div>
-        <div class="container" style="background-color: rgb(173,194,185,0.6);padding: 5px 5px 0px 5px; border-radius: 10px;">
-            <button id="ar34"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">小红书 3:4</button>
-            <button id="ar916"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">抖音 9:16</button>
-            <button id="ar43"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">传统 4:3</button>
-            <button id="ar169"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">电影 16:9</button>
-            <button id="arChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;"></button>
-        </div>
-        <div class="container" style="background-color: rgb(156,169,134,0.6);padding: 5px 5px 5px 5px;border-radius: 10px;margin: 5px auto 5px auto;">
-            <button id="niji"  style="font-size: 14px;color:lightskyblue;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">niji 5</button>
-            <button id="s50"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">不艺术</button>
-            <button id="s100"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">稍艺术</button>
-            <button id="s250"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">较艺术</button>
-            <button id="s1000"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">特艺术</button>
-            <button id="sChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;">
-            <button id="nijiChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;">
-        </div>        
-        <div class="container" style="background-color: rgb(196,122,155,0.6); padding: 5px 5px 5px 5px;border-radius: 10px;margin: 5px auto 5px auto;">
-            <button id="c10"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">稳定</button>
-            <button id="c30"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">变化</button>
-            <button id="c60"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">多变</button>
-            <button id="c100"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">混乱</button>
-            <button id="cChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;"></label>
-        </div>           
-        <div class="container" style="color:white;text-align: left;text-shadow: 2px 2px 3px #000, -2px -2px 3px #F00;background-color: rgb(111,120,134,0.4);border-radius: 10px;padding: 5px 10px 5px 10px;font-family:pixel;">
+        <div class="container" style="background-color: rgb(173,194,185,0.5);padding: 5px 5px 10px 5px; border-radius: 10px;">
+            <div class="slider" style="width:150px;float: left;margin-left: 20px;" >
+                <input style="margin-top:10px;" type="range" min="1" max="5" value="1" class="slider" id="arRange"/>
+                <span class="arValue" disabled>Square</span>
+            </div>
+            <div class="slider" style="width:150px;float: left;margin-left: 20px;">
+                <input style="margin-top:10px;" type="range" min="1" max="5" value="1" class="slider" id="sRange"/>
+                <span class="sValue" disabled>Ordinary</span>
+            </div>
+            <div class="slider" style="width:150px;float: left;margin-left: 20px;">
+                <input style="margin-top:10px;" type="range" min="1" max="5" value="1" class="slider" id="cRange"/>
+                <span class="cValue" disabled>Stable</span>
+            </div>       
+            <div class="slider" style="width:150px;float: left;margin-left: 20px;">
+                <input style="margin-top:10px;" type="range" min="1" max="5" value="1" class="slider" id="wRange"/>
+                <span class="wValue" disabled>Reasonable</span>
+            </div>              
+            <div class="slider" style="width:150px;float: left;margin-left: 20px;">
+                <input style="margin-top:10px;" type="range" min="1" max="2" value="1" class="slider" id="nRange"/>
+                <span class="nValue" disabled>Niji Off</span>
+            </div>  
         </div>
     </div>
     <script src="../js/jquery.min.js"></script>
@@ -139,7 +132,7 @@
             $("#countdownLable").html(seconds);
 
             var countdown;
-            var seconds = 60;
+            var seconds = 120;
 
             function startCountdown() {
                 $('#countdown').text(seconds);
@@ -192,7 +185,7 @@
                     url: "https://mjproxy.azurewebsites.net/api/mjproxy",
                     type: "POST",
                     data: {
-                        "prompt": $('#prompt').val() + " " + $('#arChosen').val() + " " + $('#sChosen').val() + " " + $('#nijiChosen').val() + " " + $('#cChosen').val(),
+                        "prompt": $('#prompt').val() + " " + arPrompt + " " + chaosPrompt + " " + stylizePrompt + " " + weirdPrompt + " " + nijiPrompt,
                         "op": "Upscale", 
                         "target": target,
                         "token": getCookie("MJPROXY_TOKEN"),
@@ -213,7 +206,7 @@
                         $("#img").attr("src", resp.base64img);
                         $('#draw').prop("disabled", false);
                         $('#draw').text(">>Draw<<");
-                        seconds = 60;
+                        seconds = 120;
                         $('#meter')[0].style.display = "none"
                         $('#meter')[0].value = seconds;
                         $('#countdownLable')[0].style.display = "none"
@@ -223,7 +216,7 @@
                         console.error("Error: " + error);
                         $('#draw').prop("disabled", false);
                         $('#draw').text(">>Draw<<");
-                        seconds = 60;
+                        seconds = 120;
                         $('#countdownLable')[0].style.display = "none"
                         $('#meter')[0].style.display = "none"
                         $('#meter')[0].value = seconds;
@@ -243,49 +236,8 @@
             });
             $("#upscale4").click(function() {
                 upscale("U4");
-            });                                    
+            });        
 
-            $('#ar34').click(function(){
-                $('#arChosen').html("--ar 3:4" + "   [&times;]")
-                $('#arChosen').val("--ar 3:4")
-            })
-            $('#ar916').click(function(){
-                $('#arChosen').html("--ar 9:16" + "   [&times;]")
-                $('#arChosen').val("--ar 9:16")
-            })
-            $('#ar43').click(function(){
-                $('#arChosen').html("--ar 4:3" + "   [&times;]")
-                $('#arChosen').val("--ar 4:3")
-            })
-            $('#ar169').click(function(){
-                $('#arChosen').html("--ar 16:9" + "   [&times;]")
-                $('#arChosen').val("--ar 16:9")
-            })
-            $('#arChosen').click(function(){
-                $('#arChosen').html("")
-                $('#arChosen').val("")
-            })
-
-            $('#s50').click(function(){
-                $('#sChosen').html("--stylize 50" + "   [&times;]")
-                $('#sChosen').val("--stylize 50")
-            })
-            $('#s100').click(function(){
-                $('#sChosen').html("--stylize 100" + "   [&times;]")
-                $('#sChosen').val("--stylize 100")
-            })
-            $('#s250').click(function(){
-                $('#sChosen').html("--stylize 250" + "   [&times;]")
-                $('#sChosen').val("--stylize 250")
-            })
-            $('#s1000').click(function(){
-                $('#sChosen').html("--stylize 1000" + "   [&times;]")
-                $('#sChosen').val("--stylize 1000")
-            })
-            $('#sChosen').click(function(){
-                $('#sChosen').html("")
-                $('#sChosen').val("")
-            })
             $('#niji').click(function(){
                 $('#nijiChosen').html("--niji 5" + "   [&times;]")
                 $('#nijiChosen').val("--niji 5")
@@ -293,28 +245,8 @@
             $('#nijiChosen').click(function(){
                 $('#nijiChosen').html("")
                 $('#nijiChosen').val("")
-            })    
+            })                                            
 
-            $('#c10').click(function(){
-                $('#cChosen').html("--c 10" + "   [&times;]")
-                $('#cChosen').val("--c 10")
-            })
-            $('#c30').click(function(){
-                $('#cChosen').html("--c 30" + "   [&times;]")
-                $('#cChosen').val("--c 30")
-            })
-            $('#c60').click(function(){
-                $('#cChosen').html("--c 60" + "   [&times;]")
-                $('#cChosen').val("--c 60")
-            })
-            $('#c100').click(function(){
-                $('#cChosen').html("--c 100" + "   [&times;]")
-                $('#cChosen').val("--c 100")
-            })
-            $('#cChosen').click(function(){
-                $('#cChosen').html("")
-                $('#cChosen').val("")
-            })
 
             $("#sample").change(function() {
                 $("#prompt").val($(this).val());
@@ -326,12 +258,14 @@
                 $('#meter')[0].style.display = "block"
                 $('#countdownLable')[0].style.display = "block"
                 $("#countdownLable").html(seconds);
+                var finalPrompt = $('#prompt').val() + " " + arPrompt + " " + chaosPrompt + " " + stylizePrompt + " " + weirdPrompt + " " + nijiPrompt;
+                //$("#prompt").val(finalPrompt)
                 startCountdown();
                 $.ajax({
-                    url: "http://localhost:7071/api/mjproxy",
+                    url: "https://mjproxy.azurewebsites.net/api/mjproxy",
                     type: "POST",
                     data: {
-                        "prompt": $('#prompt').val() + " " + $('#arChosen').val() + " " + $('#sChosen').val() + " " + $('#nijiChosen').val() + " " + $('#cChosen').val(),
+                        "prompt": finalPrompt,
                         "op": "Imagine", 
                         "token": getCookie("MJPROXY_TOKEN"),
                         "mjmessage":""
@@ -356,7 +290,7 @@
                         $("#img").attr("src", resp.base64img);
                         $('#draw').prop("disabled", false);
                         $('#draw').text(">>Draw<<");
-                        seconds = 60;
+                        seconds = 120;
                         $('#meter')[0].style.display = "none"
                         $('#meter')[0].value = seconds;
                         $('#countdownLable')[0].style.display = "none"
@@ -366,7 +300,7 @@
                         console.error("Error: " + error);
                         $('#draw').prop("disabled", false);
                         $('#draw').text(">>Draw<<");
-                        seconds = 60;
+                        seconds = 120;
                         $('#meter')[0].style.display = "none"
                         $('#meter')[0].value = seconds;
                         $('#countdownLable')[0].style.display = "none"
@@ -374,6 +308,56 @@
                     }
                 });
             });
+
+            const arValuesAlias = ['Square','Tradition', 'LittleRedBook', 'Youtube', 'Tiktok'];
+            const arValues = ['','--ar 4:3', '--ar 3:4', '--ar 16:9', '--ar 9:16'];
+            const arSlider = document.getElementById("arRange");
+            const arValue = document.querySelector(".arValue");
+            var arPrompt = '';
+            arSlider.oninput = function() {
+                arValue.textContent = arValuesAlias[this.value - 1] + " " + arValues[this.value - 1]; 
+                arPrompt = arValues[this.value - 1];
+            }
+
+            const sValuesAlias = ['Ordinary','Slightly Artistic', 'Quite Artistic', 'Rather Artistic', 'Very Artistic'];
+            const sValues = ['','--stylize 100', '--stylize 250', '--stylize 500', '--stylize 1000'];
+            const sSlider = document.getElementById("sRange");
+            const sValue = document.querySelector(".sValue");
+            var stylizePrompt = '';
+            sSlider.oninput = function() {
+                sValue.textContent = sValuesAlias[this.value - 1] + " " + sValues[this.value - 1]; 
+                stylizePrompt = sValues[this.value - 1]; 
+            }
+
+            const cValuesAlias = ['Stable', 'Variable', 'Volatile', 'Unstable', 'Chaotic'];
+            const cValues = ['','--c 25', '--c 50', '--c 75', '--c 100'];
+            const cSlider = document.getElementById("cRange");
+            const cValue = document.querySelector(".cValue");
+            var chaosPrompt = '';
+            cSlider.oninput = function() {
+                cValue.textContent = cValuesAlias[this.value - 1] + " " + cValues[this.value - 1]; 
+                chaosPrompt = cValues[this.value - 1]; 
+            }     
+
+            const wValuesAlias = ['Reasonable', 'Weird', 'Bizarre', 'Insane', 'OMG'];
+            const wValues = ['','--weird 250', '--weird 750', '--weird 1000', '--weird 3000'];
+            const wSlider = document.getElementById("wRange");
+            const wValue = document.querySelector(".wValue");
+            var weirdPrompt = ''
+            wSlider.oninput = function() {
+                wValue.textContent = wValuesAlias[this.value - 1] + " " + wValues[this.value - 1]; 
+                weirdPrompt = wValues[this.value - 1]; 
+            }                
+
+            const nValuesAlias = ['Niji Off','Niji On'];
+            const nValues = ['','--niji 5'];
+            const nSlider = document.getElementById("nRange");
+            const nValue = document.querySelector(".nValue");
+            var nijiPrompt = '';
+            nSlider.oninput = function() {
+                nValue.textContent = nValuesAlias[this.value - 1] + " " + nValues[this.value - 1]; 
+                nijiPrompt = nValues[this.value - 1]; 
+            }            
         });
 
     </script>
