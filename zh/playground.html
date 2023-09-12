@@ -316,7 +316,7 @@
             const arValues = ['','--ar 4:3', '--ar 3:4', '--ar 16:9', '--ar 9:16'];
             const arSlider = document.getElementById("arRange");
             const arValue = document.querySelector(".arValue");
-            var arPrompt = '1:1';
+            var arPrompt = '';
             arSlider.oninput = function() {
                 arValue.textContent = arValuesAlias[this.value - 1] + " " + arValues[this.value - 1]; 
                 arPrompt = arValues[this.value - 1];
@@ -326,7 +326,7 @@
             const sValues = ['','--stylize 100', '--stylize 250', '--stylize 500', '--stylize 1000'];
             const sSlider = document.getElementById("sRange");
             const sValue = document.querySelector(".sValue");
-            var stylizePrompt = '--stylize 0';
+            var stylizePrompt = '';
             sSlider.oninput = function() {
                 sValue.textContent = sValuesAlias[this.value - 1] + " " + sValues[this.value - 1]; 
                 stylizePrompt = sValues[this.value - 1]; 
@@ -336,7 +336,7 @@
             const cValues = ['','--c 25', '--c 50', '--c 75', '--c 100'];
             const cSlider = document.getElementById("cRange");
             const cValue = document.querySelector(".cValue");
-            var chaosPrompt = '--c 0';
+            var chaosPrompt = '';
             cSlider.oninput = function() {
                 cValue.textContent = cValuesAlias[this.value - 1] + " " + cValues[this.value - 1]; 
                 chaosPrompt = cValues[this.value - 1]; 
@@ -346,7 +346,7 @@
             const wValues = ['','--weird 250', '--weird 750', '--weird 1000', '--weird 3000'];
             const wSlider = document.getElementById("wRange");
             const wValue = document.querySelector(".wValue");
-            var weirdPrompt = '--weird 0'
+            var weirdPrompt = ''
             wSlider.oninput = function() {
                 wValue.textContent = wValuesAlias[this.value - 1] + " " + wValues[this.value - 1]; 
                 weirdPrompt = wValues[this.value - 1]; 
