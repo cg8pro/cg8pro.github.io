@@ -10,7 +10,15 @@
     <link href="../style/custom.css" rel="stylesheet" type="text/css" />
     <link href="../img/favicon.png" rel="icon" type="image/png">
     <script type="text/javascript">
-
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
+            link.href = '../style/draw_bg_mobile.css';
+        } else {
+            link.href = '../style/draw_bg.css';
+        }        
+        document.head.appendChild(link);  
 
         var link = document.createElement('link');
         link.rel = 'stylesheet';
@@ -128,7 +136,7 @@
             $("#countdownLable").html(seconds);
 
             var countdown;
-            var seconds = 60;
+            var seconds = 120;
 
             function startCountdown() {
                 $('#countdown').text(seconds);
@@ -184,7 +192,7 @@
                     url: "https://mjproxy.azurewebsites.net/api/mjproxy",
                     type: "POST",
                     data: {
-                        "prompt": $('#prompt').val() + " " + $('#arChosen').val() + " " + $('#sChosen').val() + " " + $('#nijiChosen').val() + " " + $('#cChosen').val(),
+                        "prompt": $('#prompt').val() + " " + arPrompt + " " + chaosPrompt + " " + stylizePrompt + " " + weirdPrompt + " " + nijiPrompt,
                         "op": "Upscale", 
                         "target": target,
                         "token": getCookie("MJPROXY_TOKEN"),
@@ -205,7 +213,7 @@
                         $("#img").attr("src", resp.base64img);
                         $('#draw').prop("disabled", false);
                         $('#draw').text(">>开始绘制<<");
-                        seconds = 60;
+                        seconds = 120;
                         $('#meter')[0].style.display = "none"
                         $('#meter')[0].value = seconds;
                         $('#countdownLable')[0].style.display = "none"
@@ -215,7 +223,7 @@
                         console.error("请求出错: " + error);
                         $('#draw').prop("disabled", false);
                         $('#draw').text(">>开始绘制<<");
-                        seconds = 60;
+                        seconds = 120;
                         $('#countdownLable')[0].style.display = "none"
                         $('#meter')[0].style.display = "none"
                         $('#meter')[0].value = seconds;
@@ -257,12 +265,14 @@
                 $('#meter')[0].style.display = "block"
                 $('#countdownLable')[0].style.display = "block"
                 $("#countdownLable").html(seconds);
+                var finalPrompt = $('#prompt').val() + " " + arPrompt + " " + chaosPrompt + " " + stylizePrompt + " " + weirdPrompt + " " + nijiPrompt;
+                $("#prompt").val(finalPrompt)
                 startCountdown();
                 $.ajax({
                     url: "https://mjproxy.azurewebsites.net/api/mjproxy",
                     type: "POST",
                     data: {
-                        "prompt": $('#prompt').val() + " " + arPrompt + " " + chaosPrompt + " " + stylizePrompt + " " + weirdPrompt + " " + nijiPrompt,
+                        "prompt": finalPrompt,
                         "op": "Imagine", 
                         "token": getCookie("MJPROXY_TOKEN"),
                         "mjmessage":""
@@ -306,12 +316,13 @@
                 });
             });
 
-            const arValues = ['1:1','4:3', '3:4', '16:9', '9:16'];
+            const arValuesAlias = ['1:1','4:3', '3:4', '16:9', '9:16'];
+            const arValues = ['--ar 1:1','--ar 4:3', '--ar 3:4', '--ar 16:9', '--ar 9:16'];
             const arSlider = document.getElementById("arRange");
             const arValue = document.querySelector(".arValue");
             var arPrompt = '1:1';
             arSlider.oninput = function() {
-                arValue.textContent = arValues[this.value - 1]; 
+                arValue.textContent = arValuesAlias[this.value - 1]; 
                 arPrompt = arValues[this.value - 1];
             }
 
