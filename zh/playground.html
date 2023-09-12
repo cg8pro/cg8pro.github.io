@@ -10,15 +10,7 @@
     <link href="../style/custom.css" rel="stylesheet" type="text/css" />
     <link href="../img/favicon.png" rel="icon" type="image/png">
     <script type="text/javascript">
-        var link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
-            link.href = '../style/draw_bg_mobile.css';
-        } else {
-            link.href = '../style/draw_bg.css';
-        }        
-        document.head.appendChild(link);  
+
 
         var link = document.createElement('link');
         link.rel = 'stylesheet';
@@ -50,11 +42,11 @@
             }
           }
           return null;
-        }        
+        } 
 
         window.onload = function() {
             if(!checkCookie("MJPROXY_TOKEN")) {
-                window.location.href = "auth.html";
+                //window.location.href = "auth.html";
             }
         }
     </script>
@@ -73,7 +65,7 @@
     </header>    
     <div class="section" style="margin-top:2%">
         <div class="container">
-            <h4 class="section-heading" style="font-family:pixel;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 画点什么？</h4>
+            <h4 class="section-heading" style="font-family:pixel;color:lightpink;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 画点什么？</h4>
             <img id="img" style="box-shadow: 4px 4px 8px 0px #fff000, -4px -4px 8px 0px #ff0000;"></img>
             <div style="display: block;">
                 <button id="upscale1" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大左上角</button>
@@ -82,9 +74,9 @@
                 <button id="upscale4" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大右下角</button>
             </div>
             <div>
-                <label class="three columns" style="font-family:pixel;font-size:20px;color:white;text-align: left;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">提示词：</label>
+                <label class="three columns" style="font-family:pixel;font-size:20px;color:lightpink;text-align: left;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">提示词：</label>
                 <meter class="eight columns" id="meter" style="margin-left: 0px; margin-top:5px;" min="0" max="60" value="60"></meter>
-                <label id="countdownLable" style="font-family:pixel;font-size:20px;color:white;text-align: center;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"></label>
+                <label id="countdownLable" style="font-family:pixel;font-size:20px;color:lightpink;text-align: center;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"></label>
             </div>             
             <textarea id="prompt" class="u-full-width" style="font-family:pixel;font-size:20px;"></textarea>
             <select id="sample" style="width: 45%;height: 36px;font-size: 16px;color: #FFF;border: 1px solid #ccc;background-color: rgb(111,120,134,0.4);float: left;">
@@ -100,33 +92,30 @@
                 <option value="Happy Cute hoodie baby toddler holding the letter X::2 simple background, soft colors, 3D, octane rendering --niji --style expressive --s 750">【头像 | 3D娃娃】</option>
                 <option value="fluffy blue ultra 8k high definition 3d character">【头像 | 毛茸萌宠】</option>
             </select>
-            <button id="draw" style="font-family: pixel;font-size: 20px;color:ghostwhite;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">>>开始绘制<<</button>
+            <button id="draw" style="font-family: pixel;font-size: 20px;color:lightpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">>>开始绘制<<</button>
 
         </div>
-        <div class="container" style="background-color: rgb(173,194,185,0.6);padding: 5px 5px 0px 5px; border-radius: 10px;">
-            <button id="ar34"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">小红书 3:4</button>
-            <button id="ar916"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">抖音 9:16</button>
-            <button id="ar43"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">传统 4:3</button>
-            <button id="ar169"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">电影 16:9</button>
-            <button id="arChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;"></button>
-        </div>
-        <div class="container" style="background-color: rgb(156,169,134,0.6);padding: 5px 5px 5px 5px;border-radius: 10px;margin: 5px auto 5px auto;">
-            <button id="niji"  style="font-size: 14px;color:lightskyblue;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">niji 5</button>
-            <button id="s50"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">不艺术</button>
-            <button id="s100"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">稍艺术</button>
-            <button id="s250"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">较艺术</button>
-            <button id="s1000"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">特艺术</button>
-            <button id="sChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;">
-            <button id="nijiChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;">
-        </div>        
-        <div class="container" style="background-color: rgb(196,122,155,0.6); padding: 5px 5px 5px 5px;border-radius: 10px;margin: 5px auto 5px auto;">
-            <button id="c10"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">稳定</button>
-            <button id="c30"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">变化</button>
-            <button id="c60"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">多变</button>
-            <button id="c100"  style="font-size: 14px;color:white;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;">混乱</button>
-            <button id="cChosen" style="font-size: 14px;color:hotpink;float: right;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;float: left;margin: 2px;border: none;"></label>
-        </div>           
-        <div class="container" style="color:white;text-align: left;text-shadow: 2px 2px 3px #000, -2px -2px 3px #F00;background-color: rgb(111,120,134,0.4);border-radius: 10px;padding: 5px 10px 5px 10px;font-family:pixel;">
+        <div class="container" style="background-color: rgb(173,194,185,0.5);padding: 5px 5px 10px 5px; border-radius: 10px;">
+            <div class="slider" style="width:150px;float: left;margin-left: 20px;" >
+                <input style="margin-top:10px;" type="range" min="1" max="5" value="1" class="slider" id="arRange"/>
+                <span class="arValue" disabled>1:1</span>
+            </div>
+            <div class="slider" style="width:150px;float: left;margin-left: 20px;">
+                <input style="margin-top:10px;" type="range" min="1" max="5" value="1" class="slider" id="sRange"/>
+                <span class="sValue" disabled>平凡</span>
+            </div>
+            <div class="slider" style="width:150px;float: left;margin-left: 20px;">
+                <input style="margin-top:10px;" type="range" min="1" max="5" value="1" class="slider" id="cRange"/>
+                <span class="cValue" disabled>稳定</span>
+            </div>       
+            <div class="slider" style="width:150px;float: left;margin-left: 20px;">
+                <input style="margin-top:10px;" type="range" min="1" max="5" value="1" class="slider" id="wRange"/>
+                <span class="wValue" disabled>合理</span>
+            </div>              
+            <div class="slider" style="width:150px;float: left;margin-left: 20px;">
+                <input style="margin-top:10px;" type="range" min="1" max="2" value="1" class="slider" id="nRange"/>
+                <span class="nValue" disabled>Niji关</span>
+            </div>  
         </div>
     </div>
     <script src="../js/jquery.min.js"></script>
@@ -246,49 +235,8 @@
             });
             $("#upscale4").click(function() {
                 upscale("U4");
-            });                                    
+            });        
 
-            $('#ar34').click(function(){
-                $('#arChosen').html("--ar 3:4" + "   [&times;]")
-                $('#arChosen').val("--ar 3:4")
-            })
-            $('#ar916').click(function(){
-                $('#arChosen').html("--ar 9:16" + "   [&times;]")
-                $('#arChosen').val("--ar 9:16")
-            })
-            $('#ar43').click(function(){
-                $('#arChosen').html("--ar 4:3" + "   [&times;]")
-                $('#arChosen').val("--ar 4:3")
-            })
-            $('#ar169').click(function(){
-                $('#arChosen').html("--ar 16:9" + "   [&times;]")
-                $('#arChosen').val("--ar 16:9")
-            })
-            $('#arChosen').click(function(){
-                $('#arChosen').html("")
-                $('#arChosen').val("")
-            })
-
-            $('#s50').click(function(){
-                $('#sChosen').html("--stylize 50" + "   [&times;]")
-                $('#sChosen').val("--stylize 50")
-            })
-            $('#s100').click(function(){
-                $('#sChosen').html("--stylize 100" + "   [&times;]")
-                $('#sChosen').val("--stylize 100")
-            })
-            $('#s250').click(function(){
-                $('#sChosen').html("--stylize 250" + "   [&times;]")
-                $('#sChosen').val("--stylize 250")
-            })
-            $('#s1000').click(function(){
-                $('#sChosen').html("--stylize 1000" + "   [&times;]")
-                $('#sChosen').val("--stylize 1000")
-            })
-            $('#sChosen').click(function(){
-                $('#sChosen').html("")
-                $('#sChosen').val("")
-            })
             $('#niji').click(function(){
                 $('#nijiChosen').html("--niji 5" + "   [&times;]")
                 $('#nijiChosen').val("--niji 5")
@@ -296,28 +244,8 @@
             $('#nijiChosen').click(function(){
                 $('#nijiChosen').html("")
                 $('#nijiChosen').val("")
-            })    
+            })                                            
 
-            $('#c10').click(function(){
-                $('#cChosen').html("--c 10" + "   [&times;]")
-                $('#cChosen').val("--c 10")
-            })
-            $('#c30').click(function(){
-                $('#cChosen').html("--c 30" + "   [&times;]")
-                $('#cChosen').val("--c 30")
-            })
-            $('#c60').click(function(){
-                $('#cChosen').html("--c 60" + "   [&times;]")
-                $('#cChosen').val("--c 60")
-            })
-            $('#c100').click(function(){
-                $('#cChosen').html("--c 100" + "   [&times;]")
-                $('#cChosen').val("--c 100")
-            })
-            $('#cChosen').click(function(){
-                $('#cChosen').html("")
-                $('#cChosen').val("")
-            })
 
             $("#sample").change(function() {
                 $("#prompt").val($(this).val());
@@ -331,10 +259,10 @@
                 $("#countdownLable").html(seconds);
                 startCountdown();
                 $.ajax({
-                    url: "http://localhost:7071/api/mjproxy",
+                    url: "https://mjproxy.azurewebsites.net/api/mjproxy",
                     type: "POST",
                     data: {
-                        "prompt": $('#prompt').val() + " " + $('#arChosen').val() + " " + $('#sChosen').val() + " " + $('#nijiChosen').val() + " " + $('#cChosen').val(),
+                        "prompt": $('#prompt').val() + " " + arPrompt + " " + chaosPrompt + " " + stylizePrompt + " " + weirdPrompt + " " + nijiPrompt,
                         "op": "Imagine", 
                         "token": getCookie("MJPROXY_TOKEN"),
                         "mjmessage":""
@@ -377,6 +305,55 @@
                     }
                 });
             });
+
+            const arValues = ['1:1','4:3', '3:4', '16:9', '9:16'];
+            const arSlider = document.getElementById("arRange");
+            const arValue = document.querySelector(".arValue");
+            var arPrompt = '1:1';
+            arSlider.oninput = function() {
+                arValue.textContent = arValues[this.value - 1]; 
+                arPrompt = arValues[this.value - 1];
+            }
+
+            const sValuesAlias = ['普通','有点艺术', '稍微艺术', '较为艺术', '特别艺术'];
+            const sValues = ['--stylize 0','--stylize 100', '--stylize 250', '--stylize 500', '--stylize 1000'];
+            const sSlider = document.getElementById("sRange");
+            const sValue = document.querySelector(".sValue");
+            var stylizePrompt = '--stylize 0';
+            sSlider.oninput = function() {
+                sValue.textContent = sValuesAlias[this.value - 1]; 
+                stylizePrompt = sValues[this.value - 1]; 
+            }
+
+            const cValuesAlias = ['稳定','变化', '多变', '不稳定', '混乱'];
+            const cValues = ['--c 0','--c 25', '--c 50', '--c 75', '--c 100'];
+            const cSlider = document.getElementById("cRange");
+            const cValue = document.querySelector(".cValue");
+            var chaosPrompt = '--c 0';
+            cSlider.oninput = function() {
+                cValue.textContent = cValuesAlias[this.value - 1]; 
+                chaosPrompt = cValues[this.value - 1]; 
+            }     
+
+            const wValuesAlias = ['合理','奇怪', '诡异', '疯狂', '卧槽'];
+            const wValues = ['--weird 0','--weird 250', '--weird 750', '--weird 1000', '--weird 3000'];
+            const wSlider = document.getElementById("wRange");
+            const wValue = document.querySelector(".wValue");
+            var weirdPrompt = '--weird 0'
+            wSlider.oninput = function() {
+                wValue.textContent = wValuesAlias[this.value - 1]; 
+                weirdPrompt = wValues[this.value - 1]; 
+            }                
+
+            const nValuesAlias = ['Niji关','Niji开'];
+            const nValues = ['','--niji 5'];
+            const nSlider = document.getElementById("nRange");
+            const nValue = document.querySelector(".nValue");
+            var nijiPrompt = '';
+            nSlider.oninput = function() {
+                nValue.textContent = nValuesAlias[this.value - 1]; 
+                nijiPrompt = nValues[this.value - 1]; 
+            }            
         });
 
     </script>

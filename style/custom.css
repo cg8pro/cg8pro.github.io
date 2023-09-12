@@ -100,3 +100,21 @@ a:-webkit-any-link {
   text-decoration: none;
   cursor: pointer;
 }
+
+
+.slider {
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+.slider input {
+  width: 100%;
+} 
+
+.value {
+  position: absolute;
+  top: -2em;
+  left: 50%;
+  transform: translateX(-50%);
+}
