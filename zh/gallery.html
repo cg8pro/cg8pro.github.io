@@ -73,7 +73,7 @@
                             img.alt = images[i];
                             img.addEventListener('click', function() {
                                 modal.style.display = "block";
-                                modalImg.src = 'https://mjart.blob.core.windows.net/mjartist/' + this.alt;
+                                modalImg.src = 'https://mjart.blob.core.windows.net/mjartists/' + this.alt;
                                 modalCaption.innerHTML = this.alt.replace('lossy_','').replace('.jpg','');
                             });
                             gallery.appendChild(img);
