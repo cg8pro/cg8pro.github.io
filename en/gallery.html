@@ -66,14 +66,14 @@
                             var div = document.createElement('div');
                             div.style.display = "inline-block";
                             var img = document.createElement('img');
-                            img.src = 'https://mjart.blob.core.windows.net/mjartist/' + images[i];
+                            img.src = 'https://mjart.blob.core.windows.net/mjartists/' + images[i];
                             img.style.width = "180px";
                             img.style.height = "180px";
                             img.style.margin = "auto 5px auto 5px"; 
                             img.alt = images[i];
                             img.addEventListener('click', function() {
                                 modal.style.display = "block";
-                                modalImg.src = 'https://mjart.blob.core.windows.net/mjartist/' + this.alt;
+                                modalImg.src = 'https://mjart.blob.core.windows.net/mjartists/' + this.alt;
                                 modalCaption.innerHTML = this.alt.replace('lossy_','').replace('.jpg','');
                             });
                             gallery.appendChild(img);
