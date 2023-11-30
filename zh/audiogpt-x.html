@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Talk GPT cg8.pro</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="../style/audiogpt.css" rel="stylesheet" type="text/css" />
+</head>
+<body style="background-color: black;">
+    <header>
+        <div style="color:white;text-align: center;margin-top: 50px;font-size: 24px;">
+            Talk GPT
+        </div>
+    </header>
+    <div class="container main" >
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img id="assistant" class="assistant" src="../img/silent.gif" />
+        </div>
+
+    </div>
+    <div class="footer">
+        <div style="text-align: center; ">
+            <img id="record" class="press" src="../img/btn_ready.gif" />
+        </div>
+        <span id="tips" style="color: white;font-size: 24px;"></span><div>-</div>
+        <div style="color:grey;font-size: 12px;">问题复杂时思考时间长</div>
+    </div>
+    <script src="../js/forge.min.js"></script>
+    <script src="../js/FileSaver.min.js"></script>
+    <script>
+        let mediaRecorder;let audioChunks=[];let messages=[];const recordButton=document["\u0067\u0065\u0074\u0045\u006c\u0065\u006d\u0065\u006e\u0074\u0042\u0079\u0049\u0064"]("drocer".split("").reverse().join(""));const assistant=document["\u0067\u0065\u0074\u0045\u006c\u0065\u006d\u0065\u006e\u0074\u0042\u0079\u0049\u0064"]("\u0061\u0073\u0073\u0069\u0073\u0074\u0061\u006e\u0074");const tips=document["\u0067\u0065\u0074\u0045\u006c\u0065\u006d\u0065\u006e\u0074\u0042\u0079\u0049\u0064"]("spit".split("").reverse().join(""));var status="";var isSpeaking=![];tips["\u0069\u006e\u006e\u0065\u0072\u0048\u0054\u004d\u004c"]="\u70b9\u51fb\u8bb2\u8bdd";navigator["\u006d\u0065\u0064\u0069\u0061\u0044\u0065\u0076\u0069\u0063\u0065\u0073"]['getUserMedia']({'audio':!![]})["\u0074\u0068\u0065\u006e"](_0x383335=>{mediaRecorder=new MediaRecorder(_0x383335);mediaRecorder["\u0061\u0064\u0064\u0045\u0076\u0065\u006e\u0074\u004c\u0069\u0073\u0074\u0065\u006e\u0065\u0072"]("elbaliavaatad".split("").reverse().join(""),_0x2f8bc2=>{audioChunks["\u0070\u0075\u0073\u0068"](_0x2f8bc2['data']);});mediaRecorder['addEventListener']("pots".split("").reverse().join(""),()=>{const _0x309fa2=new Blob(audioChunks,{'type':"\u0061\u0075\u0064\u0069\u006f\u002f\u006d\u0070\u0065\u0067"});sendAudioToServer(_0x309fa2);});});recordButton["\u0061\u0064\u0064\u0045\u0076\u0065\u006e\u0074\u004c\u0069\u0073\u0074\u0065\u006e\u0065\u0072"]("kcilc".split("").reverse().join(""),()=>{if(isSpeaking){recordButton['src']="fig.ydaer_ntb/gmi/..".split("").reverse().join("");audioChunks=[];isSpeaking=![];tips['innerHTML']="".split("").reverse().join("");mediaRecorder["\u0073\u0074\u006f\u0070"]();}else{recordButton['src']='../img/btn_collecting.gif';isSpeaking=!![];tips['innerHTML']="\u8BDD\u8BF4\u4F60".split("").reverse().join("");mediaRecorder['start']();}});function sendAudioToServer(_0xaf871e){const _0x2c4064=new FileReader();_0x2c4064['onloadend']=()=>{const _0x46f3de=_0x2c4064["\u0072\u0065\u0073\u0075\u006c\u0074"]["\u0073\u0070\u006c\u0069\u0074"](',')[0x61982^0x61983];assistant['src']="fig.gnikniht/gmi/..".split("").reverse().join("");tips['innerHTML']="\xB7\xB7\xB7\xB7\xB7\xB7\u4E2D\u8003\u601DTPG".split("").reverse().join("");recordButton['style']['display']="enon".split("").reverse().join("");fetch('https://1320865562-jq80o0roq9-sg.scf.tencentcs.com',{"\u006d\u0065\u0074\u0068\u006f\u0064":"\u0050\u004f\u0053\u0054","\u0068\u0065\u0061\u0064\u0065\u0072\u0073":{"\u0043\u006f\u006e\u0074\u0065\u006e\u0074\u002d\u0054\u0079\u0070\u0065":'application/json'},"\u0062\u006f\u0064\u0079":JSON['stringify']({'messages':encrypt(key,iv,new TextEncoder()["\u0065\u006e\u0063\u006f\u0064\u0065"](JSON['stringify'](messages))),'actlike':'default','audio':_0x46f3de,'option':"\u0036",'voice':"\u006f\u006e\u0079\u0078"})})["\u0074\u0068\u0065\u006e"](_0x3bcbd7=>_0x3bcbd7["\u006a\u0073\u006f\u006e"]())["\u0074\u0068\u0065\u006e"](_0x1ef5bb=>{resultMessages=JSON["\u0070\u0061\u0072\u0073\u0065"](decrypt(key,iv,_0x1ef5bb['message']));messages["\u0070\u0075\u0073\u0068"](...resultMessages);console["\u006c\u006f\u0067"](messages);var _0x166ebb=atob(_0x1ef5bb["\u0061\u0075\u0064\u0069\u006f"]);var _0xbfc8f5=new Array(_0x166ebb['length']);for(var _0x2fa3b6=0x92080^0x92080;_0x2fa3b6<_0x166ebb["\u006c\u0065\u006e\u0067\u0074\u0068"];_0x2fa3b6++){_0xbfc8f5[_0x2fa3b6]=_0x166ebb['charCodeAt'](_0x2fa3b6);}var _0x5dedf3=new Uint8Array(_0xbfc8f5);var _0x440c6e=new Blob([_0x5dedf3],{"\u0074\u0079\u0070\u0065":'audio/mpeg'});var _0x3e0f91=window["\u0055\u0052\u004c"]['createObjectURL'](_0x440c6e);console["\u006c\u006f\u0067"](_0x3e0f91);var _0x255646=document['createElement']("oidua".split("").reverse().join(""));_0x255646['src']=_0x3e0f91;document['body']["\u0061\u0070\u0070\u0065\u006e\u0064\u0043\u0068\u0069\u006c\u0064"](_0x255646);_0x255646["\u0061\u0064\u0064\u0045\u0076\u0065\u006e\u0074\u004c\u0069\u0073\u0074\u0065\u006e\u0065\u0072"]("yalp".split("").reverse().join(""),function(){assistant['src']='../img/speaking.gif';tips["\u0069\u006e\u006e\u0065\u0072\u0048\u0054\u004d\u004c"]='GPT\x20正在讲话';});_0x255646["\u0061\u0064\u0064\u0045\u0076\u0065\u006e\u0074\u004c\u0069\u0073\u0074\u0065\u006e\u0065\u0072"]('pause',function(){console['log']('Audio\x20is\x20paused');});_0x255646['addEventListener']("\u0065\u006e\u0064\u0065\u0064",function(){assistant["\u0073\u0072\u0063"]="\u002e\u002e\u002f\u0069\u006d\u0067\u002f\u0073\u0069\u006c\u0065\u006e\u0074\u002e\u0067\u0069\u0066";tips["\u0069\u006e\u006e\u0065\u0072\u0048\u0054\u004d\u004c"]="\u70b9\u51fb\u8bb2\u8bdd";recordButton['style']['display']='inline';});_0x255646["\u0070\u006c\u0061\u0079"]();});};_0x2c4064['readAsDataURL'](_0xaf871e);}function changeImage(){}const key='i9r8RSYSlIHjPv5EX+LTZ4b8XMvr1FMgjZYlI0uDzvg=';const iv="\u0039\u0069\u0065\u0062\u0074\u0045\u0033\u0072\u0079\u0052\u0057\u0038\u0043\u0072\u0056\u0043\u0049\u0030\u0038\u0070\u0073\u0041\u003d\u003d";function encrypt(_0x32544c,_0x1d9b0a,_0x44db02){var _0x35c911=forge['util']["\u0064\u0065\u0063\u006f\u0064\u0065\u0036\u0034"](_0x32544c);var _0x34f17a=forge["\u0075\u0074\u0069\u006c"]["\u0064\u0065\u0063\u006f\u0064\u0065\u0036\u0034"](_0x1d9b0a);var _0x5e6ac3=forge['cipher']["\u0063\u0072\u0065\u0061\u0074\u0065\u0043\u0069\u0070\u0068\u0065\u0072"]('AES-CBC',_0x35c911);_0x5e6ac3["\u0073\u0074\u0061\u0072\u0074"]({'iv':_0x34f17a});_0x5e6ac3['update'](forge['util']['createBuffer'](_0x44db02));_0x5e6ac3["\u0066\u0069\u006e\u0069\u0073\u0068"]();var _0x3bc3b8=_0x5e6ac3['output'];return forge["\u0075\u0074\u0069\u006c"]['encode64'](_0x3bc3b8['getBytes']());}function decrypt(_0x2907c4,_0x2c8c4a,_0x87f304){var _0x2d2858=forge["\u0075\u0074\u0069\u006c"]["\u0064\u0065\u0063\u006f\u0064\u0065\u0036\u0034"](_0x2907c4);var _0xf2bf71=forge["\u0075\u0074\u0069\u006c"]['decode64'](_0x2c8c4a);var _0x4422cc=forge['cipher']["\u0063\u0072\u0065\u0061\u0074\u0065\u0044\u0065\u0063\u0069\u0070\u0068\u0065\u0072"]("CBC-SEA".split("").reverse().join(""),_0x2d2858);_0x4422cc['start']({'iv':_0xf2bf71});_0x4422cc["\u0075\u0070\u0064\u0061\u0074\u0065"](forge['util']['createBuffer'](forge['util']['decode64'](_0x87f304)));_0x4422cc['finish']();return _0x4422cc['output']['data'];}
+    </script>
+</body>
+</html>
