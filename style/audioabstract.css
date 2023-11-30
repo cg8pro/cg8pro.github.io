@@ -1,0 +1,99 @@
+.table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table {
+    width: 100%;
+}
+
+@media screen and (max-width: 425px) {
+    table {
+        width: 100%;
+    }
+    .clipboard {
+        background-color: rgb(26,173,26); /* 选择背景色 */
+        color: white; /* 文字颜色 */
+        text-align: center; /* 文字对齐方式 */
+        text-decoration: none; /* 文字装饰 */
+        display: inline-block; /* 设置为内联块级元素 */
+        font-size: 16px; /* 字体大小 */
+        margin: 4px 2px;
+        cursor: pointer; /* 鼠标指针形状 */
+        border-radius: 12px; /* 圆角 */
+        border: none;
+    }
+    
+    .table {
+        color: white; /* 文字颜色 */
+        text-align: center; /* 文字对齐方式 */
+        text-decoration: none; /* 文字装饰 */
+        display: inline-block; /* 设置为内联块级元素 */
+        font-size: 12px; /* 字体大小 */
+        margin: 4px 2px;
+        cursor: pointer; /* 鼠标指针形状 */
+        border-radius: 12px; /* 圆角 */
+        border: none;
+    }
+}
+
+@media screen and (min-width: 426px) and (max-width: 900px) {
+    table {
+        width: 70%;
+    }
+    .clipboard {
+        background-color: rgb(26,173,26); /* 选择背景色 */
+        color: white; /* 文字颜色 */
+        text-align: center; /* 文字对齐方式 */
+        text-decoration: none; /* 文字装饰 */
+        display: inline-block; /* 设置为内联块级元素 */
+        font-size: 16px; /* 字体大小 */
+        margin: 4px 2px;
+        cursor: pointer; /* 鼠标指针形状 */
+        border-radius: 12px; /* 圆角 */
+        border: none;
+    }
+    
+    .table {
+        color: white; /* 文字颜色 */
+        text-align: center; /* 文字对齐方式 */
+        text-decoration: none; /* 文字装饰 */
+        display: inline-block; /* 设置为内联块级元素 */
+        font-size: 12px; /* 字体大小 */
+        margin: 4px 2px;
+        cursor: pointer; /* 鼠标指针形状 */
+        border-radius: 12px; /* 圆角 */
+        border: none;
+    }
+}
+
+@media screen and (min-width: 901px) {
+    table {
+        width: 50%;
+    }
+    .clipboard {
+        background-color: rgb(26,173,26); /* 选择背景色 */
+        color: white; /* 文字颜色 */
+        text-align: center; /* 文字对齐方式 */
+        text-decoration: none; /* 文字装饰 */
+        display: inline-block; /* 设置为内联块级元素 */
+        font-size: 16px; /* 字体大小 */
+        margin: 4px 2px;
+        cursor: pointer; /* 鼠标指针形状 */
+        border-radius: 12px; /* 圆角 */
+        border: none;
+    }
+    
+    .table {
+        color: white; /* 文字颜色 */
+        text-align: center; /* 文字对齐方式 */
+        text-decoration: none; /* 文字装饰 */
+        display: inline-block; /* 设置为内联块级元素 */
+        font-size: 12px; /* 字体大小 */
+        margin: 4px 2px;
+        cursor: pointer; /* 鼠标指针形状 */
+        border-radius: 12px; /* 圆角 */
+        border: none;
+    }
+
+}

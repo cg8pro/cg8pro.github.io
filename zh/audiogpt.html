@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="../style/custom.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="section hero">
+        <div class="container">
+            <div class="row">
+                <div class="one-half column" style="background-color: black;">1</div>
+                <div class="one-half column" style="background-color: black;">
+                    <img id="myImage" src="../img/listening.gif" style="width:300px;" />
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center;background-color: black;">
+            <button id="record">长按向神忏悔</button>
+            <button id="change" onclick="changeImage()">换图</button>
+        </div>
+    </div>
+    <script src="../js/forge.min.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/audiogpt.js"></script>
+    <script src="../js/FileSaver.min.js"></script>
+</body>
+</html>

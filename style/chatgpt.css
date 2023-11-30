@@ -1,0 +1,28 @@
+.section{
+	text-align: center;
+}
+
+.user-msg {
+    max-width: 500px;
+    background-color: rgb(26,173,26);
+    color: black;
+    border-radius: 8px;
+    padding: 12px;
+    float: right;
+    display: block;
+    margin-bottom:5px;
+}
+.assistant-msg {
+    max-width: 500px;
+    background-color: rgb(77,77,77);
+    color: white;
+    border-radius: 8px;
+    padding: 12px; 
+    float: left;
+    display: block;
+    margin-bottom:5px;
+}
+.msgLine {
+    display: block;
+    clear: both;
+}

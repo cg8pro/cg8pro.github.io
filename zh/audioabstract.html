@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>听斋 cg8.pro</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="../style/header.css" rel="stylesheet" type="text/css" />
+    <link href="../style/audioabstract.css" rel="stylesheet" type="text/css" />
+    <link href="../img/favicon.png" rel="icon" type="image/png">
+</head>
+
+<body>
+    <header class="site-header" style="background-color: white;opacity: 0.7;">
+        <div class="wrapper">
+            <a class="site-title" href=""></a>
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a class="page-link" href="about.html">👉👉👉 联系我 👈👈👈</a>        
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="container" style="margin-top:2%">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div class="row" ><h1>听摘</h1></div>            
+            <div class="row" style="color: RGB(150,150,150)">【生成文章摘要并朗读】【先切出去等会回来听】【可同时生成多篇文章】【万字最多等1分钟】</div>
+        </div>
+        <div class="row">
+            <div style="text-align: center;">
+                <button class="clipboard" onclick="readFromClipboard()">生成语音摘要</button>
+            </div>
+            <table class="table"></table>
+        </div>
+    </div>
+
+    <script>
+        function deleteRow(btn) {
+            var row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        async function readFromClipboard() {
+            try {
+                const text = await navigator.clipboard.readText();
+                console.log('copy clipboard: ', text);
+                getAudioAbstract(text)
+            } catch (err) {
+                console.error('Failed to read clipboard contents: ', err);
+            }
+        }
+
+        function getAudioAbstract(articleUrl) {
+            if(!isValidURL(articleUrl)){
+                alert("不是有效的互联网地址");
+                return;
+            }
+            
+            fetch('https://1320865562-jq80o0roq9-sg.scf.tencentcs.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "article": articleUrl,
+                    "option": "8",
+                    "voice": "onyx"
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 解码并创建 Blob 对象
+                var byteCharacters = atob(data.audio);
+                var byteNumbers = new Array(byteCharacters.length);
+                for (var i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                var byteArray = new Uint8Array(byteNumbers);
+                var blob = new Blob([byteArray], {type: 'audio/mpeg'});
+
+                // 创建一个 URL 并创建audio元素
+                var url = window.URL.createObjectURL(blob);
+                var audio = new Audio(url);
+
+                let start = data.message.indexOf('文章标题') + '文章标题'.length;
+                let end = data.message.indexOf('第一份总结');
+                let title = data.message.substring(start+1, end);
+
+                // 添加到表格中
+                var table = document.querySelector('.table');
+                var row = table.insertRow(-1);
+                var cell1 = row.insertCell(0);
+                cell1.style.width = '100%';
+                var cell2 = row.insertCell(1);
+                cell2.style.width = '10%';
+                var cell3 = row.insertCell(2);
+                cell3.style.width = '10%';
+                cell1.innerHTML = '<a target="_blank" rel="noopener noreferrer" href="' + articleUrl + '">' + title + '</a>';
+                cell2.innerHTML = '<span onclick="PlaySound(\'' + url + '\')">▶️</span>';
+                //cell2.innerHTML = '<button class="option" onclick="PlaySound(\'' + url + '\')">▶️</button>';
+                cell3.innerHTML = '<span onclick="deleteRow(this)">🚫</span>';
+                //cell3.innerHTML = '<button class="option" onclick="deleteRow(this)">🚫</button>';
+
+                //audio.play();
+            });
+        }
+
+        function PlaySound(url) {
+            new Audio(url).play();
+        }        
+
+        // function handleVisibilityChange() {
+        //     if (!document.hidden) {
+        //         console.log("Tab is active");
+        //         navigator.clipboard.readText().then(clipText => console.log(clipText));
+        //     }
+        // }
+
+        // document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        function isValidURL(string) {
+            try {
+                new URL(string);
+            } catch (_) {
+                return false;  
+            }
+            return true;
+        }
+    </script>
+</body>
+
+</html>
