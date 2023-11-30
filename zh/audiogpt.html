@@ -12,7 +12,7 @@
 <body style="background-color: black;">
     <header>
         <div style="color:white;text-align: center;margin-top: 50px;font-size: 24px;">
-            Talk GPT
+            Talk GPT <span style="color:grey;">by CG8</span>
         </div>
     </header>
     <div class="container main" >
@@ -40,7 +40,7 @@
         var status = ""; // collecting sending gpting silent
         var isSpeaking = false;
 
-        tips.innerHTML = "点击讲话"
+        tips.innerHTML = "点一下，然后讲话"
 
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(stream => {
@@ -137,7 +137,7 @@
 
                     audio.addEventListener('ended', function(){
                         assistant.src = '../img/silent.gif';
-                        tips.innerHTML = "点击讲话"
+                        tips.innerHTML = "点一下，然后讲话"
                         recordButton.style.display = "inline";
                     });
 
