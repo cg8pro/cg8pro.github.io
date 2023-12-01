@@ -64,6 +64,7 @@
                 mediaRecorder.addEventListener("stop", () => {
                     if (audioChunks.length > 0) {
                         const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
+                        console.log(audioBlob)
                         sendAudioToServer(audioBlob);
                     } else {
                         console.log('No audio data to send');
