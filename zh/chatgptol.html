@@ -29,7 +29,7 @@
         </div>
         <div class="row">
             <meter class="eleven columns" id="meter" style="margin-left: 0px; margin-top:5px;display: none;" min="0" max="120" value="120"></meter>
-            <label id="countdownLable"></label>
+            <label style="display: none;" id="countdownLable"></label>
         </div>
         <div class="row">
             <!--<div class="two columns" style="min-height: 632px;border-radius: 10px;border: 1px solid rgb(222,222,222);" >
@@ -61,11 +61,11 @@
             const currentsession = document.getElementById("session");
             textarea.addEventListener('keydown', (event) => {
                 if(event.key === 'Enter' && event.ctrlKey) {
-                    var countdownLable = document.getElementById("countdownLable")
+                    //var countdownLable = document.getElementById("countdownLable")
                     var meter = document.getElementById("meter")
-                    countdownLable.style.display = "block"
+                    //countdownLable.style.display = "block"
                     meter.style.display = "block"
-                    countdownLable.innerHTML = seconds;
+                    //countdownLable.innerHTML = seconds;
                     startCountdown();
 
                     event.preventDefault();
@@ -88,9 +88,9 @@
                         })
                         .then(response => response.json())
                         .then(data => {
-                            countdownLable.style.display = "none"
+                            //countdownLable.style.display = "none"
                             meter.style.display = "none"
-                            countdownLable.innerHTML = seconds;
+                            //countdownLable.innerHTML = seconds;
                             seconds = 120;
                             stopCountdown();
 
@@ -112,11 +112,11 @@
                     });                    
                 }
                 if(event.key === 'Enter' && event.altKey) {
-                    var countdownLable = document.getElementById("countdownLable")
+                    //var countdownLable = document.getElementById("countdownLable")
                     var meter = document.getElementById("meter")
-                    countdownLable.style.display = "block"
+                    //countdownLable.style.display = "block"
                     meter.style.display = "block"
-                    countdownLable.innerHTML = seconds;
+                    //countdownLable.innerHTML = seconds;
                     startCountdown();
 
                     event.preventDefault();
@@ -134,9 +134,9 @@
                         })
                         .then(response => response.json())
                         .then(data => {
-                            countdownLable.style.display = "none"
+                            //countdownLable.style.display = "none"
                             meter.style.display = "none"
-                            countdownLable.innerHTML = seconds;
+                            //countdownLable.innerHTML = seconds;
                             seconds = 120;
                             stopCountdown();
                             
@@ -254,7 +254,7 @@
             countdown = setInterval(function() {
                 seconds--;
                 $('#meter')[0].value = seconds;
-                $("#countdownLable").html(seconds);
+                //$("#countdownLable").html(seconds);
                 if (seconds <= 0) {
                     clearInterval(countdown);
                 }

@@ -33,7 +33,7 @@
     <script src="../js/vconsole.min.js"></script>
     <script>
         var vConsole = new window.VConsole();
-        
+
         let mediaRecorder;
         let audioChunks = [];
         let messages = [];
@@ -127,6 +127,7 @@
                     console.log(url)
                     var audio = document.createElement('audio');
                     audio.src = url;
+                    audio.autoplay = true;
                     document.body.appendChild(audio);
 
                     audio.addEventListener('play', function(){
@@ -152,11 +153,6 @@
                 });
             };
             reader.readAsDataURL(audioBlob);
-        }
-
-        function changeImage() {
-            
-            
         }
 
         const key = "i9r8RSYSlIHjPv5EX+LTZ4b8XMvr1FMgjZYlI0uDzvg="
