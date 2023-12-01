@@ -53,36 +53,38 @@
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(stream => {
                 mediaRecorder = new MediaRecorder(stream);
-
-                mediaRecorder.addEventListener("dataavailable", event => {
-                    audioChunks.push(event.data);
+                mediaRecorder.addEventListener('dataavailable', function (e) {
+                    if (e.data.size > 0) {
+                        audioChunks.push(event.data);
+                    } else {
+                        console.log('no audio data available');
+                    }
                 });
 
                 mediaRecorder.addEventListener("stop", () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
-                    sendAudioToServer(audioBlob);
+                    if (audioChunks.length > 0) {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
+                        sendAudioToServer(audioBlob);
+                    } else {
+                        console.log('No audio data to send');
+                    }
                 });
             });
 
 
         recordButton.addEventListener('click', () => {
-
             if (isSpeaking) {
                 recordButton.src = '../img/btn_ready.gif';
                 audioChunks = [];
                 isSpeaking = false;
                 tips.innerHTML = ""
-                audioContext.resume().then(() => {
-                    mediaRecorder.stop();
-                });
-
+                mediaRecorder.stop();
             } else {
                 recordButton.src = '../img/btn_collecting.gif';
                 isSpeaking = true;
                 tips.innerHTML = "你说话"
                 mediaRecorder.start();
             }
-
         });
 
         function sendAudioToServer(audioBlob) {
