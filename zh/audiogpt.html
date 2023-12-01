@@ -29,7 +29,7 @@
         </div>
         <span id="tips" style="color: white;font-size: 24px;"></span>
         <div>-</div>
-        <div style="color:grey;font-size: 12px;">问题复杂时思考时间长</div>
+        <div style="color:grey;font-size: 12px;">智慧值得多等一会</div>
     </div>
     <script src="../js/forge.min.js"></script>
     <script src="../js/FileSaver.min.js"></script>
@@ -53,6 +53,7 @@
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(stream => {
                 mediaRecorder = new MediaRecorder(stream);
+
                 mediaRecorder.addEventListener("dataavailable", event => {
                     audioChunks.push(event.data);
                 });
@@ -65,20 +66,22 @@
 
 
         recordButton.addEventListener('click', () => {
-            audioContext.resume().then(() => {
-                if (isSpeaking) {
-                    recordButton.src = '../img/btn_ready.gif';
-                    audioChunks = [];
-                    isSpeaking = false;
-                    tips.innerHTML = ""
+
+            if (isSpeaking) {
+                recordButton.src = '../img/btn_ready.gif';
+                audioChunks = [];
+                isSpeaking = false;
+                tips.innerHTML = ""
+                audioContext.resume().then(() => {
                     mediaRecorder.stop();
-                } else {
-                    recordButton.src = '../img/btn_collecting.gif';
-                    isSpeaking = true;
-                    tips.innerHTML = "你说话"
-                    mediaRecorder.start();
-                }
-            });
+                });
+
+            } else {
+                recordButton.src = '../img/btn_collecting.gif';
+                isSpeaking = true;
+                tips.innerHTML = "你说话"
+                mediaRecorder.start();
+            }
 
         });
 
