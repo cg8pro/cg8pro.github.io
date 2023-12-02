@@ -36,7 +36,6 @@
     <script src="../js/vconsole.min.js"></script>
     <script>
         var vConsole = new window.VConsole();
-        var audioContext;
         let mediaRecorder;
         let audioChunks = [];
         let messages = [];
@@ -54,7 +53,7 @@
                 mediaRecorder = new MediaRecorder(stream);
                 mediaRecorder.addEventListener('dataavailable', function (e) {
                     if (e.data.size > 0) {
-                        audioChunks.push(event.data);
+                        audioChunks.push(e.data);
                     } else {
                         console.log('no audio data available');
                     }
@@ -73,7 +72,7 @@
 
 
         recordButton.addEventListener('click', () => {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            var audioContext = new (window.AudioContext || window.webkitAudioContext)();
             if (isSpeaking) {
                 recordButton.src = '../img/btn_ready.gif';
                 audioChunks = [];
