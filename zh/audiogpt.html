@@ -50,6 +50,7 @@
             .then(stream => {
                 mediaRecorder = new MediaRecorder(stream);
                 mediaRecorder.addEventListener("dataavailable", event => {
+                    console.log(event)
                     console.log("触发dataavailable")
                     console.log(event.data)
                     audioChunks.push(event.data);
