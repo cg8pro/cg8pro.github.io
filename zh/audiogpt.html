@@ -30,7 +30,7 @@
         <span id="tips" style="color: white;font-size: 24px;"></span>
         <div>-</div>
         <div style="color:grey;font-size: 12px;">问题复杂时思考时间长</div>
-        <button onclick="auth()">授权</button>
+        <button id="auth">授权</button>
     </div>
     <script src="../js/forge.min.js"></script>
     <script src="../js/vconsole.min.js"></script>
@@ -48,7 +48,7 @@
 
         tips.innerHTML = "点击讲话"
 
-        function auth() {
+        document.getElementById("auth").addEventListener("click", () => {
             audioContext = new (window.AudioContext || window.webkitAudioContext)().resume().then(() => {
                 navigator.mediaDevices.getUserMedia({ audio: 'audio' })
                     .then(stream => {
@@ -168,14 +168,7 @@
                 }
             }
             )
-        }
-
-
-
-        function changeImage() {
-
-
-        }
+        })
 
         const key = "i9r8RSYSlIHjPv5EX+LTZ4b8XMvr1FMgjZYlI0uDzvg="
         const iv = "9iebtE3ryRW8CrVCI08psA=="
