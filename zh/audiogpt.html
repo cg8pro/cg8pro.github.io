@@ -70,9 +70,14 @@
                 });
             });
 
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
 
         recordButton.addEventListener('click', async () => {
-            audioContext.resume().then(() => {
+            audioContext.resume().then(async () => {
+                await sleep(1000);  // 在此处插入 sleep 调用
+
                 if (isSpeaking) {
                     recordButton.src = '../img/btn_ready.gif';
                     audioChunks = [];
