@@ -54,6 +54,7 @@
                 });
 
                 mediaRecorder.addEventListener("stop", () => {
+                    console.log(audioChunks)
                     const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
                     console.log(audioBlob)
                     //sendAudioToServer(audioBlob);
@@ -61,28 +62,28 @@
             });
 
 
-            recordButton.addEventListener('click', async () => {
-                new (window.AudioContext || window.webkitAudioContext)().resume().then(async () => {
-                    // 如果audioChunks和mediaRecorder没有初始化，等待它们
-                    while (!audioChunks || !mediaRecorder) {
-                        console.log("未初始化，等待")
-                        await new Promise(resolve => setTimeout(resolve, 100)); // 在下一次检查之前等待1秒
-                    }
+        recordButton.addEventListener('click', async () => {
+            new (window.AudioContext || window.webkitAudioContext)().resume().then(async () => {
+                // 如果audioChunks和mediaRecorder没有初始化，等待它们
+                while (!audioChunks || !mediaRecorder) {
+                    console.log("未初始化，等待")
+                    await new Promise(resolve => setTimeout(resolve, 100)); // 在下一次检查之前等待1秒
+                }
 
-                    if (isSpeaking) {
-                        recordButton.src = '../img/btn_ready.gif';
-                        audioChunks = [];
-                        isSpeaking = false;
-                        tips.innerHTML = "";
-                        mediaRecorder.stop();
-                    } else {
-                        recordButton.src = '../img/btn_collecting.gif';
-                        isSpeaking = true;
-                        tips.innerHTML = "你正在说话";
-                        mediaRecorder.start();
-                    }
-                });
+                if (isSpeaking) {
+                    recordButton.src = '../img/btn_ready.gif';
+                    audioChunks = [];
+                    isSpeaking = false;
+                    tips.innerHTML = "";
+                    mediaRecorder.stop();
+                } else {
+                    recordButton.src = '../img/btn_collecting.gif';
+                    isSpeaking = true;
+                    tips.innerHTML = "你正在说话";
+                    mediaRecorder.start();
+                }
             });
+        });
 
         // recordButton.addEventListener('touchstart', () => {
         //     gpt.src = '../img/speak.gif';
