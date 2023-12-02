@@ -48,130 +48,129 @@
 
         tips.innerHTML = "点击讲话"
 
-        function auth(){
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        }
-
-        navigator.mediaDevices.getUserMedia({ audio: 'audio' })
-            .then(stream => {
-                mediaRecorder = new MediaRecorder(stream);
-                mediaRecorder.addEventListener("dataavailable", event => {
-                    console.log(event)
-                    console.log("触发dataavailable")
-                    console.log(event.data)
-                    audioChunks.push(event.data);
-                });
-
-                mediaRecorder.addEventListener("stop", () => {
-                    console.log(audioChunks)
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
-                    console.log(audioBlob)
-                    //sendAudioToServer(audioBlob);
-                });
-            });
-
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        recordButton.addEventListener('click', async () => {
-            audioContext.resume().then(async () => {
-                await sleep(1000);  // 在此处插入 sleep 调用
-
-                if (isSpeaking) {
-                    recordButton.src = '../img/btn_ready.gif';
-                    audioChunks = [];
-                    isSpeaking = false;
-                    tips.innerHTML = "";
-                    mediaRecorder.stop();
-                } else {
-                    recordButton.src = '../img/btn_collecting.gif';
-                    isSpeaking = true;
-                    tips.innerHTML = "你正在说话";
-                    mediaRecorder.start();
-                }
-            });
-        });
-
-        // recordButton.addEventListener('touchstart', () => {
-        //     gpt.src = '../img/speak.gif';
-        //     audioChunks = [];
-        //     mediaRecorder.start();
-        // });
-
-        // recordButton.addEventListener('touchend', () => {
-        //     gpt.src = '../img/silent.gif';
-        //     mediaRecorder.stop();
-        // });
-
-        function sendAudioToServer(audioBlob) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64AudioMessage = reader.result.split(',')[1];
-                assistant.src = '../img/thinking.gif';
-                tips.innerHTML = "GPT思考中······";
-                recordButton.style.display = "none";
-                fetch('https://1320865562-jq80o0roq9-sg.scf.tencentcs.com', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        "messages": encrypt(key, iv, new TextEncoder().encode(JSON.stringify(messages))),
-                        "actlike": "default",
-                        "audio": base64AudioMessage,
-                        "option": "6",
-                        "voice": "onyx" //alloy, echo, fable, onyx 可以用的男生, nova, shimmer 可以用的女生
-                    })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        resultMessages = JSON.parse(decrypt(key, iv, data.message))
-                        messages.push(...resultMessages)
-                        console.log(messages)
-
-                        // 将 Base64 编码的字符串转换为 bytes
-                        var byteCharacters = atob(data.audio);
-                        var byteNumbers = new Array(byteCharacters.length);
-                        for (var i = 0; i < byteCharacters.length; i++) {
-                            byteNumbers[i] = byteCharacters.charCodeAt(i);
-                        }
-                        var byteArray = new Uint8Array(byteNumbers);
-
-                        // 创建一个 Blob 对象
-                        var blob = new Blob([byteArray], { type: 'audio/mpeg' });
-
-                        // 创建一个 URL 并赋值给 audio 元素的 src 属性
-                        var url = window.URL.createObjectURL(blob);
-                        console.log(url)
-                        var audio = document.createElement('audio');
-                        audio.src = url;
-                        document.body.appendChild(audio);
-
-                        audio.addEventListener('play', function () {
-                            assistant.src = '../img/speaking.gif';
-                            tips.innerHTML = "GPT 正在讲话"
+        function auth() {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)().resume().then(() => {
+                navigator.mediaDevices.getUserMedia({ audio: 'audio' })
+                    .then(stream => {
+                        mediaRecorder = new MediaRecorder(stream);
+                        mediaRecorder.addEventListener("dataavailable", event => {
+                            console.log(event)
+                            console.log("触发dataavailable")
+                            console.log(event.data)
+                            audioChunks.push(event.data);
                         });
 
-                        audio.addEventListener('pause', function () {
-                            console.log('Audio is paused');
+                        mediaRecorder.addEventListener("stop", () => {
+                            console.log(audioChunks)
+                            const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
+                            console.log(audioBlob)
+                            //sendAudioToServer(audioBlob);
                         });
-
-                        audio.addEventListener('ended', function () {
-                            assistant.src = '../img/silent.gif';
-                            tips.innerHTML = "点击讲话"
-                            recordButton.style.display = "inline";
-                        });
-
-                        // 播放音频
-                        audio.play();
-
-                        // 使用 FileSaver.js 库来下载文件
-                        // saveAs(blob, 'audio.mp3');
                     });
-            };
-            reader.readAsDataURL(audioBlob);
+
+                function sleep(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                }
+
+                recordButton.addEventListener('click', async () => {
+                    if (isSpeaking) {
+                        recordButton.src = '../img/btn_ready.gif';
+                        audioChunks = [];
+                        isSpeaking = false;
+                        tips.innerHTML = "";
+                        mediaRecorder.stop();
+                    } else {
+                        recordButton.src = '../img/btn_collecting.gif';
+                        isSpeaking = true;
+                        tips.innerHTML = "你正在说话";
+                        mediaRecorder.start();
+                    }
+                });
+
+                // recordButton.addEventListener('touchstart', () => {
+                //     gpt.src = '../img/speak.gif';
+                //     audioChunks = [];
+                //     mediaRecorder.start();
+                // });
+
+                // recordButton.addEventListener('touchend', () => {
+                //     gpt.src = '../img/silent.gif';
+                //     mediaRecorder.stop();
+                // });
+
+                function sendAudioToServer(audioBlob) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        const base64AudioMessage = reader.result.split(',')[1];
+                        assistant.src = '../img/thinking.gif';
+                        tips.innerHTML = "GPT思考中······";
+                        recordButton.style.display = "none";
+                        fetch('https://1320865562-jq80o0roq9-sg.scf.tencentcs.com', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                "messages": encrypt(key, iv, new TextEncoder().encode(JSON.stringify(messages))),
+                                "actlike": "default",
+                                "audio": base64AudioMessage,
+                                "option": "6",
+                                "voice": "onyx" //alloy, echo, fable, onyx 可以用的男生, nova, shimmer 可以用的女生
+                            })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                resultMessages = JSON.parse(decrypt(key, iv, data.message))
+                                messages.push(...resultMessages)
+                                console.log(messages)
+
+                                // 将 Base64 编码的字符串转换为 bytes
+                                var byteCharacters = atob(data.audio);
+                                var byteNumbers = new Array(byteCharacters.length);
+                                for (var i = 0; i < byteCharacters.length; i++) {
+                                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                                }
+                                var byteArray = new Uint8Array(byteNumbers);
+
+                                // 创建一个 Blob 对象
+                                var blob = new Blob([byteArray], { type: 'audio/mpeg' });
+
+                                // 创建一个 URL 并赋值给 audio 元素的 src 属性
+                                var url = window.URL.createObjectURL(blob);
+                                console.log(url)
+                                var audio = document.createElement('audio');
+                                audio.src = url;
+                                document.body.appendChild(audio);
+
+                                audio.addEventListener('play', function () {
+                                    assistant.src = '../img/speaking.gif';
+                                    tips.innerHTML = "GPT 正在讲话"
+                                });
+
+                                audio.addEventListener('pause', function () {
+                                    console.log('Audio is paused');
+                                });
+
+                                audio.addEventListener('ended', function () {
+                                    assistant.src = '../img/silent.gif';
+                                    tips.innerHTML = "点击讲话"
+                                    recordButton.style.display = "inline";
+                                });
+
+                                // 播放音频
+                                audio.play();
+
+                                // 使用 FileSaver.js 库来下载文件
+                                // saveAs(blob, 'audio.mp3');
+                            });
+                    };
+                    reader.readAsDataURL(audioBlob);
+                }
+            }
+            )
         }
+
+
 
         function changeImage() {
 
