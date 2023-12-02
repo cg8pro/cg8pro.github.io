@@ -38,6 +38,7 @@
         let mediaRecorder;
         let audioChunks = [];
         let messages = [];
+        var audioContext;
         var monitorVar = false;
         const recordButton = document.getElementById('record');
         const assistant = document.getElementById('assistant');
@@ -48,13 +49,15 @@
 
         // 创建全局轮询
         var pollId = setInterval(function () {
-            new (window.AudioContext || window.webkitAudioContext)().resume().then(() => {
-                if (monitorVar === true) {
+
+            if (monitorVar === true) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                audioContext.resume().then(() => {
                     const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
                     sendAudioToServer(audioBlob);
                     clearInterval(pollId);
-                }
-            })
+                })
+            }
         }, 200);
 
         navigator.mediaDevices.getUserMedia({ audio: true })
