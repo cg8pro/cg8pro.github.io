@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Talk GPT cg8.pro</title>
     <meta charset="UTF-8">
@@ -9,13 +10,14 @@
     <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
     <link href="../style/audiogpt.css" rel="stylesheet" type="text/css" />
 </head>
+
 <body style="background-color: black;">
     <header>
         <div style="color:white;text-align: center;margin-top: 50px;font-size: 24px;">
             Talk GPT
         </div>
     </header>
-    <div class="container main" >
+    <div class="container main">
         <div style="text-align: center; margin-bottom: 20px;">
             <img id="assistant" class="assistant" src="../img/silent.gif" />
         </div>
@@ -25,27 +27,35 @@
         <div style="text-align: center; ">
             <img id="record" class="press" src="../img/btn_ready.gif" />
         </div>
-        <span id="tips" style="color: white;font-size: 24px;"></span><div>-</div>
+        <span id="tips" style="color: white;font-size: 24px;"></span>
+        <div>-</div>
         <div style="color:grey;font-size: 12px;">问题复杂时思考时间长</div>
-        <audio id="audio" autoplay playsinline muted></audio>
     </div>
     <script src="../js/forge.min.js"></script>
-    <script src="../js/FileSaver.min.js"></script>
     <script src="../js/vconsole.min.js"></script>
     <script>
         var vConsole = new window.VConsole();
         let mediaRecorder;
         let audioChunks = [];
         let messages = [];
+        var monitorVar = false;
         const recordButton = document.getElementById('record');
         const assistant = document.getElementById('assistant');
         const tips = document.getElementById("tips");
         var status = ""; // collecting sending gpting silent
         var isSpeaking = false;
-        var audio = document.getElementById('audio');
-        audio.muted = false;
-
         tips.innerHTML = "点击讲话"
+
+        // 创建全局轮询
+        var pollId = setInterval(function () {
+            new (window.AudioContext || window.webkitAudioContext)().resume().then(() => {
+                if (monitorVar === true) {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
+                    sendAudioToServer(audioBlob);
+                    clearInterval(pollId);
+                }
+            })
+        }, 200);
 
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(stream => {
@@ -55,14 +65,13 @@
                 });
 
                 mediaRecorder.addEventListener("stop", () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
-                    sendAudioToServer(audioBlob);
+                    monitorVar = true;
                 });
             });
 
 
         recordButton.addEventListener('click', () => {
-            if(isSpeaking){
+            if (isSpeaking) {
                 recordButton.src = '../img/btn_ready.gif';
                 audioChunks = [];
                 isSpeaking = false;
@@ -100,66 +109,65 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        "messages": encrypt(key,iv,new TextEncoder().encode(JSON.stringify(messages))),
+                        "messages": encrypt(key, iv, new TextEncoder().encode(JSON.stringify(messages))),
                         "actlike": "default",
                         "audio": base64AudioMessage,
                         "option": "6",
                         "voice": "onyx" //alloy, echo, fable, onyx 可以用的男生, nova, shimmer 可以用的女生
                     })
                 })
-                .then(response => response.json())
-                .then(data => {
-                    resultMessages = JSON.parse(decrypt(key,iv,data.message))
-                    messages.push(...resultMessages)
-                    console.log(messages)
+                    .then(response => response.json())
+                    .then(data => {
+                        resultMessages = JSON.parse(decrypt(key, iv, data.message))
+                        messages.push(...resultMessages)
+                        console.log(messages)
 
-                    // 将 Base64 编码的字符串转换为 bytes
-                    var byteCharacters = atob(data.audio);
-                    var byteNumbers = new Array(byteCharacters.length);
-                    for (var i = 0; i < byteCharacters.length; i++) {
-                        byteNumbers[i] = byteCharacters.charCodeAt(i);
-                    }
-                    var byteArray = new Uint8Array(byteNumbers);
+                        // 将 Base64 编码的字符串转换为 bytes
+                        var byteCharacters = atob(data.audio);
+                        var byteNumbers = new Array(byteCharacters.length);
+                        for (var i = 0; i < byteCharacters.length; i++) {
+                            byteNumbers[i] = byteCharacters.charCodeAt(i);
+                        }
+                        var byteArray = new Uint8Array(byteNumbers);
 
-                    // 创建一个 Blob 对象
-                    var blob = new Blob([byteArray], {type: 'audio/mpeg'});
+                        // 创建一个 Blob 对象
+                        var blob = new Blob([byteArray], { type: 'audio/mpeg' });
 
-                    // 创建一个 URL 并赋值给 audio 元素的 src 属性
-                    var url = window.URL.createObjectURL(blob);
-                    console.log(url)
+                        // 创建一个 URL 并赋值给 audio 元素的 src 属性
+                        var url = window.URL.createObjectURL(blob);
+                        console.log(url)
+                        var audio = document.createElement('audio');
+                        audio.src = url;
+                        document.body.appendChild(audio);
 
-                    //var audio = document.createElement('audio');
-                    audio.src = url;
-                    //document.body.appendChild(audio);
+                        audio.addEventListener('play', function () {
+                            assistant.src = '../img/speaking.gif';
+                            tips.innerHTML = "GPT 正在讲话"
+                        });
 
-                    audio.addEventListener('play', function(){
-                        assistant.src = '../img/speaking.gif';
-                        tips.innerHTML = "GPT 正在讲话"
+                        audio.addEventListener('pause', function () {
+                            console.log('Audio is paused');
+                        });
+
+                        audio.addEventListener('ended', function () {
+                            assistant.src = '../img/silent.gif';
+                            tips.innerHTML = "点击讲话"
+                            recordButton.style.display = "inline";
+                        });
+
+                        // 播放音频
+                        audio.play();
+
+                        // 使用 FileSaver.js 库来下载文件
+                        // saveAs(blob, 'audio.mp3');
                     });
-
-                    audio.addEventListener('pause', function(){
-                        console.log('Audio is paused');
-                    });
-
-                    audio.addEventListener('ended', function(){
-                        assistant.src = '../img/silent.gif';
-                        tips.innerHTML = "点击讲话"
-                        recordButton.style.display = "inline";
-                    });
-
-                    // 播放音频
-                    audio.play(); 
-
-                    // 使用 FileSaver.js 库来下载文件
-                    // saveAs(blob, 'audio.mp3');
-                });
             };
             reader.readAsDataURL(audioBlob);
         }
 
         function changeImage() {
-            
-            
+
+
         }
 
         const key = "i9r8RSYSlIHjPv5EX+LTZ4b8XMvr1FMgjZYlI0uDzvg="
@@ -170,7 +178,7 @@
             var key = forge.util.decode64(keyBase64);
             var iv = forge.util.decode64(ivBase64);
             var cipher = forge.cipher.createCipher('AES-CBC', key);
-            cipher.start({iv: iv});
+            cipher.start({ iv: iv });
             cipher.update(forge.util.createBuffer(data));
             cipher.finish();
             var encrypted = cipher.output;
@@ -182,11 +190,12 @@
             var key = forge.util.decode64(keyBase64);
             var iv = forge.util.decode64(ivBase64);
             var decipher = forge.cipher.createDecipher('AES-CBC', key);
-            decipher.start({iv: iv});
+            decipher.start({ iv: iv });
             decipher.update(forge.util.createBuffer(forge.util.decode64(encryptedData)));
             decipher.finish();
             return decipher.output.data;
         }
     </script>
 </body>
+
 </html>
