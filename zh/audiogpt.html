@@ -29,8 +29,10 @@
         <div style="color:grey;font-size: 12px;">问题复杂时思考时间长</div>
     </div>
     <script src="../js/forge.min.js"></script>
-    <script src="../js/FileSaver.min.js"></script>
+    <script src="../js/vconsole.min.js"></script>
     <script>
+        var vConsole = new window.VConsole();
+        var audioContext = new (window.AudioContext || window.webkitAudioContext)();
         let mediaRecorder;
         let audioChunks = [];
         let messages = [];
