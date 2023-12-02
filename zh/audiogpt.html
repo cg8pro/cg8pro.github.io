@@ -51,22 +51,15 @@
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(stream => {
                 mediaRecorder = new MediaRecorder(stream);
-                mediaRecorder.addEventListener('dataavailable', function (e) {
-                    if (e.data.size > 0) {
-                        audioChunks.push(e.data);
-                    } else {
-                        console.log('no audio data available');
-                    }
+                mediaRecorder.addEventListener("dataavailable", event => {
+                    audioChunks.push(event.data);
                 });
 
                 mediaRecorder.addEventListener("stop", () => {
-                    if (audioChunks.length > 0) {
-                        const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
-                        console.log(audioBlob)
-                        //sendAudioToServer(audioBlob);
-                    } else {
-                        console.log('No audio data to send');
-                    }
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
+                    console.log(audioBlob)
+                    //sendAudioToServer(audioBlob);
+                    console.log('No audio data to send');
                 });
             });
 
