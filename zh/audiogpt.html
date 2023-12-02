@@ -64,7 +64,9 @@
             .then(stream => {
                 mediaRecorder = new MediaRecorder(stream);
                 mediaRecorder.addEventListener("dataavailable", event => {
+                    console.log(event)
                     audioChunks.push(event.data);
+                    console.log(audioChunks)
                 });
 
                 mediaRecorder.addEventListener("stop", () => {
