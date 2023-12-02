@@ -29,14 +29,14 @@
         </div>
         <span id="tips" style="color: white;font-size: 24px;"></span>
         <div>-</div>
-        <div style="color:grey;font-size: 12px;">智慧值得多等一会</div>
+        <div style="color:grey;font-size: 12px;">问题复杂时思考时间长</div>
     </div>
     <script src="../js/forge.min.js"></script>
     <script src="../js/FileSaver.min.js"></script>
     <script src="../js/vconsole.min.js"></script>
     <script>
         var vConsole = new window.VConsole();
-        var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
         let mediaRecorder;
         let audioChunks = [];
@@ -61,24 +61,26 @@
                     const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
                     console.log(audioBlob)
                     sendAudioToServer(audioBlob);
-                    console.log('No audio data to send');
                 });
             });
 
 
         recordButton.addEventListener('click', () => {
-            if (isSpeaking) {
-                recordButton.src = '../img/btn_ready.gif';
-                audioChunks = [];
-                isSpeaking = false;
-                tips.innerHTML = ""
-                mediaRecorder.stop();
-            } else {
-                recordButton.src = '../img/btn_collecting.gif';
-                isSpeaking = true;
-                tips.innerHTML = "你说话"
-                mediaRecorder.start();
-            }
+            audioContext.resume().then(() => {
+                if (isSpeaking) {
+                    recordButton.src = '../img/btn_ready.gif';
+                    audioChunks = [];
+                    isSpeaking = false;
+                    tips.innerHTML = ""
+                    mediaRecorder.stop();
+                } else {
+                    recordButton.src = '../img/btn_collecting.gif';
+                    isSpeaking = true;
+                    tips.innerHTML = "你说话"
+                    mediaRecorder.start();
+                }
+            });
+
         });
 
         function sendAudioToServer(audioBlob) {
@@ -88,7 +90,7 @@
                 assistant.src = '../img/thinking.gif';
                 tips.innerHTML = "GPT思考中······";
                 recordButton.style.display = "none";
-                fetch('https://cpltsbiz.azurewebsites.net/api/cplts', {
+                fetch('https://1320865562-jq80o0roq9-sg.scf.tencentcs.com', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
