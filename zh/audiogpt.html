@@ -52,7 +52,7 @@
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
         }
 
-        navigator.mediaDevices.getUserMedia({ audio: true })
+        navigator.mediaDevices.getUserMedia({ audio: 'audio' })
             .then(stream => {
                 mediaRecorder = new MediaRecorder(stream);
                 mediaRecorder.addEventListener("dataavailable", event => {
