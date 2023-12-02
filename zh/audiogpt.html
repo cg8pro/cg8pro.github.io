@@ -54,7 +54,7 @@
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 audioContext.resume().then(() => {
                     const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
-                    sendAudioToServer(audioBlob);
+                    //sendAudioToServer(audioBlob);
                     clearInterval(pollId);
                 })
             }
