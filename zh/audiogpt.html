@@ -27,9 +27,8 @@
         <div style="text-align: center; ">
             <img id="record" class="press" src="../img/btn_ready.gif" />
         </div>
-        <span id="tips" style="color: white;font-size: 24px;"></span>
+        <span id="tips" style="color: white;font-size: 12px;display: none;"></span>
         <div>-</div>
-        <div style="color:grey;font-size: 12px;">问题复杂时思考时间长</div>
     </div>
     <script src="../js/forge.min.js"></script>
     <script src="../js/vconsole.min.js"></script>
@@ -44,15 +43,23 @@
         const assistant = document.getElementById('assistant');
         const tips = document.getElementById("tips");
         var status = ""; // collecting sending gpting silent
-        var isSpeaking = false;
         tips.innerHTML = "点击讲话"
 
         let audioContext, source, recorder, stream;
         let isRecording = false;
 
+        var gpt = document.getElementById("assistant");
+
         // 点击录音按钮后的操作
         recordButton.addEventListener('click', function () {
         if (!isRecording) {
+            recordButton.src = '../img/btn_collecting.gif';
+            gpt.src = "../img/speaking.gif"
+            recordButton.style.width = '100px'
+            isRecording = true;
+            tips.innerHTML = "请讲"
+       
+
             // Step 1: 从麦克风中获取音频流
             navigator.mediaDevices.getUserMedia({ audio: true })
             .then(function(mediaStream) {
@@ -69,6 +76,12 @@
                 console.log('获取音频流失败：' + err);
             });
         } else {
+            recordButton.src = '../img/btn_ready.gif';
+            gpt.src = "../img/thinking.gif"
+            recordButton.style.width = '100px'
+            isRecording = false;
+            tips.innerHTML = ""      
+
             // 停止录音
             recorder.stop();
             isRecording = false;
@@ -183,15 +196,13 @@
         //     }
         // });
 
+        // var gpt = document.getElementById("assistant");
         // recordButton.addEventListener('touchstart', () => {
-        //     gpt.src = '../img/speak.gif';
-        //     audioChunks = [];
-        //     mediaRecorder.start();
+        //     gpt.src = '../img/speaking.gif';
         // });
 
         // recordButton.addEventListener('touchend', () => {
-        //     gpt.src = '../img/silent.gif';
-        //     mediaRecorder.stop();
+        //     gpt.src = '../img/thinking.gif';
         // });
 
         function sendAudioToServer(audioBlob) {
@@ -239,13 +250,13 @@
 
                             source.onended = function () {
                                 assistant.src = '../img/silent.gif';
-                                tips.innerHTML = "点一下，然后讲话";
+                                //tips.innerHTML = "点一下，然后讲话";
                                 recordButton.style.display = "inline";
                             };
 
                             source.onplaying = function () {
                                 assistant.src = '../img/speaking.gif';
-                                tips.innerHTML = "GPT 正在讲话";
+                                //tips.innerHTML = "GPT 正在讲话";
                             };
 
                             // 播放音频
