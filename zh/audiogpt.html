@@ -45,11 +45,10 @@
         var status = ""; // collecting sending gpting silent
         var isSpeaking = false;
         tips.innerHTML = "点击讲话"
-        let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
         // 创建全局轮询
         var pollId = setInterval(function () {
-            audioContext.resume().then(() => {
+            new (window.AudioContext || window.webkitAudioContext)().resume().then(() => {
                 if (monitorVar === true) {
                     const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
                     sendAudioToServer(audioBlob);
