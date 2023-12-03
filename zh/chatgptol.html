@@ -59,7 +59,50 @@
             var textarea = document.getElementById("say");
             var chatbox = document.getElementById("chatbox");
             const currentsession = document.getElementById("session");
-            textarea.addEventListener('keydown', (event) => {
+            const session = getCookie("CHATGPTOLID");
+
+            if(session) {
+                fetch('https://1320865562-jq80o0roq9-sg.scf.tencentcs.com', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                "option": "1",
+                                "messages": encrypt(key,iv,new TextEncoder().encode(JSON.stringify([]))),
+                                "session": textarea.value
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            //countdownLable.style.display = "none"
+                            meter.style.display = "none"
+                            //countdownLable.innerHTML = seconds;
+                            seconds = 120;
+                            stopCountdown();
+                            
+                            console.log(data)
+                            if(data.cptCnt == 0) {
+                                messages.pop();
+                            }else{
+                                messages.length = 0;
+                                currentsession.innerHTML = textarea.value
+                                JSON.parse(decrypt(key,iv,data.message)).forEach(item => {
+                                    messages.push(item);                               
+                                })
+                                fillChatbox(messages)
+                                textarea.value = ''
+                                setTimeout(function() {
+                                    chatbox.scrollTop = chatbox.scrollHeight;
+                                }, 0);
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);  
+                    });  
+            }
+
+            textarea.addEventListener('keydown', (event) => {                
                 if(event.key === 'Enter' && event.ctrlKey) {
                     //var countdownLable = document.getElementById("countdownLable")
                     var meter = document.getElementById("meter")
@@ -99,6 +142,10 @@
                                 messages.pop();
                             }else{
                                 currentsession.innerHTML = data.session
+                                if(!getCookie("CHATGPTOLID")){
+                                    document.cookie = "CHATGPTOLID=" + data.session + "; path=/";
+                                }
+
                                 messages = messages.concat(JSON.parse(decrypt(key,iv,data.message)))
                                 fillChatbox(messages)
                                 textarea.value = ''
@@ -266,6 +313,17 @@
             $('#countdown').text('倒计时结束');
         }
 
+        function getCookie(name) {
+            var cookies = document.cookie.split("; ");
+            for(var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].split("=");
+                if(cookie[0] === name) {
+                    return cookie[1];
+                }
+            }
+            return false;
+        }     
+
         const key = "i9r8RSYSlIHjPv5EX+LTZ4b8XMvr1FMgjZYlI0uDzvg="
         const iv = "9iebtE3ryRW8CrVCI08psA=="
 
@@ -291,7 +349,6 @@
             decipher.finish();
             return decipher.output.data;
         }
-
     </script>
 </body>
 </html>
