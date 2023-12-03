@@ -79,7 +79,6 @@
                     },
                     body: JSON.stringify({
                         "option": "1",
-                        "messages": encrypt(key, iv, new TextEncoder().encode(JSON.stringify([]))),
                         "session": session
                     })
                 })
@@ -96,12 +95,11 @@
                             messages.pop();
                         } else {
                             messages.length = 0;
-                            currentsession.innerHTML = textarea.value
+                            currentsession.innerHTML = session
                             JSON.parse(decrypt(key, iv, data.message)).forEach(item => {
                                 messages.push(item);
                             })
                             fillChatbox(messages)
-                            textarea.value = ''
                             setTimeout(function () {
                                 chatbox.scrollTop = chatbox.scrollHeight;
                             }, 0);
