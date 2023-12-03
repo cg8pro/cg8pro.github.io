@@ -202,6 +202,7 @@
                             } else {
                                 messages.length = 0;
                                 currentsession.innerHTML = textarea.value
+                                document.cookie = "CHATGPTOLID=" + textarea.value + "; path=/";
                                 JSON.parse(decrypt(key, iv, data.message)).forEach(item => {
                                     messages.push(item);
                                 })
