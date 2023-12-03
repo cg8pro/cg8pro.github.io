@@ -49,7 +49,7 @@
                 <span style="color: rgb(180,180,180);float: left;font-size: 14px;">&nbsp;【Ctrl + 回车】&nbsp;发送消息&nbsp;
                     / &nbsp;输入会话【Alt + 回车】&nbsp;加载上次聊天</span>
                 <button id="loadmessages"
-                    style="float:right;height:25px;line-height: 25px;margin: 0 5px 0 5px;padding: 0 10px;">加载上次记录</button>
+                    style="float:right;height:25px;line-height: 25px;margin: 0 5px 0 5px;padding: 0 10px;">加载上次记会话</button>
                 <button id="copyButton"
                     style="float:right;height:25px;line-height: 25px;margin: 0 5px 0 5px;padding: 0 10px;">复制会话</button>
                 <span id="session" style="float: right;color: RGB(50,205,50)"></span>
@@ -79,6 +79,7 @@
                     },
                     body: JSON.stringify({
                         "option": "1",
+                        "messages": encrypt(key, iv, new TextEncoder().encode(JSON.stringify([]))),
                         "session": session
                     })
                 })

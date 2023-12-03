@@ -109,3 +109,18 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+a:visited {
+    color: green;
+}
+
+a {
+    color: green;
+    text-decoration: none;
+}
+
+a:-webkit-any-link {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: none;
+}
