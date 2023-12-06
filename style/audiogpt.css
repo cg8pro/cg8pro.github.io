@@ -7,7 +7,7 @@
         background-color: black;
         color: black;
         text-align: center;
-        padding: 50px 0;
+        z-index: -99;
     }
 
     .assistant {
@@ -19,7 +19,82 @@
     }
 
     .main {
-        margin-top:30%
+        margin-top:20%;
+    }
+
+    #record {
+        margin-bottom: 30px;
+    }
+
+    /* userSpeakingCircle 动效*/
+
+    .userSpeakingCircle { 
+        width: 300px; 
+        height: 300px; 
+        background-color: white; 
+        border-radius: 50%; 
+        box-shadow: 0 0 5px 5px rgba(202, 202, 202, 0.5); 
+        margin: 0 auto;
+    }
+    
+    @keyframes userSpeakingPulse { 
+        0% { 
+            transform: scale(1); 
+        } 
+        20% { 
+            transform: scale(1.1); 
+        } 
+        100% { 
+            transform: scale(1); 
+        } 
+    } 
+    
+    .userSpeakingPulse { 
+        animation: userSpeakingPulse 0.3s; 
+    } 
+
+    /* userSpeakingAudio 动效 */
+
+    #userSpeaking {
+        position: relative;
+        height: 30px;
+        width: 150px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-end;
+        gap: 1px;
+        margin: 10px auto 30px auto;
+    }
+
+    .userAudioBox {
+        width: 30px;
+        height: 30px;
+        background-color: white;
+        border-radius: 50px;
+        transition: all 0.2s ease;
+        margin: 0 auto;
+    }
+
+    /* gptSpeaking 动效 */
+
+    #gptSpeaking {
+        position: relative;
+        height: 300px;
+        width: 330px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+        margin: 200px auto 0 auto;
+    }
+
+    .gptAudioBox {
+        width: 75px;
+        height: 80px;
+        background-color: white;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        margin: 0 auto;
     }
 }
 
@@ -32,7 +107,6 @@
         background-color: black;
         color: black;
         text-align: center;
-        padding: 50px 0;
     }
 
     .assistant {
@@ -46,6 +120,81 @@
     .main {
         margin-top:20%
     }
+
+    #record {
+        margin-bottom: 30px;
+    }
+
+    /* userSpeakingCircle 动效*/
+
+    .userSpeakingCircle { 
+        width: 300px; 
+        height: 300px; 
+        background-color: white; 
+        border-radius: 50%; 
+        box-shadow: 0 0 5px 5px rgba(202, 202, 202, 0.5); 
+        margin: 0 auto;
+    }
+    
+    @keyframes userSpeakingPulse { 
+        0% { 
+            transform: scale(1); 
+        } 
+        20% { 
+            transform: scale(1.1); 
+        } 
+        100% { 
+            transform: scale(1); 
+        } 
+    } 
+    
+    .userSpeakingPulse { 
+        animation: userSpeakingPulse 0.3s; 
+    } 
+
+    /* userSpeakingAudio 动效 */
+
+    #userSpeaking {
+        position: relative;
+        height: 30px;
+        width: 150px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-end;
+        gap: 1px;
+        margin: 100px auto 30px auto;
+    }
+
+    .userAudioBox {
+        width: 30px;
+        height: 30px;
+        background-color: white;
+        border-radius: 50px;
+        transition: all 0.2s ease;
+        margin: 0 auto;
+    }
+
+    /* gptSpeaking 动效 */
+
+    #userSpeaking {
+        position: relative;
+        height: 25px;
+        width: 83px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-end;
+        gap: 1px;
+        margin: 10px auto 30px auto;
+    }
+
+    .userAudioBox {
+        width: 20px;
+        height: 25px;
+        background-color: white;
+        border-radius: 50px;
+        transition: all 0.2s ease;
+        margin: 0 auto;
+    }
 }
 
 @media screen and (min-width: 901px) {
@@ -57,7 +206,6 @@
         background-color: black;
         color: black;
         text-align: center;
-        padding: 50px 0;
     }
 
     .assistant {
@@ -67,6 +215,103 @@
     .press {
         width: 100px;
     }
+
+    #record {
+        margin-bottom: 30px;
+    }
+
+    /* userSpeakingCircle 动效*/
+
+    .userSpeakingCircle { 
+        width: 300px; 
+        height: 300px; 
+        background-color: white; 
+        border-radius: 50%; 
+        box-shadow: 0 0 5px 5px rgba(202, 202, 202, 0.5); 
+        margin: 200px auto;
+    }
+    
+    @keyframes userSpeakingPulse { 
+        0% { 
+            transform: scale(1); 
+        } 
+        20% { 
+            transform: scale(1.1); 
+        } 
+        100% { 
+            transform: scale(1); 
+        } 
+    } 
+    
+    .userSpeakingPulse { 
+        animation: userSpeakingPulse 0.3s; 
+    } 
+    
+        /* gptSpeaking 动效 */
+
+    #gptSpeaking {
+        position: relative;
+        height: 300px;
+        width: 330px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+        margin: 0 auto;
+    }
+
+    .gptAudioBox {
+        width: 75px;
+        height: 80px;
+        background-color: white;
+        border-radius: 50px;
+        transition: all 0.2s ease;
+        margin: 0 auto;
+    }
+
+    /* userSpeakingAudio 动效 */
+
+    #userSpeaking {
+        position: relative;
+        height: 30px;
+        width: 130px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-end;
+        gap: 1px;
+        margin: 10px auto 30px auto;
+    }
+
+    .userAudioBox {
+        width: 30px;
+        height: 30px;
+        background-color: white;
+        border-radius: 50px;
+        transition: all 0.2s ease;
+        margin: 0 auto;
+    }
+
+    /* gptSpeaking 动效 */
+
+    #gptSpeaking {
+        position: relative;
+        height: 300px;
+        width: 330px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+        margin: 200px auto 0 auto;
+    }
+
+    .gptAudioBox {
+        width: 75px;
+        height: 80px;
+        background-color: white;
+        border-radius: 50px;
+        transition: all 0.2s ease;
+        margin: 0 auto;
+    }    
 
 }
 

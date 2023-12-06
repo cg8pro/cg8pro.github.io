@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .square {
+            width: 400px;
+            height: 400px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes heartbeat {
+            0% {
+                r: 80;
+            }
+
+            50% {
+                r: 90;
+            }
+
+            100% {
+                r: 80;
+            }
+        }
+
+        .heartbeat {
+            animation: heartbeat 1s infinite;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .rotation {
+            animation: rotation 5s infinite linear;
+            transform-origin: center;
+        }
+    </style>
+</head>
+
+<body style="background-color: black;">
+
+    <button onclick="startAnimation()">Start</button>
+    <button onclick="stopAnimation()">Stop</button>
+
+    <div class="square">
+        <svg id="svg" width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+            <polygon id="pentagon" points="200,120 280,170 250,280 150,280 120,170"
+                style="fill:white;stroke:purple;stroke-width:1" />
+            <circle id="circle1" cx="200" cy="120" r="80" fill="white" />
+            <circle id="circle2" cx="280" cy="170" r="80" fill="white" />
+            <circle id="circle3" cx="250" cy="280" r="80" fill="white" />
+            <circle id="circle4" cx="150" cy="280" r="80" fill="white" />
+            <circle id="circle5" cx="120" cy="170" r="80" fill="white" />
+        </svg>
+    </div>
+
+    <script>
+        function startAnimation() {
+            document.getElementById('svg').classList.add('rotation');
+            document.getElementById('circle1').classList.add('heartbeat');
+            document.getElementById('circle2').classList.add('heartbeat');
+            document.getElementById('circle3').classList.add('heartbeat');
+            document.getElementById('circle4').classList.add('heartbeat');
+            document.getElementById('circle5').classList.add('heartbeat');
+            document.getElementById('circle1').style.animationDelay = Math.random() + 's';
+            document.getElementById('circle2').style.animationDelay = Math.random() + 's';
+            document.getElementById('circle3').style.animationDelay = Math.random() + 's';
+            document.getElementById('circle4').style.animationDelay = Math.random() + 's';
+            document.getElementById('circle5').style.animationDelay = Math.random() + 's';
+        }
+
+        function stopAnimation() {
+            document.getElementById('svg').classList.remove('rotation');
+            document.getElementById('circle1').classList.remove('heartbeat');
+            document.getElementById('circle2').classList.remove('heartbeat');
+            document.getElementById('circle3').classList.remove('heartbeat');
+            document.getElementById('circle4').classList.remove('heartbeat');
+            document.getElementById('circle5').classList.remove('heartbeat');
+        }
+    </script>
+
+</body>
+
+</html>

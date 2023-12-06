@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hello, World!</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-end;
+            gap: 20px;
+            padding-left: 20px;
+        }
+
+        .box {
+            width: 50px;
+            height: 100px;
+            background-color: lightblue;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+    </div>
+    <button id="trigger">Trigger Animation</button>
+
+</body>
+<script>
+    let lastHeight = 100; // 初始高度
+
+    document.getElementById('trigger').addEventListener('click', () => {
+        document.querySelectorAll('.box').forEach(box => {
+            // 随机改变一点高度
+            let change = Math.random() * 40 - 20;
+            let newHeight = lastHeight + change;
+
+            // 保证新高度在100到150之间
+            if (newHeight < 100) newHeight = 100;
+            if (newHeight > 150) newHeight = 150;
+
+            box.style.height = `${newHeight}px`;
+            lastHeight = newHeight;
+
+            setTimeout(() => {
+                box.style.height = '100px';
+            }, 200);
+        });
+    });
+</script>
+
+</html>
