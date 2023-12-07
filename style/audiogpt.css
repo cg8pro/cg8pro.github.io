@@ -5,7 +5,7 @@
         bottom: 0;
         width: 100%;
         background-color: black;
-        color: black;
+        color: transparent;
         text-align: center;
         z-index: -99;
     }
