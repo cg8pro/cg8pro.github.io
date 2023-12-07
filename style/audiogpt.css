@@ -19,7 +19,7 @@
     }
 
     .main {
-        margin-top:20%;
+        margin-top:10%;
     }
 
     #record {
@@ -118,7 +118,7 @@
     }
 
     .main {
-        margin-top:20%
+        margin-top:10%
     }
 
     #record {
@@ -228,7 +228,7 @@
         background-color: white; 
         border-radius: 50%; 
         box-shadow: 0 0 5px 5px rgba(202, 202, 202, 0.5); 
-        margin: 200px auto;
+        margin: 100px auto;
     }
     
     @keyframes userSpeakingPulse { 
