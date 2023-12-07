@@ -29,8 +29,8 @@
     /* userSpeakingCircle 动效*/
 
     .userSpeakingCircle { 
-        width: 300px; 
-        height: 300px; 
+        width: 350px; 
+        height: 350px; 
         background-color: white; 
         border-radius: 50%; 
         box-shadow: 0 0 5px 5px rgba(202, 202, 202, 0.5); 
@@ -63,7 +63,7 @@
         justify-content: flex-start;
         align-items: flex-end;
         gap: 1px;
-        margin: 10px auto 30px auto;
+        margin: 10px auto 5px auto;
     }
 
     .userAudioBox {
@@ -79,8 +79,8 @@
 
     #gptSpeaking {
         position: relative;
-        height: 300px;
-        width: 330px;
+        height: 350px;
+        width: 350px;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -128,8 +128,8 @@
     /* userSpeakingCircle 动效*/
 
     .userSpeakingCircle { 
-        width: 300px; 
-        height: 300px; 
+        width: 350px; 
+        height: 350px; 
         background-color: white; 
         border-radius: 50%; 
         box-shadow: 0 0 5px 5px rgba(202, 202, 202, 0.5); 
@@ -162,7 +162,7 @@
         justify-content: flex-start;
         align-items: flex-end;
         gap: 1px;
-        margin: 100px auto 30px auto;
+        margin: 100px auto 5px auto;
     }
 
     .userAudioBox {
@@ -176,23 +176,23 @@
 
     /* gptSpeaking 动效 */
 
-    #userSpeaking {
+    #gptSpeaking {
         position: relative;
-        height: 25px;
-        width: 83px;
+        height: 350px;
+        width: 350px;
         display: flex;
         justify-content: flex-start;
-        align-items: flex-end;
-        gap: 1px;
-        margin: 10px auto 30px auto;
+        align-items: center;
+        gap: 10px;
+        margin: 200px auto 0 auto;
     }
 
-    .userAudioBox {
-        width: 20px;
-        height: 25px;
+    .gptAudioBox {
+        width: 75px;
+        height: 80px;
         background-color: white;
         border-radius: 50px;
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
         margin: 0 auto;
     }
 }
@@ -223,8 +223,8 @@
     /* userSpeakingCircle 动效*/
 
     .userSpeakingCircle { 
-        width: 300px; 
-        height: 300px; 
+        width: 350px; 
+        height: 350px; 
         background-color: white; 
         border-radius: 50%; 
         box-shadow: 0 0 5px 5px rgba(202, 202, 202, 0.5); 
@@ -251,8 +251,8 @@
 
     #gptSpeaking {
         position: relative;
-        height: 300px;
-        width: 330px;
+        height: 350px;
+        width: 350px;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -279,7 +279,7 @@
         justify-content: flex-start;
         align-items: flex-end;
         gap: 1px;
-        margin: 10px auto 30px auto;
+        margin: 10px auto 5px auto;
     }
 
     .userAudioBox {
@@ -295,8 +295,8 @@
 
     #gptSpeaking {
         position: relative;
-        height: 300px;
-        width: 330px;
+        height: 350px;
+        width: 350px;
         display: flex;
         justify-content: flex-start;
         align-items: center;
