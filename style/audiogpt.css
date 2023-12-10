@@ -83,7 +83,7 @@
         justify-content: flex-start;
         align-items: center;
         gap: 10px;
-        margin: 200px auto 0 auto;
+        margin: 120px auto 0 auto;
     }
 
     .gptAudioBox {
@@ -181,7 +181,7 @@
         justify-content: flex-start;
         align-items: center;
         gap: 10px;
-        margin: 200px auto 0 auto;
+        margin: 130px auto 0 auto;
     }
 
     .gptAudioBox {
@@ -205,7 +205,7 @@
     }
 
     .assistant {
-        width: 80%;
+        width: 60%;
     }
 
     .press {
@@ -297,7 +297,7 @@
         justify-content: flex-start;
         align-items: center;
         gap: 10px;
-        margin: 200px auto 0 auto;
+        margin: 130px auto 0 auto;
     }
 
     .gptAudioBox {
