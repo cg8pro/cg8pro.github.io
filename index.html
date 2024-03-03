@@ -21,14 +21,43 @@
             background-attachment: fixed;
         }
     </style>     -->
+    <style>
+        /* 模态框样式 */
+        .modal {
+          display: none; /* 默认不显示模态框 */
+          position: fixed; /* 固定定位 */
+          left: 0;
+          top: 0;
+          width: 100%; /* 宽度为整个视窗的宽度 */
+          height: 100%; /* 高度为整个视窗的高度 */
+          background-color: rgba(0, 0, 0, 0.4); /* 半透明背景 */
+          z-index: 1000; /* 高堆叠顺序保证在最上层 */
+        }
+        
+        /* 模态框内容样式 */
+        .modal-content {
+          background-color: #fefefe;
+          margin: 15% auto; /* 垂直居中，水平居中 */
+          padding: 20px;
+          border: 1px solid #888;
+          width: 300px; /* 定义固定宽度 */
+        }
+    </style>
 </head>
 <body>
+    <div id="contactModal" class="modal" onmouseleave="hideModal()">
+        <div class="modal-content" style="text-align: center;">
+          <img src="img/wechat.jpg" alt="QR Code" style="width:100%;">
+          <span>截图微信扫码</span>
+        </div>
+    </div>
+
     <div class="section" style="text-align: center;padding-top: 100px;padding-bottom: 20px;">
         <div class="container">
             <div class="row">
                 <div class="eight columns" style="padding-top: 50px;">
                     <h4 class="hero-heading"><strong>长歌&nbsp;&nbsp;&nbsp;</strong><span style="color: rgb(169, 169, 169);">程序员、AI画工、自媒体</span></h4>
-                    <a href=""  style="color: rgb(58, 206, 255);">联 系 我</a>
+                    <a href="javascript:void(0);" id="showModal" style="color: rgb(58, 206, 255);">内容共创 商业合作 点击联系</a>
                 </div>
                 <div class="four columns" style="text-align: center;">
                     <img src="img/avatar.png" style="max-height: 150px;">
@@ -87,5 +116,28 @@
             </div>
         </div>
     </div>
+    <script>
+        // 获取 modal 元素和链接元素
+        var modal = document.getElementById("contactModal");
+        var link = document.getElementById("showModal");
+        
+        // 当用户点击链接时打开模态框
+        link.onclick = function() {
+          modal.style.display = "block";
+          
+          // 计算并设置模态框正确位置
+          var rect = link.getBoundingClientRect();
+          var modalContent = modal.querySelector('.modal-content');
+          modalContent.style.top = (rect.bottom + window.scrollY) + 'px';
+          modalContent.style.left = rect.left + 'px';
+        }
+        
+        // 当用户点击模态框之外时，关闭模态框
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+    </script>
 </body>
 </html>
