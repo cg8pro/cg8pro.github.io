@@ -42,13 +42,28 @@
           border: 1px solid #888;
           width: 300px; /* 定义固定宽度 */
         }
+
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div id="contactModal" class="modal" onmouseleave="hideModal()">
         <div class="modal-content" style="text-align: center;">
-          <img src="img/wechat.jpg" alt="QR Code" style="width:100%;">
-          <span>截图微信扫码</span>
+            <span class="close">&times;</span>
+            <img src="img/wechat.jpg" alt="QR Code" style="width:100%;">
+            <span>截图微信扫码</span>
         </div>
     </div>
 
@@ -120,6 +135,11 @@
         // 获取 modal 元素和链接元素
         var modal = document.getElementById("contactModal");
         var link = document.getElementById("showModal");
+        var span = document.getElementsByClassName("close")[0];
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
         
         // 当用户点击链接时打开模态框
         link.onclick = function() {
