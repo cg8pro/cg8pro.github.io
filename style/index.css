@@ -1,0 +1,11 @@
+a:link, a:visited {
+    color: inherit; /* 链接颜色设置为继承父元素的颜色 */
+    text-decoration: none; /* 取消下划线 */
+    cursor: pointer; /* 将鼠标光标设为手指形状 */
+    /* 其它你希望统一设置的样式 */
+}
+
+/* 只在悬浮时添加下划线 */
+a:hover {
+    text-decoration: underline; /* 添加下划线 */
+}

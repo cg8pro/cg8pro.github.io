@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>cg8.pro Gallery</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="../style/custom.css" rel="stylesheet" type="text/css" />
+    <link href="../img/favicon.png" rel="icon" type="image/png">
+    <script type="text/javascript">
+    </script>
+</head>
+<body>
+    <header class="site-header" style="background-color: white;opacity: 0.7;">
+        <div class="wrapper">
+            <a class="site-title" href="gallery.html">Midjourney ∞ Artists</a>
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a class="page-link" href="gallery.html">Artists</a>
+                    <a class="page-link" href="playground.html">Playground</a>
+                    <a class="page-link" href="about.html">About</a>         
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="section" style="padding:0 50px 0 50px">
+        <row>
+            <hr style="border-color: transparent;">
+            <p style="line-height: 35px;">Welcome！Here are <strong>2050</strong> artists in every style, more coming up! Click to view details. Please feel free to contact me in the ↗ "About" if you find something wrong.</p>
+        </row>
+    </div>
+    <div class="section" style="margin-top:2%">
+        <div>
+            <div id="gallery" >
+                
+            </div>
+        </div>
+        <div id="modal" class="modal">
+            <span class="close">&times;</span>
+            <div id="caption" style="color:white;font-size: 32px;"></div>
+            <img class="modal-content" alt="" id="imgBig">
+        </div>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/forge.min.js"></script>
+    <script>
+        window.onload = function() {
+            var modal = document.getElementById('modal');
+            var modalImg = document.getElementById('imgBig');    
+            var modalCaption = document.getElementById('caption');    
+                
+            $.ajax({
+                url: "https://mjoss.azurewebsites.net/api/mjoss",
+                type: "POST",
+                data: JSON.stringify({
+                    "option": "list_blob"
+                }), 
+                contentType: 'application/json',
+                success: function(response) {
+                    if (response.status !== undefined && response.status === "success" && response.data !== undefined){
+                        var gallery = document.getElementById('gallery');
+                        var images = response.data
+                        for (var i = 0; i < images.length; i++) {
+                            var div = document.createElement('div');
+                            div.style.display = "inline-block";
+                            var img = document.createElement('img');
+                            img.src = 'https://mjart.blob.core.windows.net/mjartists/' + images[i];
+                            img.style.width = "180px";
+                            img.style.height = "180px";
+                            img.style.margin = "auto 5px auto 5px"; 
+                            img.alt = images[i];
+                            img.addEventListener('click', function() {
+                                modal.style.display = "block";
+                                modalImg.src = 'https://mjart.blob.core.windows.net/mjartists/' + this.alt;
+                                modalCaption.innerHTML = this.alt.replace('lossy_','').replace('.jpg','');
+                            });
+                            gallery.appendChild(img);
+
+                            var desc = document.createElement('div');
+                            desc.innerHTML = images[i].replace('lossy_','').replace('.jpg','');
+                            desc.style.margin = "10px auto 5px auto"
+                            div.appendChild(desc);
+                            div.appendChild(img);
+                            gallery.appendChild(div);
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error: " + error);
+                }
+            });
+
+            var span = document.getElementsByClassName('close')[0];
+            span.onclick = function() { 
+                modal.style.display = "none";
+            }            
+        };
+
+    </script>
+</body>
+</html>
