@@ -15,7 +15,7 @@
 }
 
 .site-title {
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 300;
     line-height: 54px;
     letter-spacing: -1px;
@@ -80,7 +80,7 @@ a:-webkit-any-link {
   margin: auto;
   display: block;
   width: 80%;
-  max-width: 700px;
+  max-width: 600px;
 }
 
 .close {
