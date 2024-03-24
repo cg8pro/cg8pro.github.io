@@ -1,0 +1,295 @@
+@media screen and (max-width: 425px) {
+    .main {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 426px) {
+    .main {
+        width: 425px;
+    }
+}
+
+.main {
+    position: inherit;
+    margin: 0 auto 0 auto;
+    min-height: 60vh;
+    background-color: rgb(245, 245, 245);
+}
+
+.mainbox{
+    width: 425px;
+    position: fixed;
+    bottom: 0;
+    background-color: rgb(250,250,250);
+}
+
+#options{
+    margin: 10px auto;
+}
+
+.option{
+    margin: 5px auto;
+    text-align: center;
+    display: inline;
+    width: 32%;
+    color: lightgrey;
+}
+
+#sceneInfo {
+    /* border-radius: 10px; */
+    /* border: 1px solid white;  */
+    width: 395px;
+    height: 150px;
+    /* padding: 10px; */
+    /* margin:6px 10px; */
+    color: white;
+    text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;
+    /* background-color: rgb(245, 245, 245); */
+    padding: 15px;
+
+}
+
+#chatbox {
+    min-height: 350px;
+    height: 70vh;
+    overflow-y:scroll;
+    border: 0px solid rgb(222,222,222);
+    text-align: center;
+    background-color: rgb(245, 245, 245);
+}
+
+.section{
+	text-align: center;
+}
+
+.user-msg {
+    max-width: 250px;
+    background-color: rgb(25, 173, 25);
+    color: black;
+    border-radius: 8px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(172, 172, 172);
+    padding: 12px;
+    float: right;
+    display: block;
+    margin-bottom:5px;
+}
+
+.assistant-msg {
+    max-width: 250px;
+    background-color: white;
+    color: black;
+    border-radius: 8px;
+    padding: 12px; 
+    float: left;
+    display: block;
+    margin-bottom:5px;
+}
+
+.msgLine {
+    display: block;
+    clear: both;
+    margin-bottom: 65px;
+}
+
+.optionsModal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.options-modal-content {
+    color:white;
+    background-color: black;
+    margin: 30% auto;
+    padding: 30px 20px 50px 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    width: 80%;
+    text-align: center;
+}
+
+#modalContent{
+    margin-bottom: 30px;
+}
+
+.menusModal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+}
+
+.menus-modal-content {
+    color:white;
+    background-color: rgb(0,0,0,0.5);
+    margin: 15% auto;
+    padding: 30px 20px 50px 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    width: 80%;
+    text-align: center;
+}
+
+.menuGroup{
+    float: left;
+}
+
+
+.radio-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.radio-button-group {
+    margin: 10px;
+    border: 1px solid rgb(200, 200, 200, 0.7);
+    border-radius: 10px;
+}
+
+.radio-button {
+    margin: 5px;
+    float: left;
+}
+
+.scrolling-wrapper {
+    overflow: hidden;
+    position: relative;
+    width: 100%; /* 根据需要调整容器宽度 */
+    height: 150px; /* 根据需要调整容器高度 */
+}
+
+.scrolling-image {
+    display: block; /* 让图片看起来更自然 */
+    position: absolute;
+    left: 0; /* 开始位置改为0 */
+    height: 100%; /* 使图片在容器中垂直居中 */
+    min-width: 100%; /* 确保图片宽度至少与容器相等 */
+    white-space: nowrap; /* 保持图片和任何其他内容的排列方式 */
+}
+
+@keyframes scrollImage {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-100% + 100vw)); }
+}
+
+.scroll {
+    animation: scrollImage 20s linear infinite alternate;
+}
+
+/* 隐藏原始的单选按钮 */
+.radio-button input[type="radio"] {
+    display: none;
+}
+
+/* 创建一个自定义的按钮样式 */
+.radio-button label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: rgb(150,150,150,0.5);
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 当单选按钮被选中时改变对应的label样式 */
+.radio-button input[type="radio"]:checked + label {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+
+/* 进度条外部容器样式 */
+.progress-container {
+    width: 400px; /* 可以根据需要调整宽度 */
+    background-color: #eee; /* 背景颜色 */
+    border-radius: 8px; /* 圆角边框 */
+    border: 1px solid lightgrey;
+    margin: 0 auto 5px auto;
+}
+    
+/* 进度条填充样式 */
+.hp-bar {
+    display: inline-block;
+    height: 20px; /* 高度 */
+    width: 0; /* 初始化宽度为0 */
+    background-color: rgba(144, 0, 0, 0.5); /* 填充颜色 */
+    text-align: center; /* 文字居中 */
+    line-height: 20px; /* 行高，使文字垂直居中 */
+    border-radius: 8px; /* 圆角边框 */
+    color: white; /* 文字颜色 */
+}
+
+/* 进度条填充样式 */
+.feel-bar {
+    display: inline-block;
+    height: 20px; /* 高度 */
+    width: 0; /* 初始化宽度为0 */
+    background-color: pink; /* 填充颜色 */
+    text-align: center; /* 文字居中 */
+    line-height: 20px; /* 行高，使文字垂直居中 */
+    border-radius: 8px; /* 圆角边框 */
+    color: white; /* 文字颜色 */
+}
+
+/* 进度条填充样式 */
+.defense-bar {
+    display: inline-block;
+    height: 20px; /* 高度 */
+    width: 0; /* 初始化宽度为0 */
+    background-color: rgb(0, 135, 188, 0.7); /* 填充颜色 */
+    text-align: center; /* 文字居中 */
+    line-height: 20px; /* 行高，使文字垂直居中 */
+    border-radius: 8px; /* 圆角边框 */
+    color: white; /* 文字颜色 */
+}
+
+/* 隐藏滚动条箭头按钮 */
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+/* 隐藏滚动条底色 */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* 定义滑块样式 */
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.5); /* 滑块颜色 */
+    border-radius: 10px; /* 滑块圆角 */
+    border: 0px solid transparent; /* 滚动条边框颜色和大小 */
+}
+
+/* 这个是滚动条整体的样式，可以控制滚动条粗细 */
+::-webkit-scrollbar{
+    width: 10px;
+}
+
+input {
+    background: white;    /* 去除背景 */
+    border: none;         /* 去除边框 */
+    outline: none;        /* 去除点击时的轮廓 */
+    padding: 0;           /* 去除内边距 */
+    margin: 0;            /* 去除外边距 */
+    box-shadow: none;     /* 去除阴影 */
+    font-family: inherit; /* 字体与周围环境一致 */
+    font-size: inherit;   /* 字号与周围环境一致 */
+    color: inherit;       /* 字体颜色与周围环境一致 */
+    /* 其他想要去除的样式 */
+}
