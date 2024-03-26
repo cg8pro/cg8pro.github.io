@@ -665,6 +665,7 @@
             if(messages.length == 1){
                 messages.splice(0,1);
             }
+            console.log(messages)
             fillChatbox(messages);
             setTimeout(function () {
                 chatbox.scrollTop = chatbox.scrollHeight;
@@ -697,9 +698,7 @@
                         if (!getCookie("CHATGPTOLID")) {
                             document.cookie = "CHATGPTOLID=" + data.session + "; path=/";
                         }
-                        console.log("解密前")
                         messages = messages.concat(JSON.parse(decrypt(key, iv, data.message)))
-                        console.log("解密后")
                         // console.log(messages)
                         fillChatbox(messages)
                         textarea.value = ''
