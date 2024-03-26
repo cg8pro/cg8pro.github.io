@@ -218,7 +218,7 @@
     <script src="../js/vconsole.min.js"></script>
     <script>
         var vConsole = new window.VConsole();
-        
+
         var remote = 'https://cpltsbiz.azurewebsites.net/api/cplts/';
         var countdown;
         var seconds = 120;
@@ -448,7 +448,7 @@
                     JSON.parse(decrypt(key, iv, data.message)).forEach(item => {
                         messages.push(item);
                     })
-                    console.log(messages)
+                    // console.log(messages)
                     fillChatbox(messages)
                     setTimeout(function () {
                         chatbox.scrollTop = chatbox.scrollHeight;
@@ -498,7 +498,7 @@
                     seconds = 120;
                     stopCountdown();
 
-                    console.log(data)
+                    // console.log(data)
                     if (data.cptCnt == 0) {
                         messages.pop();
                     } else {
@@ -550,7 +550,7 @@
                     seconds = 120;
                     stopCountdown();
 
-                    console.log(data)
+                    // console.log(data)
                     if (data.cptCnt == 0) {
                         messages.pop();
                     } else {
@@ -633,7 +633,7 @@
                         seconds = 120;
                         stopCountdown();
 
-                        console.log(data)
+                        // console.log(data)
                         if (data.cptCnt == 0) {
                             messages.pop();
                         } else {
@@ -744,7 +744,7 @@
                         // pre.appendChild(code);
 
                         var jsonObj = JSON.parse(block.content);
-                        console.log(jsonObj)
+                        // console.log(jsonObj)
                         const text = document.createElement('text');
                         if(scene == ''){
                             leftTry = +jsonObj.maxTry;
