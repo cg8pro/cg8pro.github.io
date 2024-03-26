@@ -697,9 +697,9 @@
                         if (!getCookie("CHATGPTOLID")) {
                             document.cookie = "CHATGPTOLID=" + data.session + "; path=/";
                         }
-
+                        console.log(data.message)
                         messages = messages.concat(JSON.parse(decrypt(key, iv, data.message)))
-                        console.log(messages)
+                        // console.log(messages)
                         fillChatbox(messages)
                         textarea.value = ''
                         setTimeout(function () {
