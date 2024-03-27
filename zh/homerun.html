@@ -284,6 +284,15 @@
         var girlAvatarPath = '../img/avatar/girl' + rdm2 + '.jpg';
         girlAvatar.src = girlAvatarPath;
 
+        window.onclick = function (event) {
+            if(event.target == girlProfileModal){
+                girlProfileModal.style.display = 'none';
+            }
+            if(event.target == boyProfileModal){
+                boyProfileModal.style.display = 'none';
+            }
+        }
+
         window.onload = function () {
             echo();
             setInterval(() => {
@@ -363,15 +372,6 @@
             function updateFakeLoading() {
                 const randomIndex = Math.floor(Math.random() * fakeBehavior.length);
                 fakeLoading.innerHTML = `${fakeBehavior[randomIndex]}`;
-            }
-
-            window.onclick = function (event) {
-                if(event.target == girlProfileModal){
-                    girlProfileModal.style.display = 'none';
-                }
-                if(event.target == boyProfileModal){
-                    boyProfileModal.style.display = 'none';
-                }
             }
 
             // 点击关闭按钮或者模态框外部时，关闭模态框
