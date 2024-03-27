@@ -47,20 +47,34 @@
 #sceneInfo {
     /* border-radius: 10px; */
     /* border: 1px solid white;  */
-    width: 395px;
-    height: 150px;
+    width: 350px;
+    /* height: 150px; */
     /* padding: 10px; */
     /* margin:6px 10px; */
-    color: white;
-    text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;
+    color: grey;
+    /* text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00; */
     /* background-color: rgb(245, 245, 245); */
-    padding: 15px;
+    padding: 35px auto;
+
+}
+
+#goalInfo {
+    /* border-radius: 10px; */
+    /* border: 1px solid white;  */
+    width: 350px;
+    /* height: 150px; */
+    /* padding: 10px; */
+    /* margin:6px 10px; */
+    color: grey;
+    /* text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00; */
+    /* background-color: rgb(245, 245, 245); */
+    padding: 35px auto;
 
 }
 
 #chatbox {
     min-height: 350px;
-    height: 62vh;
+    height: 85vh;
     overflow-y: scroll;
     border: 0px solid rgb(222, 222, 222);
     text-align: center;
@@ -99,10 +113,10 @@
 .msgLine {
     display: block;
     clear: both;
-    margin-bottom: 65px;
+    /* margin-bottom: 65px; */
 }
 
-.optionsModal {
+.girlProfileModal {
     display: none;
     position: fixed;
     z-index: 10000;
@@ -114,19 +128,27 @@
     background-color: rgba(0,0,0,0.4);
 }
 
-.options-modal-content {
-    color:white;
-    background-color: black;
-    margin: 30% auto;
+.boyProfileModal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.profile-modal-content {
+    color:black;
+    background-color: white;
+    margin: 10% auto;
     padding: 30px 20px 50px 20px;
     border: 1px solid #888;
     border-radius: 10px;
-    width: 80%;
-    text-align: center;
-}
-
-#modalContent{
-    margin-bottom: 30px;
+    width: 350px;
+    text-align: left;
 }
 
 .menusModal {
@@ -245,47 +267,35 @@
 
 /* 进度条外部容器样式 */
 .progress-container {
-    width: 400px; /* 可以根据需要调整宽度 */
-    background-color: #eee; /* 背景颜色 */
-    border-radius: 8px; /* 圆角边框 */
-    border: 1px solid lightgrey;
+    width: 350px;
+    /* background-color: #eee; */
+    /* border-radius: 8px; */
+    /* border: 1px solid lightgrey; */
     margin: 0 auto 5px auto;
 }
     
 /* 进度条填充样式 */
-.hp-bar {
+.status-bar {
     display: inline-block;
     height: 20px; /* 高度 */
     width: 0; /* 初始化宽度为0 */
-    background-color: rgba(144, 0, 0, 0.5); /* 填充颜色 */
     text-align: center; /* 文字居中 */
     line-height: 20px; /* 行高，使文字垂直居中 */
     border-radius: 8px; /* 圆角边框 */
     color: white; /* 文字颜色 */
+}
+.hp-bar {
+    background-color: rgba(144, 0, 0, 0.5); /* 填充颜色 */
 }
 
 /* 进度条填充样式 */
 .feel-bar {
-    display: inline-block;
-    height: 20px; /* 高度 */
-    width: 0; /* 初始化宽度为0 */
     background-color: pink; /* 填充颜色 */
-    text-align: center; /* 文字居中 */
-    line-height: 20px; /* 行高，使文字垂直居中 */
-    border-radius: 8px; /* 圆角边框 */
-    color: white; /* 文字颜色 */
 }
 
 /* 进度条填充样式 */
 .defense-bar {
-    display: inline-block;
-    height: 20px; /* 高度 */
-    width: 0; /* 初始化宽度为0 */
     background-color: rgb(0, 135, 188, 0.7); /* 填充颜色 */
-    text-align: center; /* 文字居中 */
-    line-height: 20px; /* 行高，使文字垂直居中 */
-    border-radius: 8px; /* 圆角边框 */
-    color: white; /* 文字颜色 */
 }
 
 /* 隐藏滚动条箭头按钮 */
