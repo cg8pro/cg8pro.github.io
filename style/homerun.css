@@ -69,7 +69,19 @@
     /* text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00; */
     /* background-color: rgb(245, 245, 245); */
     padding: 35px auto;
+}
 
+#subGoalsInfo{
+    /* border-radius: 10px; */
+    /* border: 1px solid white;  */
+    width: 350px;
+    /* height: 150px; */
+    /* padding: 10px; */
+    /* margin:6px 10px; */
+    color: grey;
+    /* text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00; */
+    /* background-color: rgb(245, 245, 245); */
+    padding: 35px auto;
 }
 
 #chatbox {
