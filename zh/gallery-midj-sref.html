@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>画廊 cg8.pro</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="../style/custom.css" rel="stylesheet" type="text/css" />
+    <link href="../img/favicon.png" rel="icon" type="image/png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js"></script>
+    <style>
+        .grid {
+            margin: 0 100px; /* 水平居中 */
+            padding: 0 10px; /* 两边的间距 */
+        }
+
+        .grid-item {
+            width: 235px;
+            float: left;
+            background: rgb(0, 47, 167,0.7);
+            border: 1px solid #333;
+            border-color: rgb(0, 47, 167,0.3);
+            border-radius: 5px;
+            margin-bottom: 2px;
+        }
+
+        .grid-item img {
+            width: 235px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header" style="background-color: white;opacity: 0.7;">
+        <div class="wrapper">
+            <a class="site-title" href="">Midjourney Sref Collection</a>
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a style="color: white;font-weight:bold;text-shadow: 3px 3px 6px #000, -2px -2px 4px blueviolet;"
+                        class="page-link" href="./about.html">更多AIGC工具 & 教程</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="section" style="padding:0 50px 0 10px">
+        <row>
+            <p style="line-height: 35px;color: rgb(139, 139, 139)"></p>
+        </row>
+    </div>
+    <div style="margin: 0 auto;text-align: center;">
+        <div class="section">
+            <row>
+                <div class="grid" id="image-gallery">
+            </row>
+        </div>
+    </div>
+    <script>
+        var remote = 'https://cpltssea.azurewebsites.net/api/cplts/';
+        window.onload = function () {
+            $('#image-gallery').masonry({
+                itemSelector: '.grid-item',
+                columnWidth: '.grid-item',
+                percentPosition: true,
+                gutter: 2
+            });
+
+            fetch(remote, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "option": "43"
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const newItems = data.data.map(img => `<div class="grid-item"><img src="https://chatarchive.blob.core.windows.net/backyard-gallery/` + img + `"></div>`).join('');
+                const $newItems = $(newItems);
+                $('#image-gallery').append($newItems).masonry('appended', $newItems);
+                $('#image-gallery').imagesLoaded().progress(function () {
+                    $('#image-gallery').masonry('layout');
+                });
+
+                $('#image-gallery').on('click', 'img', function () {
+                    var src = $(this).attr('src');
+                    var url = new URL(src);
+                    var pathname = url.pathname;
+                    var filename = pathname.split('/').pop().split('.')[0];
+                    alert("[IMAGINE:" + filename + "]");
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+
+</html>

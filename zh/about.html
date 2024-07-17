@@ -1,46 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>关于 cg8.pro</title>
+    <title>about cgai</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
     <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
     <link href="../style/header.css" rel="stylesheet" type="text/css" />
-    <link href="../style/index.css" rel="stylesheet" type="text/css" />
     <link href="../img/favicon.png" rel="icon" type="image/png">
-    <!-- <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-image: url('../img/cyber_rain.gif');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
-        }
-    </style>     -->
     <style>
+        body {
+            background-color: rgba(244, 244, 244);
+        }
+
         /* 模态框样式 */
         .modal {
-          display: none; /* 默认不显示模态框 */
-          position: fixed; /* 固定定位 */
-          left: 0;
-          top: 0;
-          width: 100%; /* 宽度为整个视窗的宽度 */
-          height: 100%; /* 高度为整个视窗的高度 */
-          background-color: rgba(0, 0, 0, 0.4); /* 半透明背景 */
-          z-index: 1000; /* 高堆叠顺序保证在最上层 */
+            display: none;
+            /* 默认不显示模态框 */
+            position: fixed;
+            /* 固定定位 */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* 宽度为整个视窗的宽度 */
+            height: 100%;
+            /* 高度为整个视窗的高度 */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* 半透明背景 */
+            z-index: 1000;
+            /* 高堆叠顺序保证在最上层 */
         }
-        
+
         /* 模态框内容样式 */
         .modal-content {
             background-color: #fefefe;
-            margin: 15% auto; /* 垂直居中，水平居中 */
+            margin: 15% auto;
+            /* 垂直居中，水平居中 */
             padding: 20px;
             border: 1px solid #888;
-            width: 300px; /* 定义固定宽度 */
+            width: 300px;
+            /* 定义固定宽度 */
         }
 
         .close {
@@ -56,22 +57,102 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+        a:link,
+        a:visited {
+            color: inherit;
+            /* 链接颜色设置为继承父元素的颜色 */
+            text-decoration: none;
+            /* 取消下划线 */
+            cursor: pointer;
+            /* 将鼠标光标设为手指形状 */
+            /* 其它你希望统一设置的样式 */
+        }
+
+        /* 只在悬浮时添加下划线 */
+        a:hover {
+            text-decoration: underline;
+            /* 添加下划线 */
+        }
+
+        @keyframes rainbow {
+
+            0%,
+            100% {
+                border-color: red;
+            }
+
+            14% {
+                border-color: orange;
+            }
+
+            28% {
+                border-color: yellow;
+            }
+
+            42% {
+                border-color: green;
+            }
+
+            57% {
+                border-color: blue;
+            }
+
+            71% {
+                border-color: indigo;
+            }
+
+            85% {
+                border-color: violet;
+            }
+        }
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+            }
+
+            50% {
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        .rainbow-breathe {
+            border: 1.3px solid;
+            display: inline-block;
+            /* This is needed to apply padding around the image */
+            border-radius: 8px;
+            /* Optional: for rounded corners */
+            animation: rainbow 2s linear infinite, breathe 2s ease-in-out infinite;
+            padding: 0px;
+            /* Adjusts the space between the border and the image */
+            object-fit: cover;
+            /* Optional: this helps maintain the aspect ratio of the image */
+        }
+
+        .hover-effect:hover img {
+            border: 1px dashed;
+            /* This is needed to apply padding around the image */
+            border-radius: 8px;
+            /* Optional: for rounded corners */
+            animation: rainbow 1s linear infinite, breathe 1s ease-in-out infinite;
+            padding: 0px;
+            /* Adjusts the space between the border and the image */
+            object-fit: cover;
+            /* Optional: this helps maintain the aspect ratio of the image */
+        }
+
+        .hover-effect:hover {
+            /* 鼠标悬停时还可以定义其他样式，比如文字颜色等 */
+            color: transparent;
+            /* 隐藏文本 */
+        }
     </style>
 </head>
-<body>
-    <!-- <header class="site-header" style="background-color: white;opacity: 0.7;">
-        <div class="wrapper">
-            <nav class="site-nav">
-                <div class="trigger">
-                    <a style="color: white;font-weight:bold;text-shadow: 3px 3px 6px #000, -2px -2px 4px #F00;" class="page-link" href="chatgptol-x.html">Simple GPT</a>
-                    <a style="color: white;font-weight:bold;text-shadow: 3px 3px 6px #000, -2px -2px 4px darkblue;" class="page-link" href="audiogpt-x.html">Talk GPT</a>
-                    <a style="color: white;font-weight:bold;text-shadow: 3px 3px 6px #000, -2px -2px 4px blueviolet;" class="page-link" href="playground-x.html">Midjourney</a>
-                    <a style="color: white;font-weight:bold;text-shadow: 3px 3px 6px #000, -2px -2px 4px orange;" class="page-link" href="gallery-x.html">艺术家画廊</a>
-                </div>
-            </nav>
-        </div>
-    </header> -->
 
+<body>
     <div id="contactModal" class="modal" onmouseleave="hideModal()">
         <div class="modal-content" style="text-align: center;">
             <span class="close">&times;</span>
@@ -80,13 +161,16 @@
         </div>
     </div>
 
-    <div class="section" style="text-align: center;padding-top: 30px;padding-bottom: 10px;">
+    <div class="section" style="text-align: center;padding-top: 10px;padding-bottom: 0px;">
         <div class="container">
             <div class="row">
                 <div class="eight columns" style="padding-top: 50px;">
-                    <h4 class="hero-heading"><strong>长歌&nbsp;&nbsp;&nbsp;</strong><span style="color: rgb(169, 169, 169);">程序员、AI画工、自媒体</span></h4>
-                    <a href="javascript:void(0);" id="showModal" style="color: rgb(26, 173, 25);">@微信</a>&nbsp;&nbsp;
-                    <a href="https://www.xiaohongshu.com/user/profile/64420e560000000029010631?xhsshare=CopyLink&appuid=64420e560000000029010631&apptime=1713964748" id="showModal" style="color: rgb(255, 58, 107);">@小红书</a>
+                    <h4 class="hero-heading"><strong>长歌&nbsp;&nbsp;&nbsp;</strong><span
+                            style="color: rgb(169, 169, 169);">程序员、AI绘画、自媒体、接定制</span></h4>
+                    <span style="color: rgb(151, 210, 230);">关注公众号「长歌启明」发现更多AIGC教程</span>&nbsp;&nbsp;
+                    <a href="javascript:void(0);" id="showModal" style="color: rgb(26, 173, 25);">@长歌微信</a>&nbsp;&nbsp;
+                    <a href="https://www.xiaohongshu.com/user/profile/64420e560000000029010631?xhsshare=CopyLink&appuid=64420e560000000029010631&apptime=1713964748"
+                        id="showModal" style="color: rgb(255, 58, 107);">@小红书</a>
                 </div>
                 <div class="four columns" style="text-align: center;">
                     <img src="../img/avatar.png" style="max-height: 150px;">
@@ -94,36 +178,74 @@
             </div>
         </div>
     </div>
-    <div class="section" style="text-align: left;padding-top: 10px;padding-bottom: 20px;">
+    <div class="section" style="text-align: left;padding-top: 5px;padding-bottom: 5px;">
         <div class="container">
-            <div class="row" style="text-align: left;padding: 25px 0 25px 0;color: rgb(169, 169, 169);">
-                <span style="line-height: 30px;">AIGC 项目</span>
+            <div class="row" style="text-align: left;padding: 10px 0 25px 0;color: rgb(169, 169, 169);">
+                <span style="line-height: 30px;">AIGC 应用</span>
+            </div>
+            <div class="row">
+                <div class="two columns" style="text-align: center;">
+                    <a href="./zh/chatgptol.html"><img src="../img/index_simple_gpt.jpg"
+                            style="width: 90px;border-radius: 15px;border-color: rgb(169, 169, 169,0.2);border-width: 5px;border-style: solid;"></img></a>
+                    <p><span style="font-size: 12px;">极简 GPT4</span></p>
+                </div>
+                <div class="two columns" style="text-align: center;">
+                    <a href="./zh/audiogpt.html"><img src="../img/index_talk_gpt.jpg"
+                            style="width: 90px;border-radius: 15px;border-color: rgb(169, 169, 169,0.2);border-width: 5px;border-style: solid;"></img></a>
+                    <p><span style="font-size: 12px;">语音 GPT4</span></p>
+                </div>
+                <div class="two columns" style="text-align: center;">
+                    <a href="./zh/pickup-art.html"><img src="../img/index_pickup.jpg"
+                            style="width: 90px;border-radius: 15px;border-color: rgb(169, 169, 169,0.2);border-width: 5px;border-style: solid;"></img></a>
+                    <p><span style="font-size: 12px;">搭讪模拟器</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section" style="text-align: left;padding-top: 0px;padding-bottom: 20px;">
+        <div class="container">
+            <div class="row" style="text-align: left;padding: 0 0 25px 0;color: rgb(169, 169, 169);">
+                <span style="line-height: 30px;">AI 画廊</span>
             </div>
             <div class="row">
                 <div class="three columns" style="text-align: center;">
-                    <a class="button" href="./chatgptol-x.html">ChatGPT4</a>
+                    <a href="./zh/artists-dalle.html"><img src="../img/index_dalle_artists.jpg" class="rainbow-breathe"
+                            style="width: 180px;border-radius: 15px;"></img></a>
+                    <p><span style="font-size: 12px;">DALLE 艺术家风格汇</span></p>
                 </div>
                 <div class="three columns" style="text-align: center;">
-                    <a class="button" href="./audiogpt-x.html">TalkGPT</a>
+                    <a href="./zh/gallery-midj.html"><img src="../img/index_midj_artists.jpg" class="rainbow-breathe"
+                            style="width: 180px;border-radius: 15px;"></img></a>
+                    <p><span style="font-size: 12px;">MIDJ 美图图鉴</span></p>
                 </div>
                 <div class="three columns" style="text-align: center;">
-                    <a class="button" href="./homerun-x.html">恋爱在线</a>
+                    <a href="./zh/gallery-midj-sref.html"><img src="../img/index_midj_sref.jpg" class="rainbow-breathe"
+                            style="width: 180px;border-radius: 15px;"></img></a>
+                    <p><span style="font-size: 12px;">MIDJ SREF 风格代码</span></p>
                 </div>
                 <div class="three columns" style="text-align: center;">
-                    <a class="button" href="./artists-x.html">艺术家画廊</a>
+                    <a href="./zh/gallery-sd.html"><img src="../img/index_sd.jpg" class="rainbow-breathe"
+                            style="width: 180px;border-radius: 15px;"></img></a>
+                    <p><span style="font-size: 12px;">SD 稳定扩散图鉴</span></p>
                 </div>
                 <!-- <div class="three columns" style="text-align: center;">
-                    <a class="button" href="./playground-x.html">AI 绘图（MidJ）</a>
+                    <a class="button" href="zh/playground-x.html">AI 绘图（MidJ）</a>
                 </div> -->
             </div>
         </div>
     </div>
-    <div class="section" style="text-align: left;padding-top: 10px;padding-bottom: 30px;">
+    <div class="section" style="text-align: left;padding-top: 10px;padding-bottom: 20px;">
         <div class="container">
             <div class="row" style="text-align: left;padding: 0 0 25px 0;color: rgb(169, 169, 169);">
                 <span style="line-height: 30px;">AIGC 教程</span>
             </div>
             <div class="row" style="color: grey;">
+                <div style="text-align: left;padding-left: 1em;line-height: 36px;">
+                    <a href="https://mp.weixin.qq.com/s/k5aUOhrIEhVD6lmGOHlR9A">18禁绘画模型Pony超20万下载，国内模型平台有苦难说</a>
+                </div>
+                <div style="text-align: left;padding-left: 1em;line-height: 36px;">
+                    <a href="https://mp.weixin.qq.com/s/yUqUmUcsv2O-MK4W5xE3PQ">OpenAI不对中国提供服务，但18X模型Pony分级一直在</a>
+                </div>
                 <div style="text-align: left;padding-left: 1em;line-height: 36px;">
                     <a href="https://mp.weixin.qq.com/s/A9zDRKv47xBAG53WRhtpjA">卷出天际：艺术二维码完全教程</a>
                 </div>
@@ -152,31 +274,46 @@
         </div>
     </div>
     <script>
+        // 示例，可以根据需要调整动画的参数
+        document.addEventListener('DOMContentLoaded', function () {
+            const wrapper = document.querySelector('.img-wrapper');
+
+            let breatheIncrement = 0.1; // 呼吸效果的变化量
+            let spinSpeed = 10; // 跑马灯旋转的计时（秒）
+
+            // 调整呼吸效果动画
+            wrapper.style.animationDuration = `${breatheIncrement}s`;
+
+            // 调整跑马灯效果动画
+            let beforeStyle = wrapper.querySelector('::before');
+            beforeStyle.style.animationDuration = `${spinSpeed}s`;
+        });
+
         // 获取 modal 元素和链接元素
         var modal = document.getElementById("contactModal");
         var link = document.getElementById("showModal");
         var span = document.getElementsByClassName("close")[0];
 
-        span.onclick = function() {
+        span.onclick = function () {
             modal.style.display = "none";
         }
-        
+
         // 当用户点击链接时打开模态框
-        link.onclick = function() {
-          modal.style.display = "block";
-          
-          // 计算并设置模态框正确位置
-          var rect = link.getBoundingClientRect();
-          var modalContent = modal.querySelector('.modal-content');
-          modalContent.style.top = (rect.bottom + window.scrollY) + 'px';
-          modalContent.style.left = rect.left + 'px';
+        link.onclick = function () {
+            modal.style.display = "block";
+
+            // 计算并设置模态框正确位置
+            var rect = link.getBoundingClientRect();
+            var modalContent = modal.querySelector('.modal-content');
+            modalContent.style.top = (rect.bottom + window.scrollY) + 'px';
+            modalContent.style.left = rect.left + 'px';
         }
-        
+
         // 当用户点击模态框之外时，关闭模态框
-        window.onclick = function(event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
         }
     </script>
 </body>

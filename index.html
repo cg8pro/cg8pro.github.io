@@ -1,170 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>关于 cg8.pro</title>
+    <title>about cgai</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="style/normalize.css" rel="stylesheet" type="text/css" />
-    <link href="style/skeleton.css" rel="stylesheet" type="text/css" />
-    <link href="style/header.css" rel="stylesheet" type="text/css" />
-    <link href="style/index.css" rel="stylesheet" type="text/css" />
     <link href="img/favicon.png" rel="icon" type="image/png">
-    <!-- <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-image: url('img/cyber_rain.gif');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
-        }
-    </style>     -->
-    <style>
-        /* 模态框样式 */
-        .modal {
-          display: none; /* 默认不显示模态框 */
-          position: fixed; /* 固定定位 */
-          left: 0;
-          top: 0;
-          width: 100%; /* 宽度为整个视窗的宽度 */
-          height: 100%; /* 高度为整个视窗的高度 */
-          background-color: rgba(0, 0, 0, 0.4); /* 半透明背景 */
-          z-index: 1000; /* 高堆叠顺序保证在最上层 */
-        }
-        
-        /* 模态框内容样式 */
-        .modal-content {
-          background-color: #fefefe;
-          margin: 15% auto; /* 垂直居中，水平居中 */
-          padding: 20px;
-          border: 1px solid #888;
-          width: 300px; /* 定义固定宽度 */
-        }
-
-        .close {
-            color: #aaaaaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <div id="contactModal" class="modal" onmouseleave="hideModal()">
-        <div class="modal-content" style="text-align: center;">
-            <span class="close">&times;</span>
-            <img src="img/wechat2.jpg" alt="QR Code" style="width:100%;">
-            <!-- <span>截图微信扫码</span> -->
-        </div>
-    </div>
-
-    <div class="section" style="text-align: center;padding-top: 30px;padding-bottom: 10px;">
-        <div class="container">
-            <div class="row">
-                <div class="eight columns" style="padding-top: 50px;">
-                    <h4 class="hero-heading"><strong>长歌&nbsp;&nbsp;&nbsp;</strong><span style="color: rgb(169, 169, 169);">程序员、AI画工、自媒体</span></h4>
-                    <a href="javascript:void(0);" id="showModal" style="color: rgb(26, 173, 25);">@微信</a>&nbsp;&nbsp;
-                    <a href="https://www.xiaohongshu.com/user/profile/64420e560000000029010631?xhsshare=CopyLink&appuid=64420e560000000029010631&apptime=1713964748" id="showModal" style="color: rgb(255, 58, 107);">@小红书</a>
-                </div>
-                <div class="four columns" style="text-align: center;">
-                    <img src="img/avatar.png" style="max-height: 150px;">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="section" style="text-align: left;padding-top: 20px;padding-bottom: 20px;">
-        <div class="container">
-            <div class="row" style="text-align: left;padding: 25px 0 25px 0;color: rgb(169, 169, 169);">
-                <span style="line-height: 30px;">AIGC 项目</span>
-            </div>
-            <div class="row">
-                <div class="three columns" style="text-align: center;">
-                    <a class="button" href="zh/chatgptol-x.html">Simple GPT</a>
-                </div>
-                <div class="three columns" style="text-align: center;">
-                    <a class="button" href="zh/audiogpt-x.html">Talk GPT</a>
-                </div>
-                <div class="three columns" style="text-align: center;">
-                    <a class="button" href="zh/homerun-x.html">恋爱在线</a>
-                </div>
-                <div class="three columns" style="text-align: center;">
-                    <a class="button" href="zh/artists-x.html">艺术家画廊</a>
-                </div>
-                <!-- <div class="three columns" style="text-align: center;">
-                    <a class="button" href="zh/playground-x.html">AI 绘图（MidJ）</a>
-                </div> -->
-            </div>
-        </div>
-    </div>
-    <div class="section" style="text-align: left;padding-top: 10px;padding-bottom: 20px;">
-        <div class="container">
-            <div class="row" style="text-align: left;padding: 0 0 25px 0;color: rgb(169, 169, 169);">
-                <span style="line-height: 30px;">AIGC 教程</span>
-            </div>
-            <div class="row" style="color: grey;">
-                <div style="text-align: left;padding-left: 1em;line-height: 36px;">
-                    <a href="https://mp.weixin.qq.com/s/A9zDRKv47xBAG53WRhtpjA">卷出天际：艺术二维码完全教程</a>
-                </div>
-                <div style="text-align: left;padding-left: 1em;line-height: 36px;">
-                    <a href="https://mp.weixin.qq.com/s/dL3_zFiLKShS5pSy_59U1Q">你应当掌握的三阶“换头术” - AI局部重绘完全教程</a>
-                </div>
-                <div style="text-align: left;padding-left: 1em;line-height: 36px;">
-                    <a href="https://mp.weixin.qq.com/s/xweB_7UErhu09kj_Cmtfeg">AI 电影动效指南</a>
-                </div>
-                <div style="text-align: left;padding-left: 1em;line-height: 36px;">
-                    <a href="https://mp.weixin.qq.com/s/ogma9mpOQ3R5Z9F__s42Aw">视频换脸如此丝滑，以后上网都谨慎着点吧</a>
-                </div>
-                <div style="text-align: left;padding-left: 1em;line-height: 36px;">
-                    <a href="https://mp.weixin.qq.com/s/Q8rZovkcfxv7EHGe8T1YbQ">Oh My！朋友孩子用 GPT4.5 做了个射击游戏！5分钟！</a>
-                </div>
-                <div style="text-align: left;padding-left: 1em;line-height: 36px;">
-                    <a href="https://mp.weixin.qq.com/s/7RIsoPvt2t-VKOV_56QC3Q">创成式无限细节视频制作教程</a>
-                </div>
-                <div style="text-align: left;padding-left: 1em;line-height: 36px;">
-                    <a href="https://mp.weixin.qq.com/s/iX4E8wohc_Tw1BcYK0NTlw">AI绘画保姆级超硬核教程：万象熔炉画法</a>
-                </div>
-                <div style="text-align: left;padding-left: 1em;line-height: 36px;">
-                    <span style="color: rgb(151, 210, 230);">关注公众号：长歌启明，发现更多AIGC教程</span>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <script>
-        // 获取 modal 元素和链接元素
-        var modal = document.getElementById("contactModal");
-        var link = document.getElementById("showModal");
-        var span = document.getElementsByClassName("close")[0];
-
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-        
-        // 当用户点击链接时打开模态框
-        link.onclick = function() {
-          modal.style.display = "block";
-          
-          // 计算并设置模态框正确位置
-          var rect = link.getBoundingClientRect();
-          var modalContent = modal.querySelector('.modal-content');
-          modalContent.style.top = (rect.bottom + window.scrollY) + 'px';
-          modalContent.style.left = rect.left + 'px';
-        }
-        
-        // 当用户点击模态框之外时，关闭模态框
-        window.onclick = function(event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
-        }
+        window.location.href="./zh/about.html"
     </script>
+</head>
+
+<body>
+    
 </body>
 </html>
