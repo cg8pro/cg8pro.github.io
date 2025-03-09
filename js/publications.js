@@ -9,12 +9,12 @@ var publications = [
         title: '2025-2',
         description: '制作中',
         imageSrc: '../img/index_download.jpg',
-        url: '/pictorial?'
+        url: '/pictorial-list.html'
     },
     {
         title: '2025-3',
         description: '制作中',
         imageSrc: '../img/index_download.jpg',
-        url: '/pictorial?'
+        url: '/pictorial-list.html'
     }
 ]
