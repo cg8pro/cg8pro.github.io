@@ -1,3 +1,3 @@
 function getRemote(){
-    return "https://cpltssea.azurewebsites.net/api/cplts/"
+    return "https://cplts-eus1.azurewebsites.net/api/cplts"
 }
