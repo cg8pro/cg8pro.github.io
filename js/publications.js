@@ -7,9 +7,9 @@ var publications = [
     },
     {
         title: '2025-2',
-        description: '制作中',
-        imageSrc: '../img/index_download.jpg',
-        url: '/pictorial-list.html'
+        description: '【魔物娘】',
+        imageSrc: '../img/pictorial-cover/c74ca3ad.img.jpg',
+        url: '/zh/pictorial?c74ca3adc94ccce455be6837417e0eb13673f4bea9e92fb0aa8d82a4cd0bc96dd09f3164dab8d937e71a0897eb18586c7db905c7520a927842325865f90ea2df7f16be10c1e94e713521f3b81dd92f6a169df925'
     },
     {
         title: '2025-3',
