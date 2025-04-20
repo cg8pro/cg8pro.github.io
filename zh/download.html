@@ -150,14 +150,15 @@
     <div id="bottomContainer" class="fixed-bottom" style="display: none;">
         <input id="pswd" class="input-field" placeholder="输入8位资源id" maxlength="8" />
         <button id="goBtn" class="download-btn">Download</button>
+        <span id="downloadedSize" style="color: white; font-family: pixel, monospace; font-size: 14px; margin-left: 10px;">0 MB</span>
         <br>
         <label id="alert"
             style="color: red; font-family: pixel, monospace; font-size: 16px; text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00; margin-top: 5px;"></label>
 
-        <div id="progressContainer" style="margin-top: 10px; display: none; padding: 0 10px;">
+        <!-- <div id="progressContainer" style="margin-top: 10px; display: none; padding: 0 10px;">
             <progress id="downloadProgress" value="0" max="100" style="width: 100%; height: 10px;"></progress>
             <div id="progressText" style="color: greenyellow; font-family: pixel, monospace; font-size: 14px; margin-top: 5px; text-align: center; display: none;">0%</div>
-        </div>            
+        </div>             -->
     </div>
 
     <script src="../js/jquery.min.js"></script>
@@ -200,14 +201,10 @@
             $('#downloadProgress').val(0);
             $('#progressText').text('0%');
 
-            let fakeProgress = 0;
-            const progressTimer = setInterval(() => {
-                if (fakeProgress < 95) {
-                    fakeProgress += Math.random() * 3;
-                    $('#downloadProgress').val(fakeProgress);
-                    $('#progressText').text(Math.floor(fakeProgress) + '%');
-                }
-            }, 200);
+            // 初始化：不显示MB
+            $('#downloadedSize').text('');
+
+            let received = 0;
 
             let option = type === 'img' ? '46' : '47';
             let blobname = type === 'img' ? resource + '.img.png' : resource + '.wf.json';
@@ -220,22 +217,41 @@
                     body: JSON.stringify({ option, blobname })
                 });
 
-                const data = await response.json();
+                if (!response.ok) throw new Error("请求失败");
+
+                const reader = response.body.getReader();
+                const chunks = [];
+
+                // 显示MB大小从这里开始
+                $('#downloadedSize').text('');
+
+                // 分块下载并更新已下载MB
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    chunks.push(value);
+                    received += value.length;
+
+                    // 更新已下载大小（单位为 MB）
+                    let downloadedMB = (received / (1024 * 1024)).toFixed(2); // 转换为 MB
+                    $('#downloadedSize').text(`${downloadedMB} MB`);
+                }
+
+                const fullBlob = new Blob(chunks);
+                const textData = await fullBlob.text();
+                const data = JSON.parse(textData);
+
                 if (data.status == "success") {
                     const decryptedData = JSON.parse(decrypt(key, iv, data.data));
                     let a = document.createElement('a');
 
+                    // 图片下载
                     if (type === "img") {
                         const imageDataUrl = "data:image/png;base64," + decryptedData.trim();
-                        a.href = imageDataUrl;
+                        const blob = await fetch(imageDataUrl).then(res => res.blob());
+                        const downloadUrl = URL.createObjectURL(blob);
+                        a.href = downloadUrl;
                         a.download = resource + ".png";
-
-                        // For mobile browsers (especially iOS and Android)
-                        if (navigator.msSaveBlob) { // For IE and Edge
-                            navigator.msSaveBlob(imageDataUrl, resource + ".png");
-                        } else {
-                            a.click();
-                        }
                     } else if (type === "wf") {
                         let jsonObj = null;
                         try {
@@ -248,25 +264,19 @@
                         const downloadUrl = URL.createObjectURL(blob);
                         a.href = downloadUrl;
                         a.download = (jsonObj.uuid ? jsonObj.uuid : 'download') + ".wf.json";
-                        
-                        // Trigger download (for mobile devices)
-                        if (navigator.msSaveBlob) { // For IE and Edge
-                            navigator.msSaveBlob(blob, (jsonObj.uuid ? jsonObj.uuid : 'download') + ".wf.json");
-                        } else {
-                            a.click();
-                        }
                     }
 
-                    clearInterval(progressTimer);
-                    $('#downloadProgress').val(100);
-                    $('#progressText').text('100%');
+                    // 下载触发
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+
+                    // 下载完成后清空MB
+                    $('#downloadedSize').text('');
                 }
             } catch (error) {
                 console.error("下载文件过程中出错：", error);
                 $('#alert').text("下载失败，请稍后再试。");
-                clearInterval(progressTimer);
-                $('#downloadProgress').val(0);
-                $('#progressText').text('0%');
             } finally {
                 $("#goBtn").prop('disabled', false);
                 updateButtonText(type);
