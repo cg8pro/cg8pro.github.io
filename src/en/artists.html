@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Artists Gallery</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="../style/custom.css" rel="stylesheet" type="text/css" />
+    <link href="../img/favicon.png" rel="icon" type="image/png">
+    <script type="text/javascript">
+    </script>
+</head>
+<body>
+    <header class="site-header" style="background-color: white;opacity: 0.7;">
+        <div class="wrapper">
+            <a class="site-title" href="">Artists ∞ Gallery</a>
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a style="color: white;font-weight:bold;text-shadow: 3px 3px 6px #000, -2px -2px 4px blueviolet;" class="page-link" href="./about.html">About</a>    
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="section" style="padding:20px 0 10px 0">
+        <row>
+            <p style="line-height: 35px;color: rgb(139, 139, 139)">Welcome！Here are <strong><span id="totalImgs"></span></strong> artists in every style! Click to view details, ← → or slide. <span style="color: red;"> ♥ </span> Feel free to contact ↗ </p>
+        </row>
+    </div>
+    <div class="section" style="margin-top:2%">
+        <div>
+            <div id="gallery" >
+                
+            </div>
+        </div>
+        <div id="modal" class="modal">
+            <span class="close">&times;</span>
+            <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+            <a class="next" onclick="changeSlide(1)">&#10095;</a>
+            <div id="caption" style="color:rgb(255, 255, 255);font-size: 32px;"></div>
+            <img class="modal-content" alt="" id="imgBig">
+        </div>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/forge.min.js"></script>
+    <script>
+        var images = [];
+        var modal = document.getElementById('modal');
+        var modalImg = document.getElementById('imgBig');    
+        var modalCaption = document.getElementById('caption');
+        var totalImgs = document.getElementById('totalImgs');
+        var minImgIndex = 0;
+        var maxImgIndex = 9999; 
+        var currentImgIndex;
+
+        window.onload = function() {
+            $.ajax({
+                url: "https://cpltsbiz.azurewebsites.net/api/cplts",
+                type: "POST",
+                data: JSON.stringify({
+                    "option": "42"
+                }), 
+                contentType: 'application/json',
+                success: function(response) {
+                    if (response.status !== undefined && response.status === "success" && response.data !== undefined){
+                        var gallery = document.getElementById('gallery');
+                        images = response.data
+                        maxImgIndex = images.length;
+                        totalImgs.innerHTML = maxImgIndex;
+                        for (var i = 0; i < images.length; i++) {
+                            var div = document.createElement('div');
+                            div.style.display = "inline-block";
+                            var img = document.createElement('img');
+                            img.src = 'https://mjart.blob.core.windows.net/dalleartists/' + images[i];
+                            img.style.width = "180px";
+                            img.style.height = "180px";
+                            img.style.margin = "auto 5px auto 5px";
+                            img.alt = i + '@' + images[i];
+                            img.addEventListener('click', function() {
+                                modal.style.display = "block";
+                                modalImg.src = 'https://mjart.blob.core.windows.net/dalleartists/' + this.alt.split('@')[1].replace('thumb_','mid_');
+                                modalImg.alt = this.alt;
+                                modalCaption.innerHTML = this.alt.split('@')[1].replace('thumb_watermark_','').replace('.jpg','');
+                            });
+                            gallery.appendChild(img);
+
+                            var desc = document.createElement('div');
+                            desc.innerHTML = images[i].replace('thumb_watermark_','').replace('.jpg','');
+                            desc.style.margin = "10px auto 5px auto"
+                            desc.style.color = "rgb(139, 139, 139)"
+                            div.appendChild(desc);
+                            div.appendChild(img);
+                            gallery.appendChild(div);
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("请求出错: " + error);
+                }
+            });
+
+            var span = document.getElementsByClassName('close')[0];
+            span.onclick = function() { 
+                modal.style.display = "none";
+            }            
+        };
+
+        // JavaScript to handle keyboard events for desktop
+        document.addEventListener("keydown", function(event) {
+        if (event.key === "ArrowLeft") {
+            changeSlide(-1);
+        } else if (event.key === "ArrowRight") {
+            changeSlide(1);
+        }
+        });
+
+        // JavaScript to handle touch events for mobile
+        let touchstartX = 0;
+        let touchendX = 0;
+
+        const slider = document.querySelector('.modal-content');
+
+        slider.addEventListener('touchstart', function(event) {
+            touchstartX = event.changedTouches[0].screenX;
+        }, false);
+
+        slider.addEventListener('touchend', function(event) {
+            touchendX = event.changedTouches[0].screenX;
+            handleSwipeGesture();
+        }, false);
+
+        function handleSwipeGesture() {
+            if (touchendX < touchstartX) {
+                changeSlide(1);
+            }
+
+            if (touchendX > touchstartX) {
+                changeSlide(-1);
+            }
+        }
+
+        function changeSlide(direction) {
+            var newDirection = parseInt(modalImg.alt.split('@')[0]) + direction;
+            if (newDirection < minImgIndex || newDirection > maxImgIndex){
+                return;
+            }
+            modalImg.src = 'https://mjart.blob.core.windows.net/dalleartists/' + images[newDirection].replace('thumb_','mid_');
+            modalImg.alt = newDirection + '@' + images[newDirection];
+            modalCaption.innerHTML = modalImg.alt.split('@')[1].replace('thumb_watermark_','').replace('.jpg','');
+        }
+
+    </script>
+</body>
+</html>

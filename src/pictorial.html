@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../img/_favicon.png">
+    <title>图片展示页面</title>
+    <style>
+        /* A文档原有基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            /* 禁用全局滚动条 */
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            font-family: Arial, sans-serif;
+            background-color: lightcyan;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        h4 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        /* 图片展示区 */
+        .image-container {
+            width: 80%;
+            height: 100%;
+            background-color: #f0f0f0;
+            position: relative;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .image-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(10px);
+            transform: scale(1.05);
+            z-index: -1;
+        }
+
+        .bg-fade {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            z-index: -1;
+        }
+
+        /* 修改 main-image 样式：
+       采用绝对定位居中，使用 opacity 控制可见性，方便应用动画 */
+        .main-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 25px;
+            padding: 15px;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .main-image.active {
+            opacity: 1;
+        }
+
+        /* 翻页箭头按钮样式 */
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.2);
+            color: rgb(255, 255, 255, 0.75);
+            border: none;
+            font-size: 23px;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.3s;
+            z-index: 10;
+        }
+
+        .arrow.arrow-left {
+            left: 35px;
+        }
+
+        .arrow.arrow-right {
+            right: 35px;
+        }
+
+        .arrow:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        /* 信息展示区 */
+        .info-container {
+            width: 20%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-top {
+            height: 80%;
+            padding: 20px;
+            margin: 0 0 1px 2px;
+            background-color: #fff;
+            overflow-y: auto;
+            border-radius: 5px;
+        }
+
+        .info-bottom {
+            height: 20%;
+            padding: 20px;
+            margin: 1px 0 0 2px;
+            background-color: #f8f8f8;
+            overflow-y: auto;
+            border-radius: 5px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 35px;
+            right: 20px;
+            z-index: 200;
+        }
+
+        /* 移动端样式 */
+        @media (max-width: 768px) {
+            .image-container {
+                width: 100%;
+                background-color: #BFA5A0;
+                z-index: 0;
+            }
+
+            .info-container {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.8);
+                z-index: 100;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .info-container.active {
+                display: flex;
+            }
+
+            .arrow {
+                z-index: 110;
+                /* 提高层级，确保在移动端显示 */
+            }
+
+            .info-top,
+            .info-bottom {
+                width: 90%;
+                max-width: 400px;
+                background-color: rgba(255, 255, 255, 0.9);
+                border-radius: 10px;
+                margin: 10px 0;
+                padding: 15px;
+                background: transparent;
+                background: rgba(255, 255, 255, 0.25);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+
+            .info-toggle {
+                display: block;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+                background-color: rgba(0, 0, 0, 0.7);
+                color: white;
+                border: none;
+                border-radius: 50%;
+                font-size: 20px;
+                cursor: pointer;
+                z-index: 101;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .info-toggle:hover {
+                background-color: rgba(0, 0, 0, 0.9);
+            }
+
+            h2 {
+                color: #333;
+            }
+
+            p {
+                color: #eee;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .info-toggle {
+                display: none;
+            }
+
+            .image-container {
+                background-color: #D2B9A8;
+            }
+
+            .info-top {
+                background-color: #B5A19A;
+            }
+
+            .info-bottom {
+                background-color: #A7A6A1;
+            }
+        }
+
+        /* ---- 火花和彩虹边框样式 ---- */
+        .spark {
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            background: radial-gradient(circle at center, #fff 20%, #4facfe 70%, transparent 100%);
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: move 5s linear infinite;
+            box-shadow: 0 0 100px #ffffff;
+            z-index: 25;
+        }
+
+        .spark:nth-of-type(2) {
+            animation-delay: -2.5s;
+        }
+
+        @keyframes move {
+            0% {
+                transform: translate(-100%, -100%);
+                left: 0;
+                top: 0;
+            }
+
+            25% {
+                transform: translate(0, -100%);
+                left: 100%;
+                top: 0;
+            }
+
+            50% {
+                transform: translate(0, 0);
+                left: 100%;
+                top: 100%;
+            }
+
+            75% {
+                transform: translate(-100%, 0);
+                left: 0;
+                top: 100%;
+            }
+
+            100% {
+                transform: translate(-100%, -100%);
+                left: 0;
+                top: 0;
+            }
+        }
+
+        @keyframes rainbow {
+
+            0%,
+            100% {
+                border-color: rgba(255, 0, 0, 0.4);
+            }
+
+            14% {
+                border-color: rgba(255, 165, 0, 0.4);
+            }
+
+            28% {
+                border-color: rgba(255, 255, 0, 0.4);
+            }
+
+            42% {
+                border-color: rgba(0, 128, 0, 0.4);
+            }
+
+            57% {
+                border-color: rgba(0, 0, 255, 0.4);
+            }
+
+            71% {
+                border-color: rgba(75, 0, 130, 0.4);
+            }
+
+            85% {
+                border-color: rgba(238, 130, 238, 0.4);
+            }
+        }
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+            }
+
+            50% {
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        .rainbow-breathe {
+            border: 4.5px solid;
+            display: inline-block;
+            border-radius: 8px;
+            animation: rainbow 3s linear infinite, breathe 3s ease-in-out infinite;
+            object-fit: cover;
+        }
+
+        /* ---- 以下为 B文档中的动画关键帧与动画类，对应 .main-image ---- */
+        @keyframes exit-next {
+            to {
+                transform: translate(-50%, -50%) translateX(-120%) rotate(-8deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes enter-next {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.85) translateY(60px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1) translateY(0);
+            }
+        }
+
+        @keyframes exit-prev {
+            from {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1) translateX(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8) translateX(0);
+            }
+        }
+
+        @keyframes enter-prev {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.25) translateX(-100%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1) translateX(0);
+            }
+        }
+
+        .main-image.exit-next {
+            animation: exit-next 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .main-image.enter-next {
+            animation: enter-next 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+            z-index: 3;
+        }
+
+        .main-image.exit-prev {
+            animation: exit-prev 0.2s ease-out forwards;
+        }
+
+        .main-image.enter-prev {
+            animation: enter-prev 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.1) both;
+            z-index: 3;
+        }
+
+        /* 移动端样式 */
+        @media (max-width: 768px) {
+            .main-image.exit-next {
+                animation: exit-next 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            }
+
+            .main-image.enter-next {
+                animation: enter-next 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+                z-index: 3;
+            }
+
+            .main-image.exit-prev {
+                animation: exit-prev 0.4s ease-out forwards;
+            }
+
+            .main-image.enter-prev {
+                animation: enter-prev 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.1) both;
+                z-index: 3;
+            }
+        }
+
+        #copy-toast {
+            bottom: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            max-width: 80%;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 防止移动端点击缩放 */
+        @media (max-width: 768px) {
+            body {
+                touch-action: manipulation;
+            }
+        }
+
+        .copy-icon {
+            display: inline-block;
+            vertical-align: middle;
+            /* 关键属性 */
+            position: relative;
+            /* 为微调定位做准备 */
+            top: -1px;
+            /* 微调垂直位置 */
+            margin-left: 6px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23111" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>');
+            background-size: contain;
+            transition: all 0.2s ease;
+            opacity: 0.7;
+        }
+
+        .copy-icon:hover {
+            opacity: 1;
+            transform: translateY(-1px);
+            /* 更优雅的悬停效果 */
+        }
+
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            /* 默认不显示模态框 */
+            position: fixed;
+            /* 固定定位 */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* 宽度为整个视窗的宽度 */
+            height: 100%;
+            /* 高度为整个视窗的高度 */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* 半透明背景 */
+            z-index: 1000;
+            /* 高堆叠顺序保证在最上层 */
+        }
+
+        /* 模态框内容样式 */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 7% auto;
+            /* 垂直居中，水平居中 */
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 25px;
+            width: 300px;
+            /* 定义固定宽度 */
+        }
+    </style>
+    <script>
+        // 修改meta viewport配置（必须存在在head中）
+        const viewportMeta = document.querySelector('meta[name="viewport"]');
+        if (viewportMeta) {
+            viewportMeta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+        } else {
+            const meta = document.createElement('meta');
+            meta.name = 'viewport';
+            meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+            document.head.appendChild(meta);
+        }
+    </script>
+</head>
+
+<body>
+    <div id="contactModal" class="modal" onmouseleave="hideModal()">
+        <div class="modal-content" style="text-align: center;">
+            <span class="close" style="position: absolute;
+                   top: +10px; 
+                   right: +10px;
+                   cursor: pointer;
+                   padding: 5px 10px;
+                   background: #fff;
+                   border: 1px solid #333;
+                   border-radius: 15px;
+                   z-index: 999;">
+                × <!-- 使用叉号符号 -->
+            </span>
+            <img src="../img/wechat2.jpg" alt="QR Code" style="width:100%;margin-top: 10px;border-radius: 10px;">
+            <span style="font-size: 12px;">私人号：长歌</span>
+            <img src="../img/pubAccount.jpg" alt="QR Code" style="width:100%;margin-top: 10px;border-radius: 10px;">
+            <span style="font-size: 12px;">公众号：长歌启明</span>
+        </div>
+    </div>
+
+    <!-- 上下箭头与背景火花等 -->
+    <div class="image-container rainbow-breathe">
+        <div class="bg-fade"></div>
+        <button class="arrow arrow-left" onclick="prevImage()">&#9664;</button>
+        <button class="arrow arrow-right" onclick="nextImage()">&#9654;</button>
+        <div class="spark"></div>
+        <div class="spark"></div>
+    </div>
+
+    <div class="info-container" id="infoContainer">
+        <div class="info-top" style="display: none;">
+            <h4>id<span class="copy-icon" onclick="copyTextContentToClipboard('uuid')"></span></h4>
+            <p id="uuid"></p>
+            <h4>绘画工具</h4>
+            <p id="tool_name"></p>
+            <h4>主模型</h4>
+            <p><span id="base_model"></span></p>
+            <h4>提示词<span class="copy-icon" onclick="copyTextContentToClipboard('positive_prompt')"></span></h4>
+            <p><span id="positive_prompt"></span></p>
+            <p>
+                <span id="wf_download_url">
+                    <a href="javascript:void(0);" id="showModal" style="color: rgb(111, 111, 111);"></a>&nbsp;&nbsp;
+                </span>
+            </p>
+        </div>
+        <div class="info-bottom" style="display: none;">
+            <h4>银弹</h4>
+            <p><span id="notable_features"></span></p>
+        </div>
+    </div>
+
+    <!-- 信息切换按钮（移动端） -->
+    <button class="info-toggle" style="display: none;" onclick="toggleInfo()">i</button>
+
+    <script>
+        // 全局变量及数据
+        let imageData = []; // 保存每个identifier对应的数据，索引与imageFiles顺序一致
+        let identifiers = []; // 标识符数组
+        let expectedDataFiles = 0;
+        let loadedDataFiles = 0;
+        let imageFiles = [];
+        let dataFiles = [];
+        let currentIndex = 0;
+        let isAnimating = false; // 防止动画冲突
+
+        // 数据文件加载成功时的回调，直接将data保存在对应索引位置
+        function imageDataCallback(data) {
+            // 根据data.uuid在identifiers中找到对应索引
+            const index = identifiers.indexOf(data.uuid);
+            if (index !== -1) {
+                imageData[index] = data;
+            } else {
+                console.warn('未找到匹配的UUID:', data.uuid);
+            }
+            loadedDataFiles++;
+            if (loadedDataFiles === expectedDataFiles) {
+                setActiveImage(currentIndex);
+            }
+        }
+
+        function loadScript(src) {
+            var s = document.createElement('script');
+            s.src = src;
+            s.charset = 'utf-8';
+            s.async = true;
+            s.onerror = function () {
+                console.error("加载脚本失败: " + src);
+                // 加载失败对应的位置保持 undefined
+                loadedDataFiles++;
+                if (loadedDataFiles === expectedDataFiles) {
+                    setActiveImage(currentIndex);
+                }
+            };
+            document.head.appendChild(s);
+        }
+
+        window.onload = function () {
+            document.title = '长歌 AI 画报';
+            const query = window.location.search.substring(1);
+
+            // 清空旧数据
+            imageFiles = [];
+            dataFiles = [];
+            identifiers.length = 0;
+
+            // 生成标识符列表
+            for (let i = 0; i < query.length; i += 8) {
+                identifier = query.substring(i, i + 8);
+                identifiers.push(identifier);
+                imageFiles.push(identifier + '.img.jpg');
+                dataFiles.push(identifier + '.data.js');
+            }
+
+            imageBase64Map = identifiers.reduce((map, image) => {
+                map.set(image, '');
+                return map;
+            }, new Map());
+            loadImages();
+        };
+
+        function loadImages() {
+            const container = document.querySelector('.image-container');
+            if (container) {
+                const newItems = imageFiles.map(img =>
+                    `<img src="https://chatarchive.blob.core.windows.net/pictorial/${img}" alt="image" style="width:100%; height:100%; object-fit:contain; border-radius:25px; padding:15px;" class="main-image">`
+                ).join('');
+                container.innerHTML += newItems;
+            }
+            // 加载数据文件
+            expectedDataFiles = dataFiles.length;
+            dataFiles.forEach(file => {
+                let src = "https://chatarchive.blob.core.windows.net/pictorial/" + file;
+                loadScript(src);
+            });
+            if (expectedDataFiles === 0) { setActiveImage(currentIndex); }
+        }
+
+        // 初次无动画激活图片并更新信息
+        function setActiveImage(index) {
+            const images = document.querySelectorAll('.main-image');
+            images.forEach(img => {
+                img.classList.remove('active', 'exit-next', 'exit-prev', 'enter-next', 'enter-prev');
+            });
+            images[index].classList.add('active');
+            updateInfo(index);
+        }
+
+        // 更新背景与信息展示，如果找不到对应数据则隐藏info区域
+        function updateInfo(index) {
+            const container = document.querySelector('.image-container');
+            if (container) {
+                container.style.setProperty('--bg-image', 'url("https://chatarchive.blob.core.windows.net/pictorial/' + imageFiles[index] + '")');
+            }
+            const data = imageData[index];
+            if (!data) {
+                console.warn(`索引 ${index} 处数据未加载`);
+                // 隐藏右侧信息及移动端按钮
+                document.getElementsByClassName('info-top')[0].style.display = 'none';
+                document.getElementsByClassName('info-bottom')[0].style.display = 'none';
+                document.getElementsByClassName('info-toggle')[0].style.display = 'none';
+                return;
+            }
+            // 显示并更新信息
+            document.getElementsByClassName('info-top')[0].style.display = 'block';
+            document.getElementsByClassName('info-bottom')[0].style.display = 'block';
+            document.getElementsByClassName('info-toggle')[0].style.display = 'block';
+            document.getElementById('uuid').textContent = data.uuid || '';
+            document.getElementById('tool_name').textContent = data.tool_name || '';
+            document.getElementById('base_model').textContent = data.base_model || '';
+            document.getElementById('positive_prompt').textContent = data.positive_prompt || '';
+            let featuresArray = data.notable_features;
+            document.getElementById("notable_features").innerHTML = featuresArray ? featuresArray.join("<br>") : '';
+        }
+
+        // 动画切换函数
+        function animateTransition(newIndex, direction) {
+            if (isAnimating) return;
+            isAnimating = true;
+            const images = document.querySelectorAll('.main-image');
+            const currentImage = document.querySelector('.main-image.active');
+            const newImage = images[newIndex];
+
+            updateBg("https://chatarchive.blob.core.windows.net/pictorial/" + imageFiles[newIndex]);
+
+            // 设置层级
+            newImage.style.zIndex = '3';
+            if (currentImage) currentImage.style.zIndex = '2';
+
+            // 清除旧动画类
+            images.forEach(img => {
+                img.classList.remove('exit-next', 'exit-prev', 'enter-next', 'enter-prev');
+            });
+
+            if (currentImage) {
+                if (direction === 'next') {
+                    currentImage.classList.add("exit-next");
+                    newImage.classList.add("enter-next");
+                } else {
+                    currentImage.classList.add("exit-prev");
+                    newImage.classList.add("enter-prev");
+                }
+                newImage.classList.add("active");
+
+                currentImage.addEventListener('animationend', function handler() {
+                    currentImage.classList.remove('active', 'exit-next', 'exit-prev');
+                    newImage.classList.remove('enter-next', 'enter-prev');
+                    updateInfo(newIndex);
+                    isAnimating = false;
+                    currentImage.removeEventListener('animationend', handler);
+                }, { once: true });
+            } else {
+                newImage.classList.add("active");
+                updateInfo(newIndex);
+                isAnimating = false;
+            }
+            currentIndex = newIndex;
+        }
+
+        // 下一张图片函数
+        function nextImage() {
+            const total = imageFiles.length; // 基于 imageFiles 数组
+            const newIndex = (currentIndex + 1) % total;
+            animateTransition(newIndex, 'next');
+        }
+
+        // 上一张图片函数
+        function prevImage() {
+            const total = imageFiles.length; // 基于 imageFiles 数组
+            const newIndex = (currentIndex - 1 + total) % total;
+            animateTransition(newIndex, 'prev');
+        }
+
+        function updateBg(newSrc) {
+            const container = document.querySelector('.image-container');
+            let bgFade = container.querySelector('.bg-fade');
+            if (!bgFade) {
+                bgFade = document.createElement('div');
+                bgFade.className = 'bg-fade';
+                container.appendChild(bgFade);
+            }
+            bgFade.style.backgroundImage = 'url("' + newSrc + '")';
+            bgFade.style.opacity = '1';
+            setTimeout(() => {
+                container.style.setProperty('--bg-image', 'url("' + newSrc + '")');
+                bgFade.style.opacity = '0';
+            }, 600);
+        }
+
+        // 键盘事件监听
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'ArrowLeft') {
+                prevImage();
+            } else if (event.key === 'ArrowRight') {
+                nextImage();
+            }
+        });
+
+        // 切换信息显示（移动端）
+        function toggleInfo() {
+            const infoContainer = document.querySelector('.info-container');
+            infoContainer.classList.toggle('active');
+        }
+
+        const infoContainer = document.getElementById('infoContainer');
+        infoContainer.addEventListener('click', function (event) {
+            if (event.target === infoContainer) {
+                infoContainer.classList.remove('active');
+            }
+        });
+
+        // 模态框逻辑
+        var modal = document.getElementById("contactModal");
+        var link = document.getElementById("showModal");
+        var span = document.getElementsByClassName("close")[0];
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        link.onclick = function () {
+            modal.style.display = "block";
+            var rect = link.getBoundingClientRect();
+            var modalContent = modal.querySelector('.modal-content');
+            modalContent.style.top = (rect.bottom + window.scrollY) + 'px';
+            modalContent.style.left = rect.left + 'px';
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        function copyTextContentToClipboard(spanId) {
+            var span = document.getElementById(spanId);
+            var text = span.textContent;
+            var tempTextarea = document.createElement('textarea');
+            tempTextarea.style = "position: absolute; left: -1000px; top: -1000px";
+            tempTextarea.value = text;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextarea);
+            if (text.length > 0) {
+                alert("已复制");
+            }
+        }
+
+        function showToast(msg) {
+            const existing = document.getElementById('copy-toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'copy-toast';
+            toast.textContent = msg;
+            toast.style.cssText = `
+        position: fixed;
+        bottom: 50%;
+        left: 50%;
+        transform: translate(-50%, 50%);
+        background: rgba(0,0,0,0.9);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 16px;
+        animation: fadeInOut 1.5s;
+        font-family: system-ui, -apple-system, sans-serif;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    `;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 1500);
+        }
+    </script>
+</body>
+
+</html>

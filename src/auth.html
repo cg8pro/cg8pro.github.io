@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>登录 cg8.pro</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="../style/custom.css" rel="stylesheet" type="text/css" />
+    <link href="../img/favicon.png" rel="icon" type="image/png">
+</head>
+<body>
+    <!-- <header class="site-header" style="background-color: white;opacity: 0.7;">
+        <div class="wrapper">
+            <a class="site-title" href=""></a>
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a class="page-link" href="about.html">更多好玩的AIGC工具</a>        
+                </div>
+            </nav>
+        </div>
+    </header>      -->
+    <div class="section" style="margin-top:2%">
+        <div class="container">
+            <row style="color: white;font-family:pixel;font-size:24px;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;">由 Midjourney 驱动</row>
+        </div>
+        <div class="container">
+            <p>
+                <div class="ten columns" style="margin:0px auto 0px auto;"><input style="font-family:pixel;font-size:20px;" id="token" class="u-full-width"  type="password"  placeholder="芝麻开门" /></div>
+                <button id="go" style="font-family: pixel;font-size: 20px;color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 进入画室 </button>                
+            </p>
+            <label id="alert" style="color: red;float: left;font-family:pixel;font-size:20px;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"></label>
+        </div>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/forge.min.js"></script>
+    <script>
+        const publicKey = `
+        "-----BEGIN PUBLIC KEY-----
+        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgGT9I/42qr9boWNSiFf7
+        Eo4iQQpP/JXk8IBkSCR85Ksoa80z7Qmyr+kGDRoyE18xJIO/QrSyqZrYbwzQ7jqk
+        LjzFBLuoSV3RKARefEeiA5G+8AQ+JApNXccuJYKIXBExJtKjklf2EJtQ/HyV/Qzm
+        cXRCwqxCy8tMRTCFfqjWmfuD4G0Bn1HDtPYZX8AI679H/F+sFWhA25rDTuwdT0U+
+        YK5X0aLMZCCB8yJJV/OhcTtrVWydlqCvo4nOSwaixe2I3hpWx8kR8xVCEUO8I0Jm
+        27LQGyLFPDgog8ehksM3zLRKQbbVjc9FHgfJh3uLtfIYRvNiUbhHAF1MbmzpDp1G
+        rQIDAQAB
+        -----END PUBLIC KEY-----"
+        `;
+
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
+            link.href = '../style/draw_bg_mobile.css';
+        } else {
+            link.href = '../style/draw_bg.css';
+        }        
+        document.head.appendChild(link);     
+
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
+        } else {
+            link.href = '../style/font-face.css';
+            document.head.appendChild(link);  
+        }    
+
+        $(document).ready(function(){
+            $("#token").val("f47ac10b58cc4372a5670e02b2c3d479");
+            $("#go").click(function(){
+                $.ajax({
+                    url: "https://mjproxy.azurewebsites.net/api/mjproxy",
+                    type: "POST",
+                    data: {
+                        "op": "auth", 
+                        "token": encryptWithPublicKey(publicKey,$("#token").val()),
+                    }, 
+                    success: function(response) {
+                        var resp = JSON.parse(response);
+                        if(resp.status == "success"){
+                            document.cookie = "MJPROXY_TOKEN=" + encryptWithPublicKey(publicKey,$("#token").val()) + "; path=/";
+                            window.location.href = "playground-x.html";
+                        }
+                        else{
+                            $("#alert").html("令牌错误！");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("请求出错: " + error);
+                    }
+                });
+            });
+            $("#go").click();
+        });
+
+        function encryptWithPublicKey(publicKey, data) {
+            const publicKeyObj = forge.pki.publicKeyFromPem(publicKey);
+            const encrypted = publicKeyObj.encrypt(data, "RSA-OAEP", {
+                md: forge.md.sha256.create(),
+            });
+            return forge.util.encode64(encrypted);
+        }
+
+        function decryptWithPrivateKey(privateKey, encryptedData) {
+            const privateKeyObj = forge.pki.privateKeyFromPem(privateKey);
+            const encryptedBytes = forge.util.decode64(encryptedData);
+            const decrypted = privateKeyObj.decrypt(encryptedBytes, "RSA-OAEP", {
+                md: forge.md.sha256.create(),
+            });
+            return decrypted;
+        }
+    </script>
+</body>
+</html>

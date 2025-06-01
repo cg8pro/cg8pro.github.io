@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>cg8.pro 画室</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="../style/custom.css" rel="stylesheet" type="text/css" />
+    <link href="../img/favicon.png" rel="icon" type="image/png">
+</head>
+<body>
+    <header class="site-header" style="background-color: white;opacity: 0.7;">
+        <div class="wrapper">
+            <a class="site-title" href="">Midjourney 绘画工具</a>
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a style="color: white;font-weight:bold;text-shadow: 3px 3px 6px #000, -2px -2px 4px blueviolet;" class="page-link" href="./about.html">更多AIGC工具 & 教程</a>      
+                </div>
+            </nav>
+        </div>
+    </header>  
+    <div class="section" style="margin-top:2%">
+        <div class="container">
+            <h4 class="section-heading" style="color:black;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"> 画点什么？</h4>
+            <img id="img" style="box-shadow: 4px 4px 8px 0px #fff000, -4px -4px 8px 0px #ff0000;"></img>
+            <div style="display: block;">
+                <button id="upscale1" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大左上角</button>
+                <button id="upscale2" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大右上角</button>
+                <button id="upscale3" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大左下角</button>
+                <button id="upscale4" style="color:white;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;display: none;">放大右下角</button>
+            </div>
+            <div>
+                <label style="font-size:16px;color:black;text-align: left;">提示词：<span style="color: rgb(174, 174, 174);">由Midjourny驱动，暂不支持中文</span></label>
+                    <meter class="eight columns" id="meter" style="margin-left: 0px; margin-top:5px;" min="0" max="120" value="120"></meter>
+                <label id="countdownLable" style="font-family:pixel;font-size:20px;color:lightpink;text-align: center;text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;"></label>
+            </div>             
+            <textarea id="prompt" class="u-full-width" style="font-family:pixel;font-size:20px;"></textarea>
+            <select id="sample" style="width: 45%;height: 36px;font-size: 16px;color: black;border: 1px solid #ccc;background-color: rgba(194, 194, 194, 0.5);float: left;">
+                <option value="" disabled selected>提示词样例（根据自己的需要修改关键字）</option>
+                <option value="png white background, [tech leader], in the style of animated illustrations, [city skyline], full body, text-based --stylize 20">职场生产力 - PPT素材 - 商业精英</option>
+                <option value="line art icon of a [envelope] --stylize 10">职场生产力 - PPT图标 - 信封图标</option>
+                <option value="[Timon the Meerkat from the movie The Lion King] as a Sticker, Sticker, high quality press sticker, vinyl sticker --style raw --s 1000">产品设计 - Q版贴纸</option>
+                <option value="van gogh's starry night">艺术 - 大师临摹 - 梵高·星空</option>
+                <option value="[ice age scene] kirigami art">艺术 - 国粹 - 剪纸</option>
+                <option value="Happy Cute hoodie baby toddler holding the letter X::2 simple background, soft colors, 3D, octane rendering --niji --style expressive">头像 - 3D手办</option>
+            </select>
+            <button id="draw" style="font-size: 16px;color:black;float: right;">开始绘制</button>
+
+        </div>
+        <div class="container" style="background-color: rgba(194, 194, 194, 0.5);padding: 5px 5px 10px 5px; border-radius: 10px;">
+            <div class="slider" style="width:150px;float: left;margin-left: 20px;" >
+                <span class="arValue" disabled>1:1</span>
+                <input style="margin-top:10px;" type="range" min="1" max="5" value="1" class="slider" id="arRange"/>
+            </div>
+            <div class="slider" style="width:150px;float: left;margin-left: 20px;">
+                <span class="sValue" disabled>平凡</span>
+                <input style="margin-top:10px;" type="range" min="1" max="5" value="1" class="slider" id="sRange"/>
+            </div>
+            <div class="slider" style="width:150px;float: left;margin-left: 20px;">
+                <span class="cValue" disabled>稳定</span>
+                <input style="margin-top:10px;" type="range" min="1" max="5" value="1" class="slider" id="cRange"/>
+            </div>       
+            <div class="slider" style="width:150px;float: left;margin-left: 20px;">
+                <span class="wValue" disabled>合理</span>
+                <input style="margin-top:10px;" type="range" min="1" max="5" value="1" class="slider" id="wRange"/>
+            </div>              
+            <div class="slider" style="width:150px;float: left;margin-left: 20px;">
+                <span class="nValue" disabled>Niji关</span>
+                <input style="margin-top:10px;" type="range" min="1" max="2" value="1" class="slider" id="nRange"/>
+            </div>  
+        </div>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/forge.min.js"></script>
+    <script>
+        var mjmessage;
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
+            //link.href = '../style/draw_bg_mobile.css';
+        } else {
+            //link.href = '../style/draw_bg.css';
+        }        
+        document.head.appendChild(link);  
+
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        if(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent)) {
+        } else {
+            link.href = '../style/font-face.css';
+            document.head.appendChild(link); 
+        }        
+        
+
+        function checkCookie(name) {
+            var cookies = document.cookie.split("; ");
+            for(var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].split("=");
+                if(cookie[0] === name) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function getCookie(name) {
+          const cookies = document.cookie.split("; ");
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].split("=");
+            if (cookie[0] === name) {
+              return decodeURIComponent(cookie[1]);
+            }
+          }
+          return null;
+        } 
+
+        // window.onload = function() {
+        //     if(!checkCookie("MJPROXY_TOKEN")) {
+        //         window.location.href = "auth-x.html";
+        //     }
+        // }
+
+        $(document).ready(function(){
+            $('#meter')[0].style.display = "none"
+            $('#countdownLable')[0].style.display = "none"
+            $("#countdownLable").html(seconds);
+
+            var countdown;
+            var seconds = 120;
+
+            function startCountdown() {
+                $('#countdown').text(seconds);
+                countdown = setInterval(function() {
+                    seconds--;
+                    $('#countdown').text(seconds);
+                    $('#meter')[0].value = seconds;
+                    $("#countdownLable").html(seconds);
+                    if (seconds <= 0) {
+                        clearInterval(countdown);
+                    }
+                }, 1000);
+            }
+
+            function stopCountdown() {
+                clearInterval(countdown);
+                $('#countdown').text('倒计时结束');
+            }
+
+            function calculateImageSize(width, height, X) {
+              let newWidth, newHeight;
+              // 判断是横图还是竖图，然后相应地计算新尺寸
+              if (width > height) {
+                // 横图: 以高度为基准
+                const aspectRatio = width / height;
+                newWidth = X * aspectRatio;
+                newHeight = X;
+              } else {
+                // 竖图: 以宽度为基准
+                const aspectRatio = height / width;
+                newHeight = X * aspectRatio;
+                newWidth = X;
+              }
+              
+              return {
+                width: newWidth,
+                height: newHeight
+              };
+            }
+
+            function upscale(target){
+                $('#upscale1')[0].style.display = "none";
+                $('#upscale2')[0].style.display = "none";
+                $('#upscale3')[0].style.display = "none";
+                $('#upscale4')[0].style.display = "none"; 
+                $('#draw').prop("disabled", true);
+                $('#draw').text("生成中...");
+                $('#meter')[0].style.display = "block"
+                $('#countdownLable')[0].style.display = "block"
+                $("#countdownLable").html(seconds);
+                startCountdown();
+                $.ajax({
+                    url: "https://mjproxy.azurewebsites.net/api/mjproxy",
+                    type: "POST",
+                    data: {
+                        "prompt": $('#prompt').val() + " " + arPrompt + " " + chaosPrompt + " " + stylizePrompt + " " + weirdPrompt + " " + nijiPrompt,
+                        "op": "Upscale", 
+                        "target": target,
+                        "token": getCookie("MJPROXY_TOKEN"),
+                        "mjmessage": btoa(JSON.stringify(mjmessage).replace("🔄","reroll"))
+                    }, 
+                    contentType: 'application/json',
+                    success: function(response) {
+                        var resp = JSON.parse(response);
+                        if (resp.mjmessage !== undefined && resp.mjmessage.width !== undefined && resp.mjmessage.height !== undefined){
+                            mjmessage = resp.mjmessage;
+                            const newSize = calculateImageSize(resp.mjmessage.width, resp.mjmessage.height, 512);
+                            $('img').css({
+                              'width': `${newSize.width}px`,
+                              'height': `${newSize.height}px`
+                            });                            
+                        }
+
+                        $("#img").attr("src", resp.base64img);
+                        $('#draw').prop("disabled", false);
+                        $('#draw').text(">>开始绘制<<");
+                        seconds = 120;
+                        $('#meter')[0].style.display = "none"
+                        $('#meter')[0].value = seconds;
+                        $('#countdownLable')[0].style.display = "none"
+                        stopCountdown();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("请求出错: " + error);
+                        $('#draw').prop("disabled", false);
+                        $('#draw').text(">>开始绘制<<");
+                        seconds = 120;
+                        $('#countdownLable')[0].style.display = "none"
+                        $('#meter')[0].style.display = "none"
+                        $('#meter')[0].value = seconds;
+                        stopCountdown();
+                    }
+                });
+            }
+
+            $("#upscale1").click(function() {
+                upscale("U1");
+            });
+            $("#upscale2").click(function() {
+                upscale("U2");
+            });
+            $("#upscale3").click(function() {
+                upscale("U3");
+            });
+            $("#upscale4").click(function() {
+                upscale("U4");
+            });        
+
+            $('#niji').click(function(){
+                $('#nijiChosen').html("--niji 5" + "   [&times;]")
+                $('#nijiChosen').val("--niji 5")
+            })        
+            $('#nijiChosen').click(function(){
+                $('#nijiChosen').html("")
+                $('#nijiChosen').val("")
+            })                                            
+
+
+            $("#sample").change(function() {
+                $("#prompt").val($(this).val());
+            });
+
+            $('#draw').click(function(){
+                $('#draw').prop("disabled", true);
+                $('#draw').text("生成中...");
+                $('#meter')[0].style.display = "block"
+                $('#countdownLable')[0].style.display = "block"
+                $("#countdownLable").html(seconds);
+                var finalPrompt = $('#prompt').val() + " " + arPrompt + " " + chaosPrompt + " " + stylizePrompt + " " + weirdPrompt + " " + nijiPrompt;
+                //$("#prompt").val(finalPrompt)
+                startCountdown();
+                $.ajax({
+                    url: "https://mjproxy.azurewebsites.net/api/mjproxy",
+                    type: "POST",
+                    data: {
+                        "prompt": finalPrompt,
+                        "op": "Imagine", 
+                        "token": getCookie("MJPROXY_TOKEN"),
+                        "mjmessage":""
+                    }, 
+                    contentType: 'application/json',
+                    success: function(response) {
+                        var resp = JSON.parse(response);
+                        if (resp.mjmessage !== undefined && resp.mjmessage.width !== undefined && resp.mjmessage.height !== undefined){
+                            mjmessage = resp.mjmessage;
+                            const newSize = calculateImageSize(resp.mjmessage.width, resp.mjmessage.height, 512);
+                            $('img').css({
+                              'width': `${newSize.width}px`,
+                              'height': `${newSize.height}px`
+                            });             
+
+                            $('#upscale1')[0].style.display = "inline-block";
+                            $('#upscale2')[0].style.display = "inline-block";
+                            $('#upscale3')[0].style.display = "inline-block";
+                            $('#upscale4')[0].style.display = "inline-block";         
+                        }
+
+                        $("#img").attr("src", resp.base64img);
+                        $('#draw').prop("disabled", false);
+                        $('#draw').text(">>开始绘制<<");
+                        seconds = 120;
+                        $('#meter')[0].style.display = "none"
+                        $('#meter')[0].value = seconds;
+                        $('#countdownLable')[0].style.display = "none"
+                        stopCountdown();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("请求出错: " + error);
+                        $('#draw').prop("disabled", false);
+                        $('#draw').text(">>开始绘制<<");
+                        seconds = 120;
+                        $('#meter')[0].style.display = "none"
+                        $('#meter')[0].value = seconds;
+                        $('#countdownLable')[0].style.display = "none"
+                        stopCountdown();
+                    }
+                });
+            });
+
+            const arValuesAlias = ['正方形','传统尺寸', '小红书尺寸', 'Youtube尺寸', '抖音尺寸'];
+            const arValues = ['','--ar 4:3', '--ar 3:4', '--ar 16:9', '--ar 9:16'];
+            const arSlider = document.getElementById("arRange");
+            const arValue = document.querySelector(".arValue");
+            var arPrompt = '';
+            arSlider.oninput = function() {
+                arValue.textContent = arValuesAlias[this.value - 1] + " " + arValues[this.value - 1]; 
+                arPrompt = arValues[this.value - 1];
+            }
+
+            const sValuesAlias = ['普通','略艺术', '较艺术', '挺艺术', '特艺术'];
+            const sValues = ['','--stylize 100', '--stylize 250', '--stylize 500', '--stylize 1000'];
+            const sSlider = document.getElementById("sRange");
+            const sValue = document.querySelector(".sValue");
+            var stylizePrompt = '';
+            sSlider.oninput = function() {
+                sValue.textContent = sValuesAlias[this.value - 1] + " " + sValues[this.value - 1]; 
+                stylizePrompt = sValues[this.value - 1]; 
+            }
+
+            const cValuesAlias = ['稳定', '变化', '多变', '不稳定', '混乱'];
+            const cValues = ['','--c 25', '--c 50', '--c 75', '--c 100'];
+            const cSlider = document.getElementById("cRange");
+            const cValue = document.querySelector(".cValue");
+            var chaosPrompt = '';
+            cSlider.oninput = function() {
+                cValue.textContent = cValuesAlias[this.value - 1] + " " + cValues[this.value - 1]; 
+                chaosPrompt = cValues[this.value - 1]; 
+            }     
+
+            const wValuesAlias = ['合理','奇怪', '诡异', '疯狂', '卧槽'];
+            const wValues = ['','--weird 250', '--weird 750', '--weird 1000', '--weird 3000'];
+            const wSlider = document.getElementById("wRange");
+            const wValue = document.querySelector(".wValue");
+            var weirdPrompt = ''
+            wSlider.oninput = function() {
+                wValue.textContent = wValuesAlias[this.value - 1] + " " + wValues[this.value - 1]; 
+                weirdPrompt = wValues[this.value - 1]; 
+            }                
+
+            const nValuesAlias = ['Niji关','Niji开'];
+            const nValues = ['','--niji 5'];
+            const nSlider = document.getElementById("nRange");
+            const nValue = document.querySelector(".nValue");
+            var nijiPrompt = '';
+            nSlider.oninput = function() {
+                nValue.textContent = nValuesAlias[this.value - 1] + " " + nValues[this.value - 1]; 
+                nijiPrompt = nValues[this.value - 1]; 
+            }            
+        });
+
+    </script>
+</body>
+</html>

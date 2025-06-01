@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>画廊 cg8.pro</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="../style/custom.css" rel="stylesheet" type="text/css" />
+    <link href="../img/favicon.png" rel="icon" type="image/png">
+    <script src="../js/remote.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js"></script>
+    <style>
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            /* 默认不显示模态框 */
+            position: fixed;
+            /* 固定定位 */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* 宽度为整个视窗的宽度 */
+            height: 100%;
+            /* 高度为整个视窗的高度 */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* 半透明背景 */
+            z-index: 1000;
+            /* 高堆叠顺序保证在最上层 */
+        }
+
+        /* 模态框内容样式 */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            /* 垂直居中，水平居中 */
+            padding: 20px 0 0 0;
+            border: 1px solid #888;
+            width: 300px;
+            /* 定义固定宽度 */
+            border-radius: 25px;
+        }
+
+        .grid {
+            margin: 0 100px; /* 水平居中 */
+            padding: 0 10px; /* 两边的间距 */
+        }
+
+        .grid-item {
+            width: 235px;
+            float: left;
+            background: rgb(0, 47, 167,0.7);
+            border: 1px solid #333;
+            border-color: rgb(0, 47, 167,0.3);
+            border-radius: 5px;
+            margin-bottom: 2px;
+        }
+
+        .grid-item img {
+            width: 235px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header" style="background-color: white;opacity: 0.7;">
+        <div class="wrapper">
+            <a class="site-title" href="">Midjourney Sref Collection</a>
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a style="color: white;font-weight:bold;text-shadow: 3px 3px 6px #000, -2px -2px 4px blueviolet;"
+                        class="page-link" href="./about.html">更多AIGC工具 & 教程</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div id="infoModal" class="modal">
+        <div class="modal-content" style="text-align: center;">
+            <span class="close">&times;</span>
+            <p><span id="srefInfo"></span></p>
+            <p><span id="srefCode"></span></p>
+        </div>
+    </div>
+    <div class="section" style="padding:0 50px 0 10px">
+        <row>
+            <p style="line-height: 35px;color: rgb(139, 139, 139)"></p>
+        </row>
+    </div>
+    <div style="margin: 0 auto;text-align: center;">
+        <div class="section">
+            <row>
+                <div class="grid" id="image-gallery">
+            </row>
+        </div>
+    </div>
+    <script>
+        var infoModal = document.getElementById('infoModal');
+        var infoModalCloseBtn = document.getElementsByClassName('intro-close')[0];
+        infoModal.style.display = 'none';
+
+        window.onload = function () {
+            $('#image-gallery').masonry({
+                itemSelector: '.grid-item',
+                columnWidth: '.grid-item',
+                percentPosition: true,
+                gutter: 2
+            });
+
+            fetch(getRemote(), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "option": "44"
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const newItems = data.data.map(img => `<div class="grid-item"><img src="https://chatarchive.blob.core.windows.net/gallery-midj-sref/` + img + `"></div>`).join('');
+                const $newItems = $(newItems);
+                $('#image-gallery').append($newItems).masonry('appended', $newItems);
+                $('#image-gallery').imagesLoaded().progress(function () {
+                    $('#image-gallery').masonry('layout');
+                });
+
+                $('#image-gallery').on('click', 'img', function () {
+                    var src = $(this).attr('src');
+                    var url = new URL(src);
+                    var pathname = url.pathname;
+                    var filenames = pathname.split('/').pop().split('.')[0].split('_');
+
+                    infoModal.style.display = "block";
+                    // 计算并设置模态框正确位置
+                    var rect = this.getBoundingClientRect();
+                    var modalContent = infoModal.querySelector('.modal-content');
+                    modalContent.style.top = (rect.bottom + window.scrollY) + 'px';
+                    modalContent.style.left = rect.left + 'px';
+                    var srefInfo = document.getElementById("srefInfo");
+                    srefInfo.innerText = base64ToUTF8(filenames[2])
+                    var srefCode = document.getElementById("srefCode");
+                    srefCode.innerText = "--sref " + filenames[0]
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function base64ToUTF8(base64Str){
+            var decodedData = atob(base64Str);
+            const bytes = new Uint8Array(decodedData.length);
+            for (let i = 0; i < decodedData.length; ++i) {
+                bytes[i] = decodedData.charCodeAt(i);
+            }
+            return new TextDecoder('utf-8').decode(bytes);
+        }
+
+        // 获取 modal 元素和链接元素
+        var infoModal = document.getElementById("infoModal");
+        var closeInfoModal = document.getElementsByClassName("close")[0];
+
+        closeInfoModal.onclick = function () {
+            infoModal.style.display = "none";
+        }
+
+        // 当用户点击模态框之外时，关闭模态框
+        window.onclick = function (event) {
+            if (event.target == infoModal) {
+                infoModal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+</html>

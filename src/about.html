@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>about cgai</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="../style/header.css" rel="stylesheet" type="text/css" />
+    <link href="../img/favicon.png" rel="icon" type="image/png">
+    <style>
+        body {
+            background-color: rgba(244, 244, 244);
+        }
+
+        /* 模态框样式等其它样式... */
+        .modal {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            border-radius: 25px;
+        }
+
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        a:link,
+        a:visited {
+            color: inherit;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* 默认样式（移动端）：单栏排列 */
+        .tutorials {
+            column-count: 1;
+            column-gap: 20px;
+            /* 栏间距 */
+            padding-left: 1em;
+            color: grey;
+            text-align: left;
+        }
+
+        .tutorials a {
+            display: block;
+            margin-bottom: 12px;
+            line-height: 1.8;
+        }
+
+        /* PC 端两栏：宽度大于768px时启用 */
+        @media (min-width: 768px) {
+            .tutorials {
+                column-count: 2;
+            }
+        }
+
+        /* Skeleton 框架在移动端的默认设置（比如 .row .two.columns 设置为 100%） */
+        @media (max-width: 768px) {
+            .row .two.columns {
+                width: 100%;
+                margin: auto;
+            }
+        }
+
+        /* 新增：针对 AIGC 资源区域的移动端样式优化 */
+        @media (max-width: 768px) {
+
+            /* 给 aigr-resources 容器采用网格布局，每行4列 */
+            .aigr-resources {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+                /* 可根据需要调整各项间距 */
+                justify-items: center;
+            }
+
+            /* 取消 aigr-resources 内默认 Skeleton 的宽度设置 */
+            .aigr-resources .two.columns {
+                width: auto;
+                margin: 0;
+                float: none;
+            }
+        }
+
+        @keyframes rainbow {
+
+            0%,
+            100% {
+                border-color: red;
+            }
+
+            14% {
+                border-color: orange;
+            }
+
+            28% {
+                border-color: yellow;
+            }
+
+            42% {
+                border-color: green;
+            }
+
+            57% {
+                border-color: blue;
+            }
+
+            71% {
+                border-color: indigo;
+            }
+
+            85% {
+                border-color: violet;
+            }
+        }
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+            }
+
+            50% {
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        .rainbow-breathe {
+            border: 1.3px solid;
+            display: inline-block;
+            border-radius: 8px;
+            animation: rainbow 2s linear infinite, breathe 2s ease-in-out infinite;
+            padding: 0;
+            object-fit: cover;
+        }
+
+        .hover-effect:hover img {
+            border: 1px dashed;
+            border-radius: 8px;
+            animation: rainbow 1s linear infinite, breathe 1s ease-in-out infinite;
+            padding: 0;
+            object-fit: cover;
+        }
+
+        .hover-effect:hover {
+            color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="contactModal" class="modal" onmouseleave="hideModal()">
+        <div class="modal-content" style="text-align: center;">
+            <span class="close" style="position: absolute;
+                   top: +10px; 
+                   right: +10px;
+                   cursor: pointer;
+                   padding: 5px 10px;
+                   background: #fff;
+                   border: 1px solid #333;
+                   border-radius: 15px;
+                   border-width: 0px;
+                   z-index: 999;">
+                × <!-- 使用叉号符号 -->
+            </span>
+            <img src="../img/wechat2.jpg" alt="QR Code" style="width:100%;margin-top: 10px;border-radius: 10px;">
+            <span style="font-size: 12px;">私人号：长歌</span>
+            <img src="../img/pubAccount.jpg" alt="QR Code" style="width:100%;margin-top: 10px;border-radius: 10px;">
+            <span style="font-size: 12px;">公众号：长歌启明</span>
+            <!-- <span>截图微信扫码</span> -->
+        </div>
+    </div>
+
+    <div class="section" style="text-align: center;padding-top: 10px;padding-bottom: 0px;">
+        <div class="container">
+            <div class="row">
+                <div class="eight columns" style="padding-top: 50px;">
+                    <h4 class="hero-heading"><strong>长歌&nbsp;&nbsp;&nbsp;</strong><span
+                            style="color: rgb(169, 169, 169);font-size: 18px;">程序员、AI绘画、自媒体</span></h4>
+                    <span style="color: rgb(151, 210, 230);">
+                        <a href="javascript:void(0);" id="showModal" style="color: rgb(26, 173, 25);">扫码</a>
+                        入群发现更多快乐黑科技
+                    </span>&nbsp;
+                    <!-- <a href="https://www.xiaohongshu.com/user/profile/64420e560000000029010631?xhsshare=CopyLink&appuid=64420e560000000029010631&apptime=1713964748"
+                        id="showModal" style="color: rgb(255, 58, 107);">小红书</a> -->
+                </div>
+                <div class="four columns" style="text-align: center;">
+                    <img src="../img/avatar.png" style="max-height: 150px;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section" style="text-align: left;padding-top: 5px;padding-bottom: 5px;">
+        <div class="container">
+            <!-- 标题部分 -->
+            <div class="row" style="text-align: left; padding: 0 0 25px 0; color: rgb(169, 169, 169);">
+                <span style="line-height: 30px;">实用教程</span>
+            </div>
+            <!-- 教程列表部分，采用两栏排版 -->
+            <div class="row">
+                <div class="tutorials">
+                    <a href="https://mp.weixin.qq.com/s/uWeAo1taUrOBpaQW7kYmnQ">「赚钱」低风险美元套利</a>
+                    <a href="https://mp.weixin.qq.com/s/MdZuC9UKZwUISWS_4KPdBA">「实用」免梯跨境网络流量</a>
+                    <a href="https://mp.weixin.qq.com/s/LfaXXHsP1G7qKGvDHEEQPQ">「AI绘画」简明原生 ComfyUI 零失误安装教程</a>
+                    <a href="https://mp.weixin.qq.com/s/BlstwJPDFMCv2CJzV1-xHA">「AI绘画」简明原生 ComfyUI 从0到1 - 扩散模型原理</a>
+                    <a href="https://mp.weixin.qq.com/s/5SdEcOUrY7baxZlfLA05Dg">「AI绘画」简明原生 ComfyUI 三重超细节放大教程（附工作流）</a>
+                    <a href="https://mp.weixin.qq.com/s/k5aUOhrIEhVD6lmGOHlR9A">「AI绘画」Pony 模型介绍</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" style="text-align: left; padding-top: 5px; padding-bottom: 5px;">
+        <div class="container">
+            <!-- AIGC 资源标题 -->
+            <div class="row" style="text-align: left; padding: 10px 0 25px 0; color: rgb(169, 169, 169);">
+                <span style="line-height: 30px;">AIGC 资源</span>
+            </div>
+            <!-- 注意这里给 row 加上了新类 aigr-resources -->
+            <div class="row aigr-resources">
+                <div class="two columns" style="text-align: center;">
+                    <a href="./download.html"><img src="../img/index_download.jpg" class="rainbow-breathe"
+                            style="width: 80%; border-radius: 15px; border-color: rgba(169, 169, 169, 0.2); border-width: 1px; border-style: solid;"></a>
+                    <p><span style="font-size: 12px;">资源下载</span></p>
+                </div>
+                <div class="two columns" style="text-align: center;">
+                    <a href="./pictorial-list.html"><img src="../img/index_midj_artists.jpg" class="rainbow-breathe"
+                            style="width: 80%; border-radius: 15px; border-color: rgba(169, 169, 169, 0.2); border-width: 1px; border-style: solid;"></a>
+                    <p><span style="font-size: 12px;">AI画报</span></p>
+                </div>
+                <div class="two columns" style="text-align: center;">
+                    <a href="./artists-dalle.html"><img src="../img/index_dalle_artists.jpg" class="rainbow-breathe"
+                            style="width: 80%; border-radius: 15px; border-color: rgba(169, 169, 169, 0.2); border-width: 1px; border-style: solid;"></a>
+                    <p><span style="font-size: 12px;">DALLE 艺术家风格汇</span></p>
+                </div>
+                <div class="two columns" style="text-align: center;">
+                    <a href="./gallery-midj-sref.html"><img src="../img/index_midj_sref.jpg" class="rainbow-breathe"
+                            style="width: 80%; border-radius: 15px; border-color: rgba(169, 169, 169, 0.2); border-width: 1px; border-style: solid;"></a>
+                    <p><span style="font-size: 12px;">Midjourney 风格词</span></p>
+                </div>
+                <!-- <div class="two columns" style="text-align: center;">
+                    <a href="./chatgptol.html"><img src="../img/index_simple_gpt.jpg"
+                            style="width: 90px;border-radius: 15px;border-color: rgb(169, 169, 169,0.2);border-width: 5px;border-style: solid;"></img></a>
+                    <p><span style="font-size: 12px;">极简 GPT4</span></p>
+                </div>
+                <div class="two columns" style="text-align: center;">
+                    <a href="./audiogpt.html"><img src="../img/index_talk_gpt.jpg"
+                            style="width: 90px;border-radius: 15px;border-color: rgb(169, 169, 169,0.2);border-width: 5px;border-style: solid;"></img></a>
+                    <p><span style="font-size: 12px;">语音 GPT4</span></p>
+                </div>
+                <div class="two columns" style="text-align: center;">
+                    <a href="./pickup-art.html"><img src="../img/index_pickup.jpg"
+                            style="width: 90px;border-radius: 15px;border-color: rgb(169, 169, 169,0.2);border-width: 5px;border-style: solid;"></img></a>
+                    <p><span style="font-size: 12px;">搭讪模拟器</span></p>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        // 获取 modal 元素和链接元素
+        var modal = document.getElementById("contactModal");
+        var link = document.getElementById("showModal");
+        var span = document.getElementsByClassName("close")[0];
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // 当用户点击链接时打开模态框
+        link.onclick = function () {
+            modal.style.display = "block";
+
+            // 计算并设置模态框正确位置
+            var rect = link.getBoundingClientRect();
+            var modalContent = modal.querySelector('.modal-content');
+            modalContent.style.top = (rect.bottom + window.scrollY) + 'px';
+            modalContent.style.left = rect.left + 'px';
+        }
+
+        // 当用户点击模态框之外时，关闭模态框
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        function hideModal() {
+            var modal = document.getElementById("contactModal");
+            modal.style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

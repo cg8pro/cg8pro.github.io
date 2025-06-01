@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../img/favicon.png" rel="icon" type="image/png">
+    <title></title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        body {
+            background-color: #ffffff;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            padding: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .image {
+            height: 540px;
+            background-color: #1a1a1a;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            margin-left: auto;
+            margin-right: auto;
+            aspect-ratio: 9/16;
+            object-fit: cover;
+        }
+
+        .text {
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            width: 100%;
+        }
+
+        .title {
+            color: #1a1a1a;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #646464;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* PC端适配 */
+        @media (min-width: 768px) {
+            .card {
+                flex-direction: row;
+                flex-wrap: nowrap;
+                padding: 24px;
+            }
+
+            .image {
+                height: 240px;
+                width: 43%;
+                margin-right: 24px;
+                margin-bottom: 0;
+            }
+
+            .text {
+                width: 70%;
+                padding-left: 24px;
+                border-bottom: none;
+                border-left: 1px solid #e2e8f0;
+                padding-bottom: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+    </div>
+    <script src="../js/publications.js" charset="UTF-8"></script>
+    <script>
+        document.title = "长歌画报"
+        const container = document.querySelector('.container');
+
+        publications.forEach(pub => {
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            const image = document.createElement('div');
+            image.className = 'image';
+            image.style.backgroundImage = `url(${pub.imageSrc})`;
+            image.style.backgroundSize = 'cover';
+            image.style.backgroundPosition = 'center';
+
+            const text = document.createElement('div');
+            text.className = 'text';
+
+            const title = document.createElement('h3');
+            title.className = 'title';
+            title.textContent = pub.title;
+
+            const description = document.createElement('p');
+            description.className = 'description';
+            description.textContent = pub.description;
+
+            image.addEventListener('click', () => {
+                window.location.href = pub.url;
+            });
+
+            text.appendChild(title);
+            text.appendChild(description);
+
+            card.appendChild(image);
+            card.appendChild(text);
+
+            container.appendChild(card);
+        });
+    </script>
+</body>
+
+</html>

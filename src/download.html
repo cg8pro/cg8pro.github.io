@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>资源下载</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="../img/_favicon.png" rel="icon" type="image/png">
+    <style>
+        body {
+            background-color: black;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 固定底部容器，兼容 PC 和移动端 */
+        .fixed-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 10px 10px;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 输入框样式；字体大小改为16px，与按钮一致 */
+        .input-field {
+            width: 75%;
+            max-width: 300px;
+            font-family: pixel, monospace;
+            font-size: 16px;
+            background-color: transparent;
+            border: none;
+            border-bottom: 2px solid rgb(55, 55, 55);
+            color: white;
+            margin-bottom: 5px;
+            outline: none;
+            text-align: center;
+        }
+
+        /* 针对 placeholder 的字体样式 */
+        ::-webkit-input-placeholder {
+            font-size: 16px;
+        }
+
+        :-ms-input-placeholder {
+            font-size: 16px;
+        }
+
+        ::placeholder {
+            font-size: 16px;
+        }
+
+        /* 按钮样式 */
+        .download-btn {
+            font-family: pixel, monospace;
+            font-size: 16px;
+            color: lightgrey;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            margin: 0 5px;
+            text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00;
+        }
+
+        /* 禁用时的样式 */
+        .download-btn:disabled {
+            color: #888;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        /* 左右选项 */
+        .option-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10%;
+        }
+
+        .option-img {
+            width: 150px;
+            margin: 0 15px;
+            cursor: pointer;
+        }
+
+        /* glow-box 样式，仅点击后添加 */
+        .glow-box {
+            border: 1px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.8);
+        }
+
+        /* 响应式处理 */
+        @media (max-width: 768px) {
+            .option-img {
+                width: 120px;
+                margin: 0 10px;
+            }
+
+            .input-field {
+                width: 80%;
+            }
+        }
+
+        /* 统一进度条样式（绿色） */
+        #downloadProgress {
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        #downloadProgress::-webkit-progress-bar {
+            background-color: #333; /* 背景条 */
+            border-radius: 5px;
+        }
+
+        #downloadProgress::-webkit-progress-value {
+            background-color: #00cc66; /* 绿色进度条 */
+            border-radius: 5px;
+        }
+
+        #downloadProgress::-moz-progress-bar {
+            background-color: #00cc66; /* Firefox */
+        }        
+    </style>
+    <script type="text/javascript">
+        // 检查是否在微信中打开
+        function isWeixinBrowser() {
+            return /micromessenger/i.test(navigator.userAgent);
+        }
+        if (isWeixinBrowser()) {
+            alert("不允许在微信中打开");
+            window.location.href = "https://bing.com/";
+        }
+    </script>
+</head>
+<script src="../js/remote.js"></script>
+<body>
+    <!-- 页面中部显示两个选项，点击后选择下载类型 -->
+    <div class="option-container">
+        <img id="imgOption" data-type="img" class="option-img" src="../img/download_hd.png" alt="高清下载选项" />
+    </div>
+
+    <!-- 固定底部的输入框与按钮，初始状态隐藏 -->
+    <div id="bottomContainer" class="fixed-bottom" style="display: none;">
+        <input id="pswd" class="input-field" placeholder="输入8位资源id" maxlength="8" />
+        <button id="goBtn" class="download-btn">Download</button>
+        <br>
+        <label id="alert"
+            style="color: red; font-family: pixel, monospace; font-size: 16px; text-shadow: 2px 2px 4px #000, -2px -2px 4px #F00; margin-top: 5px;"></label>
+
+        <div id="progressContainer" style="margin-top: 10px; display: none; padding: 0 10px;">
+            <progress id="downloadProgress" value="0" max="100" style="width: 100%; height: 10px;"></progress>
+            <div id="progressText" style="color: greenyellow; font-family: pixel, monospace; font-size: 14px; margin-top: 5px; text-align: center; display: none;">0%</div>
+        </div>            
+    </div>
+
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/forge.min.js"></script>
+    <script>
+        // 全局变量：已选择的 type
+        let selectedType = "";
+        const key = "i9r8RSYSlIHjPv5EX+LTZ4b8XMvr1FMgjZYlI0uDzvg=";
+        const iv = "9iebtE3ryRW8CrVCI08psA==";
+
+        // 加密函数
+        function encrypt(keyBase64, ivBase64, data) {
+            var keyBytes = forge.util.decode64(keyBase64);
+            var ivBytes = forge.util.decode64(ivBase64);
+            var cipher = forge.cipher.createCipher('AES-CBC', keyBytes);
+            cipher.start({ iv: ivBytes });
+            cipher.update(forge.util.createBuffer(data));
+            cipher.finish();
+            var encrypted = cipher.output;
+            return forge.util.encode64(encrypted.getBytes());
+        }
+
+        // 解密函数
+        function decrypt(keyBase64, ivBase64, encryptedData) {
+            var keyBytes = forge.util.decode64(keyBase64);
+            var ivBytes = forge.util.decode64(ivBase64);
+            var decipher = forge.cipher.createDecipher('AES-CBC', keyBytes);
+            decipher.start({ iv: ivBytes });
+            decipher.update(forge.util.createBuffer(forge.util.decode64(encryptedData)));
+            decipher.finish();
+            return decipher.output.data;
+        }
+
+        // 下载文件函数；在请求期间禁用按钮与图片选项，并修改按钮文字，完成后恢复原状态
+        async function downloadFile(type, resource) {
+            $('#goBtn').text(type === 'img' ? "原图下载中..." : "工作流下载中...");
+            $("#goBtn").prop('disabled', true);
+            $('.option-img').css('pointer-events', 'none');
+            $('#progressContainer').show();
+            $('#downloadProgress').val(0);
+            $('#progressText').text('0%');
+
+            // 模拟进度增长（假进度）
+            let fakeProgress = 0;
+            const progressTimer = setInterval(() => {
+                if (fakeProgress < 95) {
+                    fakeProgress += Math.random() * 3;
+                    $('#downloadProgress').val(fakeProgress);
+                    $('#progressText').text(Math.floor(fakeProgress) + '%');
+                }
+            }, 200);
+
+            let option = type === 'img' ? '46' : '47';
+            let blobname = type === 'img' ? resource + '.img.png' : resource + '.wf.json';
+            blobname = encrypt(key, iv, new TextEncoder().encode(JSON.stringify(blobname)));
+
+            try {
+                const response = await fetch(getRemote(), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ option, blobname })
+                });
+
+                const data = await response.json();
+                if (data.status == "success") {
+                    const decryptedData = JSON.parse(decrypt(key, iv, data.data));
+                    let a = document.createElement('a');
+
+                    if (type === "img") {
+                        const imageDataUrl = "data:image/png;base64," + decryptedData.trim();
+                        a.href = imageDataUrl;
+                        a.download = resource + ".png";
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    } else if (type === "wf") {
+                        let jsonObj = null;
+                        try {
+                            jsonObj = JSON.parse(decryptedData);
+                        } catch (e) {
+                            throw new Error("解析 JSON 出错: " + e);
+                        }
+                        const jsonContent = JSON.stringify(jsonObj, null, 4);
+                        const blob = new Blob([jsonContent], { type: 'application/json' });
+                        const downloadUrl = URL.createObjectURL(blob);
+                        a.href = downloadUrl;
+                        a.download = (jsonObj.uuid ? jsonObj.uuid : 'download') + ".wf.json";
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(downloadUrl);
+                    }
+
+                    // 下载完成，设置为 100%
+                    clearInterval(progressTimer);
+                    $('#downloadProgress').val(100);
+                    $('#progressText').text('100%');
+                } else {
+                    throw new Error("服务器返回失败状态");
+                }
+            } catch (error) {
+                console.error("下载文件过程中出错：", error);
+                $('#alert').text("下载失败，请稍后再试。");
+                clearInterval(progressTimer);
+                $('#downloadProgress').val(0);
+                $('#progressText').text('0%');
+            } finally {
+                $("#goBtn").prop('disabled', false);
+                updateButtonText(type);
+                $('.option-img').css('pointer-events', 'auto');
+
+                // 延迟隐藏进度条
+                setTimeout(() => {
+                    $('#progressContainer').hide();
+                }, 800);
+            }
+        }
+
+        // 设置按钮文字，根据当前选择的下载类型
+        function updateButtonText(type) {
+            if (type === "img") {
+                $('#goBtn').text("下载原图");
+            } else if (type === "wf") {
+                $('#goBtn').text("下载工作流");
+            }
+        }
+
+        // 页面加载后初始化
+        window.onload = function () {
+            document.title = '资源下载';
+
+            // 图片点击事件：选择下载类型、显示底部容器、更新按钮文字，并添加 glow-box 样式
+            $('#imgOption').click(function () {
+                selectedType = $(this).data('type');
+                $('#imgOption').addClass('glow-box');
+                $('#wfOption').removeClass('glow-box');
+                $('#alert').text('');
+                $('#bottomContainer').show();
+                updateButtonText(selectedType);
+            });
+
+            $('#wfOption').click(function () {
+                selectedType = $(this).data('type');
+                $('#wfOption').addClass('glow-box');
+                $('#imgOption').removeClass('glow-box');
+                $('#alert').text('');
+                $('#bottomContainer').show();
+                updateButtonText(selectedType);
+            });
+
+            // 检查 URL 参数并自动触发下载，同时显示底部容器
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlType = 'img';
+            const urlResource = urlParams.get('resource');
+            if (urlType && (urlType === 'img' || urlType === 'wf') && urlResource && urlResource.length === 8) {
+                $('#pswd').val(urlResource);
+                if (urlType === 'img') {
+                    $('#imgOption').click();
+                } else {
+                    $('#wfOption').click();
+                }
+                downloadFile(urlType, urlResource);
+            }
+
+            // 点击下载按钮时触发下载操作
+            $('#goBtn').click(function () {
+                const resource = $('#pswd').val().trim();
+                if (!selectedType) {
+                    $('#alert').text("请选择下载类型！");
+                    return;
+                }
+                if (!resource || resource.length !== 8) {
+                    $('#alert').text("请输入8位资源id！");
+                    return;
+                }
+                $('#alert').text("");
+                downloadFile(selectedType, resource);
+            });
+        };
+    </script>
+</body>
+
+</html>

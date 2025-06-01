@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Simple GPT</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../style/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="../style/skeleton.css" rel="stylesheet" type="text/css" />
+    <link href="../style/header.css" rel="stylesheet" type="text/css" />
+    <link href="../style/chatgpt.css" rel="stylesheet" type="text/css" />
+    <link href="../img/favicon.png" rel="icon" type="image/png">
+</head>
+
+<body>   
+    <header class="site-header" style="background-color: white;opacity: 0.7;">
+        <div class="wrapper">
+            <a style="font-size: 24px;" href="">Simple GPT</a>
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a style="color: white;font-weight:bold;text-shadow: 3px 3px 6px #000, -2px -2px 4px blueviolet;" class="page-link" href="./about.html">更多AIGC工具 & 教程</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="container" style="margin-top:2%">
+        <div class="row">
+            <span id="status" style="font-size: 14px;float: left;color: RGB(200,200,200);color:red;">⬤ 服务不可用</span>
+        </div>
+        <div class="row">
+            <!--<div class="two columns" style="min-height: 632px;border-radius: 10px;border: 1px solid rgb(222,222,222);" >
+
+            </div>-->
+            <!--<div class="ten columns"  >-->
+            
+            <div id="chatbox" class="row"
+                style="min-height: 550px;max-height:550px;overflow-y:scroll;padding: 15px;border-radius: 10px;border: 1px solid rgb(222,222,222);border-left: none;border-right: none;border-top: none;text-align: center;">
+            </div>
+            <div class="row">
+                <meter class="twelve columns" id="meter" style="margin-left: 0px; margin-top:5px;display: none;" min="0"
+                    max="120" value="120"></meter>
+                <label style="display: none;" id="countdownLable"></label>
+            </div>
+            <div class="row">
+                <textarea id="say" class="u-full-width" placeholder="🖊"
+                    style="min-height: 80px; margin: 20px auto 0 auto;border-left: none;border-right: none;border-top: none;"></textarea>
+                <span id="enterGuide" style="color: rgb(180,180,180);float: left;font-size: 14px;"></span>
+                <button id="sendMessage" 
+                style="width: 100%; height:35px;line-height: 25px;margin: 0 5px 0 5px;padding: 0 10px;background-color: rgb(58, 206, 255);color: white;">发送</button>
+                <button id="retrieveMessage"
+                    style="height:45px;line-height: 24px;margin: 0 5px 0 5px;padding: 0 10px;font-size: 14px;color: rgb(150,150,150);border:none;">>加载会话id</button>
+                <button id="loadmessages"
+                    style="float:left;height:45px;line-height: 24px;margin: 0 5px 0 5px;padding: 0 10px;font-size: 14px;color: rgb(150,150,150);border:none;">>加载上次聊天</button>
+                <button id="copyButton"
+                    style="float:left;height:45px;line-height: 24px;margin: 0 5px 0 5px;padding: 0 10px;font-size: 14px;color: rgb(150,150,150);border:none;">>复制会话id</button>
+                <!-- <button id="testButton"
+                    style="float:left;height:24px;line-height: 24px;margin: 0 5px 0 5px;padding: 0 10px;font-size: 14px;color: rgb(150,150,150);border:none;">>> 测试按钮</button>                     -->
+            </div>
+            <div class="row">
+                <span id="session" style="font-size: 14px;float: left;color: RGB(200,200,200);margin-right: 50px;"></span>
+            </div>
+            <!--</div>-->
+        </div>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/forge.min.js"></script>
+    <script>
+        var remote = 'https://cpltssea.azurewebsites.net/api/cplts/';
+        var countdown;
+        var seconds = 120;
+
+        window.onload = function () {
+            var chatbox = document.getElementById("chatbox");
+            chatbox.innerHTML = "";
+            var img = document.createElement('img');
+            img.src = "../img/chatgptol_intro.png";
+            chatbox.appendChild(img);
+
+            echo();
+            setInterval(() => {
+                echo();
+            }, 10000);
+
+            var messages = [];
+            var textarea = document.getElementById("say");
+            var enterGuide = document.getElementById("enterGuide")
+            var sendMessage = document.getElementById("sendMessage")
+            var retrieveMessage = document.getElementById("retrieveMessage")
+            var currentsession = document.getElementById("session");
+            var session = getCookie("CHATGPTOLID");
+            var loadmessages = document.getElementById("loadmessages")
+            //var testBtn = document.getElementById("testButton")
+
+            const isMobile = getDeviceType() == "mobile";
+            enterGuide.style.display = isMobile ? "none" : "inline";
+            sendMessage.style.display = isMobile ? "inline" : "none";
+            retrieveMessage.style.display = isMobile ? "inline" : "none";
+
+            loadmessages.addEventListener('click', (event) => {
+                fetch(remote , {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        
+                    },
+                    body: JSON.stringify({
+                        "option": "1",
+                        "messages": encrypt(key, iv, new TextEncoder().encode(JSON.stringify([]))),
+                        "session": session
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    //countdownLable.style.display = "none"
+                    meter.style.display = "none"
+                    //countdownLable.innerHTML = seconds;
+                    seconds = 120;
+                    stopCountdown();
+
+                    console.log(data)
+                    if (data.cptCnt == 0) {
+                        messages.pop();
+                    } else {
+                        messages.length = 0;
+                        currentsession.innerHTML = session
+                        JSON.parse(decrypt(key, iv, data.message)).forEach(item => {
+                            messages.push(item);
+                        })
+                        fillChatbox(messages)
+                        setTimeout(function () {
+                            chatbox.scrollTop = chatbox.scrollHeight;
+                        }, 0);
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            })
+
+            sendMessage.addEventListener('click', () => {
+                //var countdownLable = document.getElementById("countdownLable")
+                var meter = document.getElementById("meter")
+                //countdownLable.style.display = "block"
+                meter.style.display = "block"
+                //countdownLable.innerHTML = seconds;
+                startCountdown();
+
+                event.preventDefault();
+                message = { "role": "user", "content": textarea.value }
+                messages.push(message)
+                textarea.value = ""
+                fillChatbox(messages);
+                setTimeout(function () {
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                }, 0);
+                fetch(remote , {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        
+                    },
+                    body: JSON.stringify({
+                        "option": "7",
+                        "messages": encrypt(key, iv, new TextEncoder().encode(JSON.stringify(message))),
+                        "session": currentsession.innerHTML
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        //countdownLable.style.display = "none"
+                        meter.style.display = "none"
+                        //countdownLable.innerHTML = seconds;
+                        seconds = 120;
+                        stopCountdown();
+
+                        console.log(data)
+                        if (data.cptCnt == 0) {
+                            messages.pop();
+                        } else {
+                            currentsession.innerHTML = data.session
+                            if (!getCookie("CHATGPTOLID")) {
+                                document.cookie = "CHATGPTOLID=" + data.session + "; path=/";
+                            }
+
+                            messages = messages.concat(JSON.parse(decrypt(key, iv, data.message)))
+                            fillChatbox(messages)
+                            textarea.value = ''
+                            setTimeout(function () {
+                                chatbox.scrollTop = chatbox.scrollHeight;
+                            }, 0);
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            })
+
+            retrieveMessage.addEventListener('click', () => {
+                //var countdownLable = document.getElementById("countdownLable")
+                var meter = document.getElementById("meter")
+                //countdownLable.style.display = "block"
+                meter.style.display = "block"
+                //countdownLable.innerHTML = seconds;
+                startCountdown();
+
+                event.preventDefault();
+                fillChatbox(messages);
+                fetch(remote , {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        
+                    },
+                    body: JSON.stringify({
+                        "option": "1",
+                        "messages": encrypt(key, iv, new TextEncoder().encode(JSON.stringify([]))),
+                        "session": textarea.value
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        //countdownLable.style.display = "none"
+                        meter.style.display = "none"
+                        //countdownLable.innerHTML = seconds;
+                        seconds = 120;
+                        stopCountdown();
+
+                        console.log(data)
+                        if (data.cptCnt == 0) {
+                            messages.pop();
+                        } else {
+                            messages.length = 0;
+                            currentsession.innerHTML = textarea.value
+                            document.cookie = "CHATGPTOLID=" + textarea.value + "; path=/";
+                            JSON.parse(decrypt(key, iv, data.message)).forEach(item => {
+                                messages.push(item);
+                            })
+                            fillChatbox(messages)
+                            textarea.value = ''
+                            setTimeout(function () {
+                                chatbox.scrollTop = chatbox.scrollHeight;
+                            }, 0);
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            })
+
+            // testBtn.addEventListener('click', () => {
+            //     fetch(remote , {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json'                        
+            //         },
+            //         body: JSON.stringify({
+            //             "option": "41",
+            //             "imgdesc":"something very cool",
+            //             "session": "dalle3 test"
+            //         })
+            //     })
+            //         .then(response => console.log(response))
+            //         .catch(error => {
+            //             console.error(error);
+            //         });
+            // })
+
+            textarea.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' && event.ctrlKey) {
+                    //var countdownLable = document.getElementById("countdownLable")
+                    var meter = document.getElementById("meter")
+                    //countdownLable.style.display = "block"
+                    meter.style.display = "block"
+                    //countdownLable.innerHTML = seconds;
+                    startCountdown();
+
+                    event.preventDefault();
+                    message = { "role": "user", "content": textarea.value }
+                    messages.push(message)
+                    textarea.value = "";
+                    fillChatbox(messages);
+                    setTimeout(function () {
+                        chatbox.scrollTop = chatbox.scrollHeight;
+                    }, 0);
+                    fetch(remote , {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            
+                        },
+                        body: JSON.stringify({
+                            "option": "7",
+                            "messages": encrypt(key, iv, new TextEncoder().encode(JSON.stringify(message))),
+                            "session": currentsession.innerHTML,
+                            "asst": "asst_EB53dezUxmfLtC3nXv9y7IXK"
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            //countdownLable.style.display = "none"
+                            meter.style.display = "none"
+                            //countdownLable.innerHTML = seconds;
+                            seconds = 120;
+                            stopCountdown();
+
+                            console.log(data)
+                            if (data.cptCnt == 0) {
+                                messages.pop();
+                            } else {
+                                currentsession.innerHTML = data.session
+                                if (!getCookie("CHATGPTOLID")) {
+                                    document.cookie = "CHATGPTOLID=" + data.session + "; path=/";
+                                }
+
+                                messages = messages.concat(JSON.parse(decrypt(key, iv, data.message)))
+                                fillChatbox(messages)
+                                textarea.value = ''
+                                setTimeout(function () {
+                                    chatbox.scrollTop = chatbox.scrollHeight;
+                                }, 0);
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                }
+                if (event.key === 'Enter' && event.altKey) {
+                    //var countdownLable = document.getElementById("countdownLable")
+                    var meter = document.getElementById("meter")
+                    //countdownLable.style.display = "block"
+                    meter.style.display = "block"
+                    //countdownLable.innerHTML = seconds;
+                    startCountdown();
+
+                    event.preventDefault();
+                    fillChatbox(messages);
+                    fetch(remote , {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            
+                        },
+                        body: JSON.stringify({
+                            "option": "1",
+                            "messages": encrypt(key, iv, new TextEncoder().encode(JSON.stringify([]))),
+                            "session": textarea.value
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            //countdownLable.style.display = "none"
+                            meter.style.display = "none"
+                            //countdownLable.innerHTML = seconds;
+                            seconds = 120;
+                            stopCountdown();
+
+                            console.log(data)
+                            if (data.cptCnt == 0) {
+                                messages.pop();
+                            } else {
+                                messages.length = 0;
+                                currentsession.innerHTML = textarea.value
+                                document.cookie = "CHATGPTOLID=" + textarea.value + "; path=/";
+                                JSON.parse(decrypt(key, iv, data.message)).forEach(item => {
+                                    messages.push(item);
+                                })
+                                fillChatbox(messages)
+                                textarea.value = ''
+                                setTimeout(function () {
+                                    chatbox.scrollTop = chatbox.scrollHeight;
+                                }, 0);
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                }
+            });
+            document.querySelector("#copyButton").addEventListener('click', function () {
+                copySpanTextToClipboard('session');
+            });
+        }
+        function fillChatbox(messages) {
+            const chatbox = document.getElementById("chatbox");
+            chatbox.style="min-height: 550px;max-height:550px;overflow-y:scroll;padding: 15px;border-radius: 10px;border: 1px solid rgb(222,222,222);border-left: none;border-right: none;border-top: none;text-align: left;"
+            chatbox.innerHTML = "";
+            messages.forEach(msg => {
+
+                const msgLine = document.createElement('div');
+                msgLine.classList.add('msgLine')
+                const msgtext = document.createElement('div');
+                if (msg.role === 'user') {
+                    msgtext.classList.add('user-msg');
+                } else if (msg.role === 'assistant') {
+                    msgtext.classList.add('assistant-msg');
+                }
+
+                const contentBlocks = parseContent(msg.content);
+                contentBlocks.forEach(block => {
+                    if (block.type === 'img'){
+                        // 渲染图片
+                        const img = document.createElement('img');
+                        img.src = block.content;
+                        img.style = "width:360px;height:360px;display:block;border: 3px solid gray;border-radius: 15px;margin-bottom:15px;";
+                        msgtext.appendChild(img);
+                    } else if (block.type === 'gpt_op_prompt' || block.type === 'dalle_op_prompt'){
+                        // 优化后的提示词文本块
+                        const span = document.createElement('span');
+                        span.style = "display:block;"
+                        span.innerHTML = block.content;
+                        msgtext.appendChild(span);
+                    } else if (block.type === 'code') {
+                        // 渲染代码块 
+                        const pre = document.createElement('pre');
+                        const code = document.createElement('code');
+                        pre.style.color = 'black';
+                        code.textContent = block.content;
+                        pre.appendChild(code);
+                        msgtext.appendChild(pre);
+                    } else {
+                        // 渲染普通文本块
+                        const span = document.createElement('span');
+                        span.innerHTML = block.content;
+                        msgtext.appendChild(span);
+                    }
+                });
+
+                msgLine.appendChild(msgtext)
+                chatbox.appendChild(msgLine)
+            });
+        }
+        function parseContent(content) {
+            let blocks = [];
+            let lines = content.split('\n');
+            let inCode = false;
+            let text = '';
+            let code = '';
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i];
+                if (line.startsWith('[image]')) {
+                    // DALLE3 图片
+
+                    // 匹配Image URL
+                    let imageRegex = /\[image\](.*?)\[gpt_prompt\]/;
+                    let imageUrl = line.match(imageRegex)[1];
+
+                    // 匹配DALL·E Prompt
+                    // let gptPromptRegex = /\[gpt_prompt\](.*)/;
+                    // let gptPrompt = line.match(gptPromptRegex)[1];
+
+                    // // 匹配GPT Prompt
+                    let gptPromptRegex = /\[gpt_prompt\](.*?)\[dalle_prompt\]/;
+                    let gptPrompt = line.match(gptPromptRegex)[1];
+
+                    // // 匹配DALL·E Prompt
+                    let dallePromptRegex = /\[dalle_prompt\](.*)/;
+                    let dallePrompt = line.match(dallePromptRegex)[1];
+
+                    blocks.push({ type: 'img', content: imageUrl})
+                    blocks.push({ type: 'gpt_op_prompt', content: 'ChatGPT 改写的提示词：' + gptPrompt})
+                    blocks.push({ type: 'dalle_op_prompt', content: 'DALLE 优化的提示词：' + dallePrompt})
+
+                } else if (line.startsWith('```') && !inCode) {
+                    // 文本块结束或代码块开始
+                    if (text) {
+                        blocks.push({ type: 'text', content: text });
+                        text = '';
+                    }
+                    inCode = !inCode;
+                } else if (line.endsWith('```') && inCode) {
+                    // 代码块结束
+                    inCode = false;
+                    blocks.push({ type: 'code', content: code });
+                    code = '';
+                } else {
+                    if (inCode) {
+                        // 积累代码内容
+                        code += line + '\n';
+                    } else {
+                        // 积累文本内容  
+                        text += line + '\n';
+                    }
+                }
+            }
+            // 收尾 
+            if (text)
+                blocks.push({ type: 'text', content: text });
+            return blocks;
+        }
+        function copySpanTextToClipboard(spanId) {
+            var span = document.getElementById(spanId);
+            var text = span.textContent;
+            var tempTextarea = document.createElement('textarea');
+            tempTextarea.style = "position: absolute; left: -1000px; top: -1000px";
+            tempTextarea.value = text;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextarea);
+            if (text.length > 0) {
+                alert("会话id已复制到剪贴板")
+            }
+        }
+        function startCountdown() {
+            countdown = setInterval(function () {
+                seconds--;
+                $('#meter')[0].value = seconds;
+                //$("#countdownLable").html(seconds);
+                if (seconds <= 0) {
+                    clearInterval(countdown);
+                }
+            }, 1000);
+        }
+
+        function stopCountdown() {
+            clearInterval(countdown);
+            $('#countdown').text('倒计时结束');
+        }
+
+        function getCookie(name) {
+            var cookies = document.cookie.split("; ");
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].split("=");
+                if (cookie[0] === name) {
+                    return cookie[1];
+                }
+            }
+            return false;
+        }
+
+        function getDeviceType() {
+            const userAgent = navigator.userAgent;
+            if (/Mobile|iPod/i.test(userAgent)
+                || /Android/i.test(userAgent) && !/Mobile/i.test(userAgent)) {
+                return "mobile";
+            } else {
+                return "desktop";
+            }
+        }
+
+        function echo() {
+            const currentsession = document.getElementById("status");
+            fetch(remote , {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "option": "0",
+                    })
+                })
+                .then(response => {
+                    if (!response.ok || response.status < 200 || response.status > 299){
+                        currentsession.innerHTML = "⬤ 服务不可用"
+                        currentsession.style = "font-size: 14px;float: left;color: RGB(200,200,200);color:red;"
+                    }
+                    return response;
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status == "ok") {
+                        currentsession.innerHTML = "⬤ 服务正常"
+                        currentsession.style = "font-size: 14px;float: left;color: RGB(200,200,200);color:green;"
+                    } else {
+                        currentsession.innerHTML = "⬤ 服务不可用"
+                        currentsession.style = "font-size: 14px;float: left;color: RGB(200,200,200);color:red;"
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                }
+            );
+        }
+
+        const key = "i9r8RSYSlIHjPv5EX+LTZ4b8XMvr1FMgjZYlI0uDzvg="
+        const iv = "9iebtE3ryRW8CrVCI08psA=="
+
+        // 加密
+        function encrypt(keyBase64, ivBase64, data) {
+            var key = forge.util.decode64(keyBase64);
+            var iv = forge.util.decode64(ivBase64);
+            var cipher = forge.cipher.createCipher('AES-CBC', key);
+            cipher.start({ iv: iv });
+            cipher.update(forge.util.createBuffer(data));
+            cipher.finish();
+            var encrypted = cipher.output;
+            return forge.util.encode64(encrypted.getBytes());
+        }
+
+        // 解密
+        function decrypt(keyBase64, ivBase64, encryptedData) {
+            var key = forge.util.decode64(keyBase64);
+            var iv = forge.util.decode64(ivBase64);
+            var decipher = forge.cipher.createDecipher('AES-CBC', key);
+            decipher.start({ iv: iv });
+            decipher.update(forge.util.createBuffer(forge.util.decode64(encryptedData)));
+            decipher.finish();
+            return decipher.output.data;
+        }
+    </script>
+</body>
+
+</html>
