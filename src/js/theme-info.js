@@ -184,13 +184,18 @@ const themeDetails = {
 
 function updateThemeInfo(theme) {
     const details = themeDetails[theme];
-    if (!details) return;
-
-    document.getElementById('theme-info-title').textContent = details.name;
-    document.getElementById('theme-info-desc').textContent = details.description;
-
+    const titleEl = document.getElementById('theme-info-title');
+    const descEl = document.getElementById('theme-info-desc');
     const paletteContainer = document.getElementById('theme-info-palette');
-    paletteContainer.innerHTML = '';
+
+    // Defensive check: only proceed if the target elements exist
+    if (!details || !titleEl || !descEl || !paletteContainer) {
+        return;
+    }
+
+    titleEl.textContent = details.name;
+    descEl.textContent = details.description;
+    paletteContainer.innerHTML = ''; // Clear previous swatches
 
     details.colors.forEach(color => {
         const swatch = document.createElement('div');
@@ -210,15 +215,4 @@ function updateThemeInfo(theme) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const themeSelect = document.getElementById('theme-select');
-    
-    // Initial load
-    const initialTheme = localStorage.getItem('theme') || 'default';
-    updateThemeInfo(initialTheme);
 
-    // Update on change
-    themeSelect.addEventListener('change', (event) => {
-        updateThemeInfo(event.target.value);
-    });
-});

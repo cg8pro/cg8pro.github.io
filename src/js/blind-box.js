@@ -1,4 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- 新增：随机显示一个盲盒按钮 ---
+    const buttonWrappers = document.querySelectorAll('.theme-button-wrapper');
+    if (buttonWrappers.length > 0) {
+        // 首先隐藏所有按钮
+        buttonWrappers.forEach(wrapper => {
+            // 使用内联样式以确保覆盖CSS规则
+            wrapper.style.display = 'none'; 
+        });
+        // 随机选择一个按钮显示
+        const randomIndex = Math.floor(Math.random() * buttonWrappers.length);
+        buttonWrappers[randomIndex].style.display = 'block';
+    }
+    // --- 随机显示功能结束 ---
     // --- 方案A: 极简霓虹胶囊 ---
     const capsuleBtn = document.getElementById('theme-btn-capsule');
     const capsulePopup = document.getElementById('capsule-info-popup');
