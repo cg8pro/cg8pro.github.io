@@ -63,56 +63,29 @@
         }
 
         .lang-switcher {
-            position: relative;
             display: inline-flex;
-            background-color: var(--bg-secondary-color);
-            border-radius: 25px;
-            padding: 4px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .lang-btn {
-            position: relative;
             background: none;
-            border: none;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
             color: var(--text-secondary-color);
-            padding: 6px 16px;
-            border-radius: 20px;
-            cursor: pointer;
             font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 2;
-            min-width: 45px;
-            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .lang-btn:hover {
+            background-color: var(--overlay-bg-color);
             color: var(--text-color);
         }
 
-        .lang-btn.active {
-            color: var(--bg-secondary-color);
-        }
 
-        .lang-switcher .active-pill {
-            content: '';
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            width: calc(50% - 4px);
-            height: calc(100% - 8px);
-            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
-            border-radius: 18px;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
 
-        .lang-switcher[data-active='en'] .active-pill {
-            transform: translateX(100%);
-        }
+
 
         .login-container {
             background-color: var(--bg-secondary-color);
@@ -139,25 +112,28 @@
             color: var(--text-secondary-color);
         }
 
-        input[type="text"], input[type="password"] {
+        input[type="text"], input[type="password"],
+        .login-btn {
+            box-sizing: border-box; /* Crucial for consistent width */
             width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
+            padding: 12px;
             border-radius: 5px;
+        }
+
+        input[type="text"], input[type="password"] {
+            border: 1px solid var(--border-color);
             background-color: var(--bg-color);
             color: var(--text-color);
         }
 
         .login-btn {
-            width: 100%;
-            padding: 12px;
             border: none;
-            border-radius: 5px;
             background-color: var(--accent-color);
             color: #fff;
             font-size: 16px;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-top: 10px; /* Add some space above the button */
         }
 
         .login-btn:hover {
@@ -198,10 +174,8 @@
 </head>
 <body>
     <div class="controls-container">
-        <div class="lang-switcher" data-active="zh">
-            <div class="active-pill"></div>
-            <button class="lang-btn active" data-lang="zh">中</button>
-            <button class="lang-btn" data-lang="en">En</button>
+        <div class="lang-switcher">
+            <button id="lang-toggle-btn" class="lang-btn" data-lang="zh">中</button>
         </div>
         <div class="blind-box-container">
             <div class="theme-button-wrapper">
