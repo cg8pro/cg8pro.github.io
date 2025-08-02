@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画廊</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --bg-secondary-color: #222;
+            --header-bg-color: #111;
+            --text-color: #f0f0f0;
+            --text-secondary-color: #aaa;
+            --primary-color: #00aaff;
+            --accent-color: #e06cff;
+            --border-color: #333;
+            --overlay-bg-color: rgba(0, 0, 0, 0.05);
+            --shadow-color: rgba(0,0,0,0.7);
+        }
+
+        body[data-theme='morandi'] {
+            --bg-color: #e0e0e0;
+            --bg-secondary-color: #f5f5f5;
+            --header-bg-color: #d6d6d6;
+            --text-color: #5a5a5a;
+            --text-secondary-color: #8d8d8d;
+            --primary-color: #a3bfb8;
+            --accent-color: #b8a3a3;
+            --border-color: #c2c2c2;
+            --overlay-bg-color: rgba(255, 255, 255, 0.2);
+            --shadow-color: rgba(0,0,0,0.2);
+        }
+
+        body[data-theme='mucha'] {
+            --bg-color: #f4f0e6;
+            --bg-secondary-color: #fffaf0;
+            --header-bg-color: #e9e2d5;
+            --text-color: #4b3f32;
+            --text-secondary-color: #8c7d6e;
+            --primary-color: #8a795d;
+            --accent-color: #c06c84;
+            --border-color: #dcd3c4;
+            --overlay-bg-color: rgba(255, 250, 240, 0.3);
+            --shadow-color: rgba(0,0,0,0.3);
+        }
+
+        body[data-theme='bauhaus'] {
+            --bg-color: #f0f0f0;
+            --bg-secondary-color: #ffffff;
+            --header-bg-color: #e0e0e0;
+            --text-color: #000000;
+            --text-secondary-color: #555555;
+            --primary-color: #dd0000;
+            --accent-color: #005bff;
+            --border-color: #000000;
+            --overlay-bg-color: rgba(255, 255, 0, 0.1);
+            --shadow-color: rgba(0,0,0,0.4);
+        }
+
+        body[data-theme='cyberpunk'] {
+            --bg-color: #0d0221;
+            --bg-secondary-color: #241e4e;
+            --header-bg-color: #000000;
+            --text-color: #f0f0f0;
+            --text-secondary-color: #00f0ff; /* Bright Cyan */
+            --primary-color: #39ff14;      /* Fluorescent Green */
+            --accent-color: #ff3131;       /* Neon Red */
+            --border-color: #8a2be2;       /* Blue-Violet */
+            --overlay-bg-color: rgba(255, 0, 255, 0.05);
+            --shadow-color: rgba(0, 240, 255, 0.5);
+        }
+
+        body[data-theme='destijl'] {
+            --bg-color: #f0f0f0;
+            --bg-secondary-color: #ffffff;
+            --header-bg-color: #e0e0e0;
+            --text-color: #000000;
+            --text-secondary-color: #005bff; /* Blue */
+            --primary-color: #ffde00; /* Yellow */
+            --accent-color: #dd0000; /* Red */
+            --border-color: #000000;
+            --overlay-bg-color: rgba(255, 222, 0, 0.1);
+            --shadow-color: rgba(0,0,0,0.4);
+        }
+
+        body[data-theme='ukiyoe'] {
+            --bg-color: #f3eada;
+            --bg-secondary-color: #ffffff;
+            --header-bg-color: #d8c7b2;
+            --text-color: #4f4233;
+            --text-secondary-color: #8c7d6e;
+            --primary-color: #005f73; /* Deep Teal */
+            --accent-color: #ae2012; /* Russet Red */
+            --border-color: #9b8a78;
+            --overlay-bg-color: rgba(0, 95, 115, 0.05);
+            --shadow-color: rgba(79, 66, 51, 0.3);
+        }
+
+        body[data-theme='wesanderson'] {
+            --bg-color: #fdf6e4;
+            --bg-secondary-color: #ffffff;
+            --header-bg-color: #f0e5d1;
+            --text-color: #585043;
+            --text-secondary-color: #a39a8c;
+            --primary-color: #e76f51; /* Coral */
+            --accent-color: #2a9d8f; /* Teal */
+            --border-color: #d4c8b4;
+            --overlay-bg-color: rgba(231, 111, 81, 0.05);
+            --shadow-color: rgba(88, 80, 67, 0.3);
+        }
+
+        body[data-theme='monet'] {
+            --bg-color: #e6e8fa;
+            --bg-secondary-color: #ffffff;
+            --header-bg-color: #d9dcf2;
+            --text-color: #495a78;
+            --text-secondary-color: #8b9bb4;
+            --primary-color: #7aa2e5; /* Cornflower Blue */
+            --accent-color: #d8a7d8; /* Lilac */
+            --border-color: #c1c8e0;
+            --overlay-bg-color: rgba(122, 162, 229, 0.05);
+            --shadow-color: rgba(73, 90, 120, 0.3);
+        }
+
+        body[data-theme='artdeco'] {
+            --bg-color: #1a1a1a;
+            --bg-secondary-color: #2d2d2d;
+            --header-bg-color: #000000;
+            --text-color: #f5f5dc; /* Beige */
+            --text-secondary-color: #d4af37; /* Gold */
+            --primary-color: #ffd700; /* Gold */
+            --accent-color: #ff6b35; /* Vermillion */
+            --border-color: #8b7355; /* Bronze */
+            --overlay-bg-color: rgba(255, 215, 0, 0.05);
+            --shadow-color: rgba(212, 175, 55, 0.4);
+        }
+
+        body[data-theme='nordic'] {
+            --bg-color: #fafafa;
+            --bg-secondary-color: #ffffff;
+            --header-bg-color: #f0f0f0;
+            --text-color: #2e3440; /* Dark Blue Grey */
+            --text-secondary-color: #5e81ac; /* Frost Blue */
+            --primary-color: #88c0d0; /* Polar Night */
+            --accent-color: #d08770; /* Aurora Orange */
+            --border-color: #d8dee9;
+            --overlay-bg-color: rgba(136, 192, 208, 0.05);
+            --shadow-color: rgba(46, 52, 64, 0.2);
+        }
+
+        body[data-theme='vaporwave'] {
+            --bg-color: #1a0d26;
+            --bg-secondary-color: #2d1b3d;
+            --header-bg-color: #0f0515;
+            --text-color: #ff71ce; /* Hot Pink */
+            --text-secondary-color: #01cdfe; /* Electric Blue */
+            --primary-color: #05ffa1; /* Mint Green */
+            --accent-color: #b967db; /* Purple */
+            --border-color: #7209b7;
+            --overlay-bg-color: rgba(255, 113, 206, 0.05);
+            --shadow-color: rgba(185, 103, 219, 0.5);
+        }
+
+        body[data-theme='matisse'] {
+            --bg-color: #fff8e7;
+            --bg-secondary-color: #ffffff;
+            --header-bg-color: #f0e68c;
+            --text-color: #2f4f4f; /* Dark Slate Gray */
+            --text-secondary-color: #ff6347; /* Tomato */
+            --primary-color: #4169e1; /* Royal Blue */
+            --accent-color: #ffd700; /* Gold */
+            --border-color: #dc143c; /* Crimson */
+            --overlay-bg-color: rgba(65, 105, 225, 0.05);
+            --shadow-color: rgba(47, 79, 79, 0.3);
+        }
+
+        body[data-theme='filmnoir'] {
+            --bg-color: #1c1c1c;
+            --bg-secondary-color: #2a2a2a;
+            --header-bg-color: #0d0d0d;
+            --text-color: #e5e5e5; /* Light Gray */
+            --text-secondary-color: #b0b0b0; /* Medium Gray */
+            --primary-color: #ffffff; /* Pure White */
+            --accent-color: #696969; /* Dim Gray */
+            --border-color: #555555;
+            --overlay-bg-color: rgba(255, 255, 255, 0.02);
+            --shadow-color: rgba(0, 0, 0, 0.8);
+        }
+
+        body[data-theme='synthwave'] {
+            --bg-color: #0f0f23;
+            --bg-secondary-color: #1a1a3a;
+            --header-bg-color: #050510;
+            --text-color: #ff006e; /* Hot Pink */
+            --text-secondary-color: #8338ec; /* Purple */
+            --primary-color: #3a86ff; /* Electric Blue */
+            --accent-color: #ffbe0b; /* Amber */
+            --border-color: #fb5607; /* Orange Red */
+            --overlay-bg-color: rgba(255, 0, 110, 0.05);
+            --shadow-color: rgba(131, 56, 236, 0.6);
+        }
+
+        body[data-theme='brutalism'] {
+            --bg-color: #2c2c2c;
+            --bg-secondary-color: #3d3d3d;
+            --header-bg-color: #1a1a1a;
+            --text-color: #f5f5f5;
+            --text-secondary-color: #cccccc;
+            --primary-color: #ff4444; /* Bright Red */
+            --accent-color: #ffff00; /* Pure Yellow */
+            --border-color: #000000;
+            --overlay-bg-color: rgba(255, 68, 68, 0.05);
+            --shadow-color: rgba(0, 0, 0, 0.9);
+        }
+
+        body[data-theme='kawaii'] {
+            --bg-color: #fff0f5; /* Lavender Blush */
+            --bg-secondary-color: #ffffff;
+            --header-bg-color: #ffe4e6;
+            --text-color: #8b5a83; /* Mauve */
+            --text-secondary-color: #d4a5d4; /* Plum */
+            --primary-color: #ff69b4; /* Hot Pink */
+            --accent-color: #87ceeb; /* Sky Blue */
+            --border-color: #ffc0cb; /* Pink */
+            --overlay-bg-color: rgba(255, 105, 180, 0.05);
+            --shadow-color: rgba(139, 90, 131, 0.3);
+        }
+
+        body[data-theme='steampunk'] {
+            --bg-color: #2f1b14;
+            --bg-secondary-color: #4a2c1a;
+            --header-bg-color: #1a0f0a;
+            --text-color: #d4af37; /* Gold */
+            --text-secondary-color: #cd853f; /* Peru */
+            --primary-color: #b8860b; /* Dark Goldenrod */
+            --accent-color: #8b4513; /* Saddle Brown */
+            --border-color: #a0522d; /* Sienna */
+            --overlay-bg-color: rgba(212, 175, 55, 0.05);
+            --shadow-color: rgba(139, 69, 19, 0.6);
+        }
+
+        body[data-theme='neontokyo'] {
+            --bg-color: #0a0a0a;
+            --bg-secondary-color: #1a1a1a;
+            --header-bg-color: #000000;
+            --text-color: #00ffff; /* Cyan */
+            --text-secondary-color: #ff1493; /* Deep Pink */
+            --primary-color: #00ff41; /* Matrix Green */
+            --accent-color: #ff073a; /* Neon Red */
+            --border-color: #9d00ff; /* Electric Purple */
+            --overlay-bg-color: rgba(0, 255, 255, 0.05);
+            --shadow-color: rgba(157, 0, 255, 0.7);
+        }
+
+        body[data-theme='vintageposter'] {
+            --bg-color: #f5e6d3;
+            --bg-secondary-color: #ffffff;
+            --header-bg-color: #e6d2b8;
+            --text-color: #8b4513; /* Saddle Brown */
+            --text-secondary-color: #cd853f; /* Peru */
+            --primary-color: #dc143c; /* Crimson */
+            --accent-color: #ff6347; /* Tomato */
+            --border-color: #a0522d; /* Sienna */
+            --overlay-bg-color: rgba(220, 20, 60, 0.05);
+            --shadow-color: rgba(139, 69, 19, 0.4);
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* 使body高度占满视窗 */
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .header {
+            padding: 20px 0; /* 移除水平内边距，让背景通栏 */
+            background-color: var(--header-bg-color);
+        }
+
+        .header-container {
+            max-width: 1200px; /* 设置内容最大宽度 */
+            margin: 0 auto; /* 水平居中 */
+            padding: 0 40px; /* 保留左右边距 */
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* 两端对齐 */
+        }
+
+        .lang-switcher {
+            position: relative;
+            display: inline-flex;
+            background-color: var(--bg-secondary-color);
+            border-radius: 25px;
+            padding: 4px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .lang-btn {
+            position: relative;
+            background: none;
+            border: none;
+            color: var(--text-secondary-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+            min-width: 45px;
+        }
+
+        .lang-btn:hover {
+            color: var(--text-color);
+        }
+
+        .lang-btn.active {
+            color: var(--bg-secondary-color);
+        }
+
+        .lang-switcher::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            border-radius: 18px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .lang-switcher[data-active='en']::before {
+            transform: translateX(100%);
+        }
+
+        .controls-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .blind-box-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-button-wrapper {
+            position: relative;
+        }
+
+        .blind-box-btn {
+            background: var(--bg-secondary-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .blind-box-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border-color: var(--accent-color);
+        }
+
+        #theme-btn-capsule {
+            border-radius: 21px;
+        }
+        #theme-btn-capsule.active {
+            animation: capsule-pop 0.5s;
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+        @keyframes capsule-pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        #capsule-info-popup {
+            display: none;
+            position: absolute;
+            top: 110%;
+            right: 0;
+            width: 250px;
+            padding: 15px;
+            background: var(--bg-secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        #capsule-info-popup.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(10px);
+        }
+
+        #theme-btn-spinner .spinner-svg {
+            width: 80%;
+            height: 80%;
+            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #theme-btn-spinner .spinner-svg circle {
+            fill: none;
+            stroke: var(--primary-color);
+            stroke-width: 8;
+            stroke-dasharray: 140 140;
+        }
+        #theme-btn-spinner.spinning .spinner-svg {
+            transform: rotate(1080deg);
+        }
+
+        #theme-card-container {
+            perspective: 1000px;
+        }
+        #theme-btn-card {
+            width: 42px;
+            height: 42px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+        #theme-btn-card.flipped {
+            transform: rotateY(180deg);
+        }
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 1.5rem;
+        }
+        .card-front {
+            background: var(--bg-secondary-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+        .card-back {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            transform: rotateY(180deg);
+            padding: 5px;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .card-back .info-title { font-size: 0.7rem; margin: 0; color: var(--text-color); }
+        .info-palette-mini {
+            display: flex;
+            gap: 2px;
+            width: 100%;
+            height: 10px;
+        }
+        .info-palette-mini .color-chip {
+            flex-grow: 1;
+            border-radius: 2px;
+        }
+
+        #theme-btn-floater {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            background: var(--bg-secondary-color);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+            border-left: 5px solid var(--primary-color);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .toast .info-title { font-size: 1rem; margin: 0; color: var(--text-color); }
+        .toast .info-desc { font-size: 0.8rem; margin: 0; color: var(--text-secondary-color); }
+        .toast .info-palette { display: flex; gap: 5px; height: 15px; }
+        .toast .info-palette .color-chip { flex-grow: 1; border-radius: 3px; }
+
+        }
+
+        .theme-info-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 5px;
+            transition: color 0.3s;
+        }
+
+        .theme-info-btn:hover {
+            color: var(--accent-color);
+        }
+
+        .theme-info-popup {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background-color: var(--bg-secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            width: 280px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .theme-info-container:hover .theme-info-popup {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Blind Box Theme Buttons --- */
+        .blind-box-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-button-wrapper {
+            position: relative;
+        }
+
+        .blind-box-btn {
+            background: var(--bg-secondary-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .blind-box-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border-color: var(--accent-color);
+        }
+
+        /* --- 方案A: 胶囊 --- */
+        #theme-btn-capsule {
+            border-radius: 21px;
+        }
+        #theme-btn-capsule.active {
+            animation: capsule-pop 0.5s;
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+        @keyframes capsule-pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        #capsule-info-popup {
+            display: none; /* Initially hidden */
+            position: absolute;
+            top: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            padding: 15px;
+            background: var(--bg-secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        #capsule-info-popup.show {
+            display: block;
+            opacity: 1;
+            transform: translateX(-50%) translateY(10px);
+        }
+
+        /* --- 方案B: 转盘 --- */
+        #theme-btn-spinner .spinner-svg {
+            width: 80%;
+            height: 80%;
+            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #theme-btn-spinner .spinner-svg circle {
+            fill: none;
+            stroke: var(--primary-color);
+            stroke-width: 8;
+            stroke-dasharray: 140 140;
+        }
+        #theme-btn-spinner.spinning .spinner-svg {
+            transform: rotate(1080deg);
+        }
+
+        /* --- 方案C: 卡片翻转 --- */
+        #theme-card-container {
+            perspective: 1000px;
+        }
+        #theme-btn-card {
+            width: 42px;
+            height: 42px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+        #theme-btn-card.flipped {
+            transform: rotateY(180deg);
+        }
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 1.5rem;
+        }
+        .card-front {
+            background: var(--bg-secondary-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+        .card-back {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            transform: rotateY(180deg);
+            padding: 5px;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .card-back .info-title { font-size: 0.7rem; margin: 0; color: var(--text-color); }
+        .info-palette-mini {
+            display: flex;
+            gap: 2px;
+            width: 100%;
+            height: 10px;
+        }
+        .info-palette-mini .color-chip {
+            flex-grow: 1;
+            border-radius: 2px;
+        }
+
+        /* --- 方案D: 漂浮球 & Toast --- */
+        #theme-btn-floater {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            background: var(--bg-secondary-color);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+            border-left: 5px solid var(--primary-color);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .toast .info-title { font-size: 1rem; margin: 0; color: var(--text-color); text-align: center; }
+        .toast .info-desc { font-size: 0.8rem; margin: 0; color: var(--text-secondary-color); text-align: center; }
+        .toast .info-palette { display: flex; gap: 5px; height: 15px; justify-content: center; }
+        .toast .info-palette .color-chip { flex-grow: 1; border-radius: 3px; }
+
+        .theme-info-popup h4 {
+            margin: 0 0 10px 0;
+            color: var(--text-color);
+            font-size: 1.1rem;
+        }
+
+        .theme-info-popup p {
+            margin: 0 0 15px 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary-color);
+            line-height: 1.5;
+        }
+
+        .color-palette {
+            display: flex;
+            gap: 10px;
+        }
+
+        .color-swatch {
+            width: 100%;
+        }
+
+        .color-swatch .color-chip {
+            width: 100%;
+            height: 30px;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+
+        .color-swatch .color-info {
+            font-size: 0.75rem;
+            margin-top: 5px;
+            color: var(--text-secondary-color);
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .logo span:first-child {
+            margin-right: 0.3rem; /* 减少间距 */
+        }
+
+        .logo span {
+            color: var(--primary-color);
+        }
+
+        .navbar {
+            background-color: var(--bg-secondary-color);
+            padding: 15px 40px 25px; /* 调整上下内边距，使其更均衡 */
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar li {
+            margin: 0 30px; /* 增加导航项间距 */
+        }
+
+        .navbar a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1rem; /* 减小字体大小 */
+            font-weight: 600;
+            transition: color 0.3s;
+            position: relative;
+            padding-bottom: 5px; /* 稍微留出一点空间 */
+            text-align: center;
+        }
+
+        .nav-number {
+            display: block;
+            font-size: 0.7rem; /* 再次减小字体 */
+            color: var(--text-secondary-color);
+            font-weight: normal;
+            margin-bottom: 5px;
+            text-align: left; /* 数字左对齐 */
+        }
+
+        .navbar a:hover,
+        .navbar a.active {
+            color: var(--accent-color); /* 设置高亮颜色 */
+        }
+
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            bottom: -20px; /* 再次微调位置 */
+            left: 50%;
+            width: 35px;
+            height: 3px;
+            background-color: var(--accent-color);
+            transform: translateX(-50%) scaleX(0);
+            transform-origin: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .navbar a:hover::after,
+        .navbar a.active::after {
+            transform: translateX(-50%) scaleX(1); /* 显示下划线 */
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            aspect-ratio: 16 / 9; /* 保持16:9的宽高比以消除黑边 */
+            overflow: hidden;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            display: flex; /* 使用Flexbox进行对齐 */
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+        }
+
+        .slide img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain; /* 保持宽高比 */
+            display: block;
+        }
+
+        .slider-nav { display: none; } /* 隐藏旧的导航 */
+
+        .thumbnail-overlay {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 25%; /* 设置为屏幕宽度的25% */
+            height: 100%;
+            background-color: var(--overlay-bg-color);
+            backdrop-filter: blur(8px);
+            padding: 15px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+            transition: background-color 0.5s;
+        }
+
+        .thumb-nav-controls {
+            position: absolute;
+            right: 25%; /* 定位到浮层左侧 */
+            top: 50%;
+            transform: translateY(-50%);
+            margin-right: 15px; /* 与浮层保持间距 */
+            z-index: 11; /* 确保在最上层 */
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* 增加按钮间距 */
+        }
+
+        .thumb-nav-btn {
+            background: rgba(0,0,0,0.3);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .thumb-nav-btn:hover {
+            background: rgba(0,0,0,0.6);
+        }
+
+        .thumbnail-container {
+            flex-grow: 1;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .thumbnail-list {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .thumbnail-item {
+            width: 80%; /* 增加缩略图宽度 */
+            aspect-ratio: 16 / 9; /* 保持16:9的宽高比 */
+            height: auto;
+            margin: 10px auto;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .thumbnail-item:hover {
+            transform: scale(1.05);
+        }
+
+        .thumbnail-item.active {
+            border-color: var(--primary-color);
+        }
+
+        .thumbnail-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .main-content {
+            flex-grow: 1; /* 让主内容区域占据剩余空间 */
+            position: relative; /* 为绝对定位的子元素提供参考 */
+            overflow: hidden; /* 防止内容溢出 */
+            display: flex; /* 使用flex布局来居中内容 */
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+        }
+
+        .info-overlay-container {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            z-index: 5;
+            pointer-events: none; /* 允许点击穿透容器 */
+        }
+
+        .image-info-overlay {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            box-sizing: border-box;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-shadow: 2px 2px 5px var(--shadow-color);
+            pointer-events: auto; /* 恢复浮层自身的点击事件 */
+        }
+
+        .info-top {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1rem; /* 增大字体 */
+            font-weight: 600;
+        }
+
+        .info-top .tag {
+            background-color: rgba(255,255,255,0.2); /* This might need theme-specific overrides if it looks bad */
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        .image-title {
+            font-size: 4.5rem; /* 增大标题字体 */
+            font-weight: 700;
+            margin: 20px 0;
+        }
+
+        .info-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .info-btn {
+            padding: 15px 30px; /* 增大按钮 */
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem; /* 增大按钮字体 */
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+
+        .info-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-watch {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+        }
+
+        .btn-preview {
+            background-color: var(--bg-secondary-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-container">
+            <div class="logo"><span data-lang-key="logo_main">长歌</span> <span data-lang-key="logo_secondary">小世界</span></div>
+            <div class="controls-container">
+                <div class="lang-switcher" data-active="zh">
+                    <button class="lang-btn" data-lang="zh">中文</button>
+                    <button class="lang-btn" data-lang="en">EN</button>
+                </div>
+                <div class="blind-box-container">
+                    <!-- 方案A: 极简霓虹胶囊 -->
+                    <div class="theme-button-wrapper">
+                        <button id="theme-btn-capsule" class="blind-box-btn">🎁</button>
+                        <div class="theme-info-popup" id="capsule-info-popup">
+                            <h4 class="info-title"></h4>
+                            <p class="info-desc"></p>
+                            <div class="info-palette"></div>
+                        </div>
+                    </div>
+
+                    <!-- 方案B: 转盘盲盒 -->
+                    <div class="theme-button-wrapper">
+                        <button id="theme-btn-spinner" class="blind-box-btn">
+                            <svg class="spinner-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- 方案C: 卡片翻转 -->
+                    <div id="theme-card-container" class="theme-button-wrapper">
+                        <div id="theme-btn-card" class="card">
+                            <div class="card-face card-front">?</div>
+                            <div class="card-face card-back">
+                                <h4 class="info-title"></h4>
+                                <div class="info-palette-mini"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 方案D: 悬浮漂浮球 -->
+                    <div class="theme-button-wrapper">
+                        <button id="theme-btn-floater" class="blind-box-btn">✨</button>
+                    </div>
+                </div>
+                <!-- 方案D的Toast容器 -->
+                <div id="toast-container"></div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="#" class="active"><span class="nav-number">01</span><span data-lang-key="nav_home">首页</span></a></li>
+            <li><a href="#"><span class="nav-number">02</span><span data-lang-key="nav_portfolio">作品集</span></a></li>
+            <li><a href="#"><span class="nav-number">03</span><span data-lang-key="nav_artists">艺术家</span></a></li>
+            <li><a href="#"><span class="nav-number">04</span><span data-lang-key="nav_about">关于</span></a></li>
+            <li><a href="#"><span class="nav-number">05</span><span data-lang-key="nav_contact">联系我们</span></a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div class="slider-container">
+            <div class="slider">
+                <div class="slide"><img src="https://picsum.photos/1600/900?random=1" alt="Image 1"></div>
+                <div class="slide"><img src="https://picsum.photos/1600/900?random=2" alt="Image 2"></div>
+                <div class="slide"><img src="https://picsum.photos/1600/900?random=3" alt="Image 3"></div>
+                <div class="slide"><img src="https://picsum.photos/1600/900?random=4" alt="Image 4"></div>
+                <div class="slide"><img src="https://picsum.photos/1600/900?random=5" alt="Image 5"></div>
+                <div class="slide"><img src="https://picsum.photos/1600/900?random=6" alt="Image 6"></div>
+            </div>
+        </div>
+
+        <div class="info-overlay-container">
+            <div class="image-info-overlay">
+                <div class="info-top">
+                    <span data-lang-key="info_author_prefix">@</span><span data-lang-key="info_author_name">艺术作者</span>
+                    <span class="tag" data-lang-key="info_tag_masterpiece">杰作</span>
+                    <span class="tag" data-lang-key="info_tag_scenery">风景</span>
+                </div>
+                <h2 class="image-title" data-lang-key="info_title">宁静的黎明</h2>
+                <div class="info-buttons">
+                    <button class="info-btn btn-watch">▶ <span data-lang-key="btn_watch">观看</span></button>
+                    <button class="info-btn btn-preview">👁 <span data-lang-key="btn_preview">预览</span></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="thumb-nav-controls">
+            <button id="thumbPrevBtn" class="thumb-nav-btn">▲</button>
+            <button id="thumbNextBtn" class="thumb-nav-btn">▼</button>
+        </div>
+        <div class="thumbnail-overlay">
+            <div class="thumbnail-container">
+                <div class="thumbnail-list">
+                    <!-- Thumbnails will be generated by JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/language.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/image-loader.js"></script>
+    <script src="js/theme-info.js"></script>
+    <script src="js/blind-box.js"></script>
+    <script>
+        const slider = document.querySelector('.slider');
+        const slides = document.querySelectorAll('.slide');
+        const thumbList = document.querySelector('.thumbnail-list');
+        const thumbPrevBtn = document.getElementById('thumbPrevBtn');
+        const thumbNextBtn = document.getElementById('thumbNextBtn');
+        const thumbContainer = document.querySelector('.thumbnail-container');
+
+        let currentIndex = 0;
+        let slideWidth = slides[0].clientWidth;
+
+        // Generate thumbnails
+        slides.forEach((slide, index) => {
+            const thumbItem = document.createElement('div');
+            thumbItem.classList.add('thumbnail-item');
+            thumbItem.dataset.index = index;
+            thumbItem.innerHTML = `<img src="${slide.querySelector('img').src}" alt="Thumbnail ${index + 1}">`;
+            thumbList.appendChild(thumbItem);
+        });
+
+        const thumbnails = document.querySelectorAll('.thumbnail-item');
+        const thumbHeight = thumbnails[0].offsetHeight;
+        const thumbMargin = 10; // as set in CSS
+        const thumbTotalHeight = thumbHeight + (thumbMargin * 2);
+
+        function updateActiveThumbnail() {
+            thumbnails.forEach(thumb => thumb.classList.remove('active'));
+            thumbnails[currentIndex].classList.add('active');
+        }
+
+        function scrollThumbnails() {
+            const containerHeight = thumbContainer.clientHeight;
+            const visibleThumbs = Math.floor(containerHeight / thumbTotalHeight);
+            let scrollOffset = 0;
+
+            if (currentIndex >= visibleThumbs) {
+                scrollOffset = (currentIndex - visibleThumbs + 1) * thumbTotalHeight;
+            }
+            thumbList.style.transform = `translateY(-${scrollOffset}px)`;
+        }
+
+        function goToSlide(index) {
+            if (index < 0) index = slides.length - 1;
+            if (index >= slides.length) index = 0;
+            currentIndex = index;
+
+            slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+            updateActiveThumbnail();
+            scrollThumbnails();
+        }
+
+        thumbNextBtn.addEventListener('click', () => {
+            goToSlide(currentIndex + 1);
+        });
+
+        thumbPrevBtn.addEventListener('click', () => {
+            goToSlide(currentIndex - 1);
+        });
+
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', () => {
+                goToSlide(parseInt(thumb.dataset.index));
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            slideWidth = slides[0].clientWidth;
+            slider.style.transition = 'none';
+            goToSlide(currentIndex);
+            setTimeout(() => {
+                slider.style.transition = 'transform 0.5s ease-in-out';
+            }, 0);
+        });
+
+        // Initial setup
+        goToSlide(0);
+
+    </script>
+
+</body>
+</html>

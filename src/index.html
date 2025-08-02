@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 艺术画廊</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --bg-secondary-color: #2c2c2c;
+            --text-color: #f0f0f0;
+            --text-secondary-color: #a0a0a0;
+            --primary-color: #00aaff;
+            --accent-color: #e06cff;
+            --border-color: #444;
+            --overlay-bg-color: rgba(0, 0, 0, 0.05);
+            --shadow-color: rgba(0,0,0,0.7);
+        }
+
+        body[data-theme='morandi'] { --bg-color: #e0e0e0; --bg-secondary-color: #f5f5f5; --header-bg-color: #d6d6d6; --text-color: #5a5a5a; --text-secondary-color: #8d8d8d; --primary-color: #a3bfb8; --accent-color: #b8a3a3; --border-color: #c2c2c2; --overlay-bg-color: rgba(255, 255, 255, 0.2); --shadow-color: rgba(0,0,0,0.2); }
+        body[data-theme='mucha'] { --bg-color: #f4f0e6; --bg-secondary-color: #fffaf0; --header-bg-color: #e9e2d5; --text-color: #4b3f32; --text-secondary-color: #8c7d6e; --primary-color: #8a795d; --accent-color: #c06c84; --border-color: #dcd3c4; --overlay-bg-color: rgba(255, 250, 240, 0.3); --shadow-color: rgba(0,0,0,0.3); }
+        body[data-theme='bauhaus'] { --bg-color: #f0f0f0; --bg-secondary-color: #ffffff; --header-bg-color: #e0e0e0; --text-color: #000000; --text-secondary-color: #555555; --primary-color: #dd0000; --accent-color: #005bff; --border-color: #000000; --overlay-bg-color: rgba(255, 255, 0, 0.1); --shadow-color: rgba(0,0,0,0.4); }
+        body[data-theme='cyberpunk'] { --bg-color: #0d0221; --bg-secondary-color: #241e4e; --header-bg-color: #000000; --text-color: #f0f0f0; --text-secondary-color: #00f0ff; --primary-color: #39ff14; --accent-color: #ff3131; --border-color: #8a2be2; --overlay-bg-color: rgba(255, 0, 255, 0.05); --shadow-color: rgba(0, 240, 255, 0.5); }
+        body[data-theme='destijl'] { --bg-color: #f0f0f0; --bg-secondary-color: #ffffff; --header-bg-color: #e0e0e0; --text-color: #000000; --text-secondary-color: #005bff; --primary-color: #ffde00; --accent-color: #dd0000; --border-color: #000000; --overlay-bg-color: rgba(255, 222, 0, 0.1); --shadow-color: rgba(0,0,0,0.4); }
+        body[data-theme='ukiyoe'] { --bg-color: #f3eada; --bg-secondary-color: #ffffff; --header-bg-color: #d8c7b2; --text-color: #4f4233; --text-secondary-color: #8c7d6e; --primary-color: #005f73; --accent-color: #ae2012; --border-color: #9b8a78; --overlay-bg-color: rgba(0, 95, 115, 0.05); --shadow-color: rgba(79, 66, 51, 0.3); }
+        body[data-theme='wesanderson'] { --bg-color: #fdf6e4; --bg-secondary-color: #ffffff; --header-bg-color: #f0e5d1; --text-color: #585043; --text-secondary-color: #a39a8c; --primary-color: #e76f51; --accent-color: #2a9d8f; --border-color: #d4c8b4; --overlay-bg-color: rgba(231, 111, 81, 0.05); --shadow-color: rgba(88, 80, 67, 0.3); }
+        body[data-theme='monet'] { --bg-color: #e6e8fa; --bg-secondary-color: #ffffff; --header-bg-color: #d9dcf2; --text-color: #495a78; --text-secondary-color: #8b9bb4; --primary-color: #7aa2e5; --accent-color: #d8a7d8; --border-color: #c1c8e0; --overlay-bg-color: rgba(122, 162, 229, 0.05); --shadow-color: rgba(73, 90, 120, 0.3); }
+        body[data-theme='artdeco'] { --bg-color: #1a1a1a; --bg-secondary-color: #2d2d2d; --header-bg-color: #000000; --text-color: #f5f5dc; --text-secondary-color: #d4af37; --primary-color: #ffd700; --accent-color: #ff6b35; --border-color: #8b7355; --overlay-bg-color: rgba(255, 215, 0, 0.05); --shadow-color: rgba(212, 175, 55, 0.4); }
+        body[data-theme='nordic'] { --bg-color: #fafafa; --bg-secondary-color: #ffffff; --header-bg-color: #f0f0f0; --text-color: #2e3440; --text-secondary-color: #5e81ac; --primary-color: #88c0d0; --accent-color: #d08770; --border-color: #d8dee9; --overlay-bg-color: rgba(136, 192, 208, 0.05); --shadow-color: rgba(46, 52, 64, 0.2); }
+        body[data-theme='vaporwave'] { --bg-color: #1a0d26; --bg-secondary-color: #2d1b3d; --header-bg-color: #0f0515; --text-color: #ff71ce; --text-secondary-color: #01cdfe; --primary-color: #05ffa1; --accent-color: #b967db; --border-color: #7209b7; --overlay-bg-color: rgba(255, 113, 206, 0.05); --shadow-color: rgba(185, 103, 219, 0.5); }
+        body[data-theme='matisse'] { --bg-color: #fff8e7; --bg-secondary-color: #ffffff; --header-bg-color: #f0e68c; --text-color: #2f4f4f; --text-secondary-color: #ff6347; --primary-color: #4169e1; --accent-color: #ffd700; --border-color: #dc143c; --overlay-bg-color: rgba(65, 105, 225, 0.05); --shadow-color: rgba(47, 79, 79, 0.3); }
+        body[data-theme='filmnoir'] { --bg-color: #1c1c1c; --bg-secondary-color: #2a2a2a; --header-bg-color: #0d0d0d; --text-color: #e5e5e5; --text-secondary-color: #b0b0b0; --primary-color: #ffffff; --accent-color: #696969; --border-color: #555555; --overlay-bg-color: rgba(255, 255, 255, 0.02); --shadow-color: rgba(0, 0, 0, 0.8); }
+        body[data-theme='synthwave'] { --bg-color: #0f0f23; --bg-secondary-color: #1a1a3a; --header-bg-color: #050510; --text-color: #ff006e; --text-secondary-color: #8338ec; --primary-color: #3a86ff; --accent-color: #ffbe0b; --border-color: #fb5607; --overlay-bg-color: rgba(255, 0, 110, 0.05); --shadow-color: rgba(131, 56, 236, 0.6); }
+        body[data-theme='brutalism'] { --bg-color: #2c2c2c; --bg-secondary-color: #3d3d3d; --header-bg-color: #1a1a1a; --text-color: #f5f5f5; --text-secondary-color: #cccccc; --primary-color: #ff4444; --accent-color: #ffff00; --border-color: #000000; --overlay-bg-color: rgba(255, 68, 68, 0.05); --shadow-color: rgba(0, 0, 0, 0.9); }
+        body[data-theme='kawaii'] { --bg-color: #fff0f5; --bg-secondary-color: #ffffff; --header-bg-color: #ffe4e6; --text-color: #8b5a83; --text-secondary-color: #d4a5d4; --primary-color: #ff69b4; --accent-color: #87ceeb; --border-color: #ffc0cb; --overlay-bg-color: rgba(255, 105, 180, 0.05); --shadow-color: rgba(139, 90, 131, 0.3); }
+        body[data-theme='steampunk'] { --bg-color: #2f1b14; --bg-secondary-color: #4a2c1a; --header-bg-color: #1a0f0a; --text-color: #d4af37; --text-secondary-color: #cd853f; --primary-color: #b8860b; --accent-color: #8b4513; --border-color: #a0522d; --overlay-bg-color: rgba(212, 175, 55, 0.05); --shadow-color: rgba(139, 69, 19, 0.6); }
+        body[data-theme='neontokyo'] { --bg-color: #0a0a0a; --bg-secondary-color: #1a1a1a; --header-bg-color: #000000; --text-color: #00ffff; --text-secondary-color: #ff1493; --primary-color: #00ff41; --accent-color: #ff073a; --border-color: #9d00ff; --overlay-bg-color: rgba(0, 255, 255, 0.05); --shadow-color: rgba(157, 0, 255, 0.7); }
+        body[data-theme='vintageposter'] { --bg-color: #f5e6d3; --bg-secondary-color: #ffffff; --header-bg-color: #e6d2b8; --text-color: #8b4513; --text-secondary-color: #cd853f; --primary-color: #dc143c; --accent-color: #ff6347; --border-color: #a0522d; --overlay-bg-color: rgba(220, 20, 60, 0.05); --shadow-color: rgba(139, 69, 19, 0.4); }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .controls-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .lang-switcher {
+            position: relative;
+            display: inline-flex;
+            background-color: var(--bg-secondary-color);
+            border-radius: 25px;
+            padding: 4px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .lang-btn {
+            position: relative;
+            background: none;
+            border: none;
+            color: var(--text-secondary-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+            min-width: 45px;
+            text-align: center;
+        }
+
+        .lang-btn:hover {
+            color: var(--text-color);
+        }
+
+        .lang-btn.active {
+            color: var(--bg-secondary-color);
+        }
+
+        .lang-switcher .active-pill {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            border-radius: 18px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .lang-switcher[data-active='en'] .active-pill {
+            transform: translateX(100%);
+        }
+
+        .login-container {
+            background-color: var(--bg-secondary-color);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 350px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary-color);
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--accent-color);
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        .blind-box-container { display: flex; align-items: center; gap: 15px; }
+        .theme-button-wrapper { position: relative; }
+        .blind-box-btn { background: var(--bg-secondary-color); border: 1px solid var(--border-color); color: var(--text-color); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .blind-box-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); border-color: var(--accent-color); }
+        #theme-btn-capsule { border-radius: 21px; }
+        #theme-btn-capsule.active { animation: capsule-pop 0.5s; box-shadow: 0 0 15px var(--accent-color); }
+        @keyframes capsule-pop { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        #capsule-info-popup { display: none; position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 250px; padding: 15px; background: var(--bg-secondary-color); border: 1px solid var(--border-color); border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 100; opacity: 0; transition: opacity 0.3s, transform 0.3s; }
+        #capsule-info-popup.show { display: block; opacity: 1; transform: translateX(-50%) translateY(10px); }
+        #theme-btn-spinner .spinner-svg { width: 80%; height: 80%; transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        #theme-btn-spinner .spinner-svg circle { fill: none; stroke: var(--primary-color); stroke-width: 8; stroke-dasharray: 140 140; }
+        #theme-btn-spinner.spinning .spinner-svg { transform: rotate(1080deg); }
+        #theme-card-container { perspective: 1000px; }
+        #theme-btn-card { width: 42px; height: 42px; position: relative; transform-style: preserve-3d; transition: transform 0.6s; cursor: pointer; }
+        #theme-btn-card.flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 1.5rem; }
+        .card-front { background: var(--bg-secondary-color); border: 1px solid var(--border-color); color: var(--text-color); }
+        .card-back { background: var(--bg-color); border: 1px solid var(--border-color); transform: rotateY(180deg); padding: 5px; flex-direction: column; gap: 5px; }
+        .card-back .info-title { font-size: 0.7rem; margin: 0; color: var(--text-color); }
+        .info-palette-mini { display: flex; gap: 2px; width: 100%; height: 10px; }
+        .info-palette-mini .color-chip { flex-grow: 1; border-radius: 2px; }
+        #theme-btn-floater { animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: var(--bg-secondary-color); padding: 15px 20px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.25); border-left: 5px solid var(--primary-color); display: flex; flex-direction: column; gap: 8px; opacity: 0; transform: translateX(100%); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .toast.show { opacity: 1; transform: translateX(0); }
+        .toast .info-title { font-size: 1rem; margin: 0; color: var(--text-color); }
+        .toast .info-desc { font-size: 0.8rem; margin: 0; color: var(--text-secondary-color); }
+        .toast .info-palette { display: flex; gap: 5px; height: 15px; }
+        .toast .info-palette .color-chip { flex-grow: 1; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="controls-container">
+        <div class="lang-switcher" data-active="zh">
+            <div class="active-pill"></div>
+            <button class="lang-btn active" data-lang="zh">中</button>
+            <button class="lang-btn" data-lang="en">En</button>
+        </div>
+        <div class="blind-box-container">
+            <div class="theme-button-wrapper">
+                <button id="theme-btn-capsule" class="blind-box-btn">🎁</button>
+            </div>
+            <div class="theme-button-wrapper">
+                <button id="theme-btn-spinner" class="blind-box-btn">
+                    <svg class="spinner-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45"/></svg>
+                </button>
+            </div>
+            <div id="theme-card-container" class="theme-button-wrapper">
+                <div id="theme-btn-card" class="card">
+                    <div class="card-face card-front">?</div>
+                    <div class="card-face card-back">
+                        <h4 class="info-title"></h4>
+                        <div class="info-palette-mini"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-button-wrapper">
+                <button id="theme-btn-floater" class="blind-box-btn">✨</button>
+            </div>
+        </div>
+        <div id="toast-container"></div>
+    </div>
+
+    <div class="login-container">
+        <h1 data-lang-key="login_title">欢迎回来</h1>
+        <form action="home.html">
+            <div class="input-group">
+                <label for="username" data-lang-key="login_username_label">用户名</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password" data-lang-key="login_password_label">密码</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="login-btn" data-lang-key="login_button">登录</button>
+        </form>
+    </div>
+
+    <script src="js/language.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/theme-info.js"></script>
+    <script src="js/blind-box.js"></script>
+</body>
+</html>
