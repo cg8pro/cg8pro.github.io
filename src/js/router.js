@@ -1,12 +1,15 @@
 // Hash-based client-side router for local file usage
 
 // Map hash paths to HTML fragment files (relative to project root)
+// Dynamically compute the base path for routing ('' or '../')
+const CURRENT_PATH = window.location.pathname;
+const BASE = CURRENT_PATH.includes('/pages/') ? './' : 'pages/';
 const routes = {
-    "": "pages/home.html",          // default (home) – optional
-    "portfolio": "pages/portfolio.html",
-    "artists": "pages/artists.html",
-    "about": "pages/about.html",
-    "contact": "pages/contact.html"
+    "": BASE + "home.html",          // default (home)
+    "portfolio": BASE + "portfolio.html",
+    "artists": BASE + "artists.html",
+    "about": BASE + "about.html",
+    "contact": BASE + "contact.html"
 };
 
 /**
